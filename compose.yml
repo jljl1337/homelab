@@ -1,0 +1,24 @@
+name: home-server
+
+services:
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    restart: unless-stopped
+    volumes:
+      - ${UPTIME_KUMA_DATA}:/app/data
+    ports:
+      - ${UPTIME_KUMA_PORT}:3001
+    extra_hosts:
+      - host.ip:${HOST_IP}
+
+  vaultwarden:
+    image: vaultwarden/server:latest
+    restart: unless-stopped
+    volumes:
+      - ${VAULTWARDEN_DATA}:/data
+    ports:
+      - ${VAULTWARDEN_PORT}:80
+    environment:
+      - SIGNUPS_ALLOWED=false # Comment this line to allow signups
+      - DOMAIN=${VAULTWARDEN_DOMAIN}
