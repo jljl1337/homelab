@@ -21,7 +21,6 @@ services:
       - ${VAULTWARDEN_PORT}:80
     environment:
       - SIGNUPS_ALLOWED=false # Comment this line to allow signups
-      - DOMAIN=${VAULTWARDEN_DOMAIN}
 
   icloud-photo:
     image: icloudpd/icloudpd:latest
@@ -32,4 +31,15 @@ services:
       - ${ICLOUD_PHOTO_PORT}:8080
     environment:
       - TZ=${TZ}
-    command: icloudpd --directory /data --username '${ICLOUD_USERNAME}' --password-provider webui --mfa-provider webui --watch-with-interval 3600
+    command: icloudpd --directory /data --username ${ICLOUD_USERNAME} --password-provider webui --mfa-provider webui --watch-with-interval 3600
+
+  samba:
+    image: dperson/samba
+    restart: unless-stopped
+    volumes:
+      - ${SAMBA_MOUNT}:/mount
+    ports:
+      - 445:445
+    environment:
+      - USER=${SAMBA_USERNAME};${SAMBA_PASSWORD}
+      - SHARE="hard disk;/mount;yes;no;no;${SAMBA_USERNAME}"
