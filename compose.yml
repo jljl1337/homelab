@@ -5,12 +5,11 @@ services:
   uptime-kuma:
     image: louislam/uptime-kuma:1
     restart: unless-stopped
+    network_mode: host
     volumes:
       - ${UPTIME_KUMA_DATA}:/app/data
-    ports:
-      - ${UPTIME_KUMA_PORT}:3001
-    extra_hosts:
-      - host.ip:${HOST_IP}
+    environment:
+      - PORT=${UPTIME_KUMA_PORT}
 
   vaultwarden:
     image: vaultwarden/server:latest
