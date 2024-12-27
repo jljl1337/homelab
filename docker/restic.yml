@@ -1,0 +1,60 @@
+services:
+  restic-backup:
+    image: mazzolino/restic:1.7.2
+    hostname: restic-backup
+    restart: unless-stopped
+    environment:
+      RUN_ON_STARTUP: "true"
+      BACKUP_CRON: "0 30 3 * * *"
+      RESTIC_REPOSITORY: /mnt/repo
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      RESTIC_BACKUP_SOURCES: /mnt/source
+      RESTIC_BACKUP_ARGS: >-
+        --tag my-tag
+        --exclude ._*
+        --exclude .DS_Store
+        --verbose
+      RESTIC_FORGET_ARGS: >-
+        --keep-last 10
+        --keep-daily 7
+        --keep-weekly 5
+        --keep-monthly 12
+      POST_COMMANDS_FAILURE: |-
+        curl -X POST -d 'urls=${DISCORD_WEBHOOK}&body=Restic backup failed' http://apprise:8000/notify
+      TZ: ${TZ}
+    volumes:
+      - ${RESTIC_SOURCE}:/mnt/source:ro
+      - ${RESTIC_REPO}:/mnt/repo
+
+  restic-prune:
+    image: mazzolino/restic:1.7.2
+    hostname: restic-prune
+    restart: unless-stopped
+    environment:
+      SKIP_INIT: "true"
+      RUN_ON_STARTUP: "true"
+      PRUNE_CRON: "0 0 4 * * *"
+      RESTIC_REPOSITORY: /mnt/repo
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      TZ: ${TZ}
+    volumes:
+      - ${RESTIC_REPO}:/mnt/repo
+
+  restic-check:
+    image: mazzolino/restic:1.7.2
+    hostname: restic-check
+    restart: unless-stopped
+    environment:
+      SKIP_INIT: "true"
+      RUN_ON_STARTUP: "false"
+      CHECK_CRON: "0 15 5 * * *"
+      RESTIC_CHECK_ARGS: >-
+        --read-data-subset=10%
+      RESTIC_REPOSITORY: /mnt/repo
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      TZ: ${TZ}
+    volumes:
+      - ${RESTIC_REPO}:/mnt/repo
+
+  apprise:
+    image: caronc/apprise:latest

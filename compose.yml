@@ -1,33 +1,8 @@
 name: homelab
 
-services:
-
-  uptime-kuma:
-    image: louislam/uptime-kuma:1
-    restart: unless-stopped
-    network_mode: host
-    volumes:
-      - ${UPTIME_KUMA_DATA}:/app/data
-    environment:
-      - PORT=${UPTIME_KUMA_PORT}
-
-  vaultwarden:
-    image: vaultwarden/server:latest
-    restart: unless-stopped
-    volumes:
-      - ${VAULTWARDEN_DATA}:/data
-    ports:
-      - ${VAULTWARDEN_PORT}:80
-    environment:
-      - SIGNUPS_ALLOWED=false # Comment this line to allow signups
-
-  icloud-photo:
-    image: icloudpd/icloudpd:latest
-    restart: unless-stopped
-    volumes:
-      - ${ICLOUD_PHOTO_DATA}:/data
-    ports:
-      - ${ICLOUD_PHOTO_PORT}:8080
-    environment:
-      - TZ=${TZ}
-    command: icloudpd --directory /data --username ${ICLOUD_USERNAME} --password-provider webui --mfa-provider webui --watch-with-interval 3600
+include:
+  - path:
+    - docker/uptime-kuma.yml
+    - docker/vaultwarden.yml
+    - docker/icloud-photo.yml
+    - docker/restic.yml
