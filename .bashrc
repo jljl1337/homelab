@@ -1,4 +1,5 @@
 set -o vi
 bind '"jk":vi-movement-mode'
 
-export EDITOR="vim"
+export VISUAL="vim"
+export EDITOR="$VISUAL"
