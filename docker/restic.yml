@@ -1,7 +1,7 @@
 services:
 
   restic-backup:
-    image: mazzolino/restic:1.7.2
+    image: mazzolino/restic:latest
     hostname: restic-backup
     restart: unless-stopped
     environment:
@@ -28,7 +28,7 @@ services:
       - ${RESTIC_REPO}:/mnt/repo
 
   restic-prune:
-    image: mazzolino/restic:1.7.2
+    image: mazzolino/restic:latest
     hostname: restic-prune
     restart: unless-stopped
     environment:
@@ -42,7 +42,7 @@ services:
       - ${RESTIC_REPO}:/mnt/repo
 
   restic-check:
-    image: mazzolino/restic:1.7.2
+    image: mazzolino/restic:latest
     hostname: restic-check
     restart: unless-stopped
     environment:
