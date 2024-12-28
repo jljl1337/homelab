@@ -30,6 +30,12 @@ sudo apt install -y curl openssh-server git vim samba
 - [AnyDesk](https://anydesk.com/en/downloads/linux)
 - [Sunshine](https://docs.lizardbyte.dev/projects/sunshine/en/latest/about/setup.html)
 
+Restart the service if having issues to connect to the sunshine server:
+
+```bash
+systemctl --user restart sunshine
+```
+
 ## Usage
 
 ### Samba
