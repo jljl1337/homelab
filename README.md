@@ -18,7 +18,7 @@ sudo reboot
 3. Install packages
 
 ```bash
-sudo apt install -y curl openssh-server git vim samba
+sudo apt install -y curl openssh-server git vim samba htop
 ```
 
 4. Setup these as you need
