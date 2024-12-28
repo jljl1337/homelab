@@ -21,6 +21,15 @@ sudo reboot
 sudo apt install -y curl openssh-server git vim samba
 ```
 
+4. Setup these as you need
+
+- [ssh key](https://askubuntu.com/a/46935)
+- [tailscale](https://tailscale.com/download/linux)
+- [git username and email](https://stackoverflow.com/a/33024593/11027944)
+- [Docker](https://docs.docker.com/engine/install/ubuntu/)
+- [AnyDesk](https://anydesk.com/en/downloads/linux)
+- [Sunshine](https://docs.lizardbyte.dev/projects/sunshine/en/latest/about/setup.html)
+
 ## Usage
 
 ### Samba
