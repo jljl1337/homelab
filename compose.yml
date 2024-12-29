@@ -6,3 +6,4 @@ include:
     - docker/vaultwarden.yml
     - docker/icloud-photo.yml
     - docker/restic.yml
+    - docker/netdata.yml
