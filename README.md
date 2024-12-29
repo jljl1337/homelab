@@ -4,20 +4,20 @@
 
 1. Update the system
 
-```bash
+```sh
 sudo apt update
 sudo apt upgrade -y
 ```
 
 2. Reboot
 
-```bash
+```sh
 sudo reboot
 ```
 
 3. Install packages
 
-```bash
+```sh
 sudo apt install -y curl openssh-server git vim samba htop
 ```
 
@@ -32,7 +32,7 @@ sudo apt install -y curl openssh-server git vim samba htop
 
 Restart the service if having issues to connect to the sunshine server:
 
-```bash
+```sh
 systemctl --user restart sunshine
 ```
 
@@ -43,20 +43,20 @@ systemctl --user restart sunshine
 1. Copy the content of `smb.conf` to the end of `/etc/samba/smb.conf`.
 2. Add the user to the Samba database.
 
-```bash
+```sh
 sudo smbpasswd -a <username>
 ```
 
 3. Restart the Samba service.
 
-```bash
+```sh
 sudo systemctl restart smbd
 ```
 
 ### Docker
 
 1. Copy the `.env.example` file to `.env` and set the environment variables.
-2. Run `docker-compose up -d` to start the services.
+2. Run `docker compose up -d` to start the services.
 
 ## Development (Docker)
 
