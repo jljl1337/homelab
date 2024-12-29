@@ -6,17 +6,19 @@ services:
     restart: unless-stopped
     environment:
       RUN_ON_STARTUP: "true"
-      BACKUP_CRON: "0 15 * * * *"
-      RESTIC_REPOSITORY: /mnt/repo
+      BACKUP_CRON: "0 0 * * * *"
+      RESTIC_REPOSITORY: ${RESTIC_REPOSITORY}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD}
       RESTIC_BACKUP_SOURCES: /mnt/source
       RESTIC_BACKUP_ARGS: >-
-        --tag my-tag
+        --tag backup
         --exclude ._*
         --exclude .DS_Store
         --verbose
       RESTIC_FORGET_ARGS: >-
-        --keep-last 10
+        --keep-hourly 24
         --keep-daily 7
         --keep-weekly 5
         --keep-monthly 12
@@ -25,7 +27,6 @@ services:
       TZ: ${TZ}
     volumes:
       - ${RESTIC_SOURCE}:/mnt/source:ro
-      - ${RESTIC_REPO}:/mnt/repo
 
   restic-prune:
     image: mazzolino/restic:latest
@@ -33,13 +34,13 @@ services:
     restart: unless-stopped
     environment:
       SKIP_INIT: "true"
-      RUN_ON_STARTUP: "true"
-      PRUNE_CRON: "0 45 * * * *"
-      RESTIC_REPOSITORY: /mnt/repo
+      RUN_ON_STARTUP: "false"
+      PRUNE_CRON: "0 30 4 * * *"
+      RESTIC_REPOSITORY: ${RESTIC_REPOSITORY}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD}
       TZ: ${TZ}
-    volumes:
-      - ${RESTIC_REPO}:/mnt/repo
 
   restic-check:
     image: mazzolino/restic:latest
@@ -48,14 +49,14 @@ services:
     environment:
       SKIP_INIT: "true"
       RUN_ON_STARTUP: "false"
-      CHECK_CRON: "0 0 * * * *"
+      CHECK_CRON: "0 45 4 * * *"
       RESTIC_CHECK_ARGS: >-
         --read-data-subset=10%
-      RESTIC_REPOSITORY: /mnt/repo
+      RESTIC_REPOSITORY: ${RESTIC_REPOSITORY}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD}
       TZ: ${TZ}
-    volumes:
-      - ${RESTIC_REPO}:/mnt/repo
 
   apprise:
     image: caronc/apprise:latest

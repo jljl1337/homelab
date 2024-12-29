@@ -58,6 +58,32 @@ sudo systemctl restart smbd
 1. Copy the `.env.example` file to `.env` and set the environment variables.
 2. Run `docker compose up -d` to start the services.
 
+### Restore backup
+
+Start the restic container with the following command:
+
+```sh
+docker run -it --env-file .env -v <restore-location>:/mnt/restore --entrypoint sh restic/restic
+```
+
+Get all the snapshots and the corresponding id:
+
+```sh
+restic snapshots
+```
+
+Get the files in the snapshot:
+
+```sh
+restic ls <snapshot-id>
+```
+
+Restore the files:
+
+```sh
+restic restore <snapshot-id>:/mnt/source --target /mnt/restore/
+```
+
 ## Development (Docker)
 
 1. Edit the `docker-compose.yml` file to add or remove services.
