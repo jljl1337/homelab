@@ -49,9 +49,9 @@ services:
     environment:
       SKIP_INIT: "true"
       RUN_ON_STARTUP: "false"
-      CHECK_CRON: "0 45 4 * * *"
+      CHECK_CRON: "0 45 4 * * 0"
       RESTIC_CHECK_ARGS: >-
-        --read-data-subset=10%
+        --read-data-subset=500M
       RESTIC_REPOSITORY: ${RESTIC_REPOSITORY}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
