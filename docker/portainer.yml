@@ -1,0 +1,13 @@
+services:
+
+  portainer:
+    image: portainer/portainer-ce:2.21.5
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+      - ${PORTAINER_PORT}:9000
+
+volumes:
+  portainer_data:
