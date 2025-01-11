@@ -1,0 +1,30 @@
+services:
+
+  jenkins:
+    image: jljl1337/jenkins-docker:lts
+    restart: unless-stopped
+    ports:
+      - ${JENKINS_PORT}:8080
+    volumes:
+      - jenkins-data:/var/jenkins_home
+    environment:
+      - DOCKER_HOST=tcp://docker-socket-proxy:2375
+
+  docker-socket-proxy:
+    image: tecnativa/docker-socket-proxy:latest
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - POST=1
+      - CONTAINERS=1
+      - EXEC=1
+      - IMAGES=1
+      - SERVICES=1
+      - TASKS=1
+      - NETWORKS=1
+      - NODES=1
+
+volumes:
+  jenkins-data:

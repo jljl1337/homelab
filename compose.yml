@@ -8,3 +8,4 @@ include:
     - docker/restic.yml
     - docker/netdata.yml
     - docker/portainer.yml
+    - docker/jenkins.yml
