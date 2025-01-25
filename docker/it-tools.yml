@@ -1,0 +1,6 @@
+services:
+
+  it-tools:
+    image: corentinth/it-tools:latest
+    ports:
+      - ${IT_TOOLS_PORT}:80

@@ -9,3 +9,4 @@ include:
     - docker/netdata.yml
     - docker/portainer.yml
     - docker/jenkins.yml
+    - docker/it-tools.yml
