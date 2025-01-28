@@ -1,0 +1,15 @@
+services:
+
+  makemkv:
+    image: jlesage/makemkv
+    devices:
+      - ${MAKEMKV_DEVICE_SR}
+      - ${MAKEMKV_DEVICE_SG}
+    volumes:
+      - ${MAKEMKV_OUTPUT}:/output
+      - makemkv_config:/config
+    ports:
+      - ${MAKEMKV_PORT}:5800
+
+volumes:
+  makemkv_config:
