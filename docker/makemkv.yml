@@ -2,6 +2,7 @@ services:
 
   makemkv:
     image: jlesage/makemkv
+    restart: unless-stopped
     devices:
       - ${MAKEMKV_DEVICE_SR}
       - ${MAKEMKV_DEVICE_SG}

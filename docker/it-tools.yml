@@ -2,5 +2,6 @@ services:
 
   it-tools:
     image: corentinth/it-tools:latest
+    restart: unless-stopped
     ports:
       - ${IT_TOOLS_PORT}:80
