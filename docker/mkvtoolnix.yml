@@ -1,0 +1,13 @@
+services:
+
+  mkvtoolnix:
+    image: jlesage/mkvtoolnix
+    restart: unless-stopped
+    ports:
+      - ${MKVTOOLNIX_PORT}:5800
+    volumes:
+      - mkvtoolnix_config:/config
+      - ${MKVTOOLNIX_STORAGE}:/storage
+
+volumes:
+  mkvtoolnix_config:
