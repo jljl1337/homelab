@@ -86,6 +86,6 @@ restic restore <snapshot-id>:/mnt/source --target /mnt/restore/
 
 ## Development (Docker)
 
-1. Edit the `docker-compose.yml` file to add or remove services.
+1. Edit the `compose.yml` file and the yaml files in the `docker` to add or remove services.
 2. Add the environment variables to the `.env` file.
 3. Run `env_example.sh` to generate the new `.env.example` file.
