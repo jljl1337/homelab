@@ -60,7 +60,8 @@ sudo systemctl restart smbd
 
 ### Restore backup
 
-Start the restic container with the following command:
+1. Copy the `.env.example` file to `.env` and set the environment variables for restic.
+2. Start the restic container with the following command:
 
 ```sh
 docker run -it --env-file .env -v <restore-location>:/mnt/restore --entrypoint sh restic/restic
