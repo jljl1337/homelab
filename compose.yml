@@ -12,3 +12,4 @@ include:
     - docker/it-tools.yml
     - docker/makemkv.yml
     - docker/mkvtoolnix.yml
+    - docker/scrutiny.yml
