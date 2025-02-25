@@ -18,10 +18,16 @@ sudo reboot
 3. Install packages
 
 ```sh
-sudo apt install -y curl openssh-server git vim samba htop
+sudo apt install -y curl openssh-server git vim samba htop zsh
 ```
 
-4. Setup these as you need
+4. Change the default shell to zsh
+
+```sh
+chsh -s $(which zsh)
+```
+
+5. Setup these as you need
 
 - [ssh key](https://askubuntu.com/a/46935)
 - [tailscale](https://tailscale.com/download/linux)
