@@ -1,0 +1,47 @@
+services:
+
+  komodo-ferretdb:
+    image: ghcr.io/ferretdb/ferretdb:1
+    labels:
+      komodo.skip: # Prevent Komodo from stopping with StopAllContainers
+    restart: unless-stopped
+    logging:
+      driver: local
+    volumes:
+      - komodo-sqlite-data:/state
+    environment:
+      - FERRETDB_HANDLER=sqlite
+  
+  komodo-core:
+    image: ghcr.io/moghtech/komodo-core:latest
+    labels:
+      komodo.skip: # Prevent Komodo from stopping with StopAllContainers
+    restart: unless-stopped
+    depends_on:
+      - komodo-ferretdb
+    logging:
+      driver: local
+    ports:
+      - ${KOMODO_PORT}:9120
+    environment:
+      KOMODO_DATABASE_ADDRESS: komodo-ferretdb
+      KOMODO_FIRST_SERVER: https://komodo-periphery:8120
+      KOMODO_LOCAL_AUTH: "true"
+    volumes:
+      - komodo-repo-cache:/repo-cache
+
+  komodo-periphery:
+    image: ghcr.io/moghtech/komodo-periphery:latest
+    labels:
+      komodo.skip: # Prevent Komodo from stopping with StopAllContainers
+    restart: unless-stopped
+    logging:
+      driver: local
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc:/proc
+      - /etc/komodo:/etc/komodo
+
+volumes:
+  komodo-sqlite-data:
+  komodo-repo-cache:

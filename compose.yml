@@ -7,7 +7,7 @@ include:
     - docker/icloud-photo.yml
     - docker/restic.yml
     - docker/netdata.yml
-    - docker/portainer.yml
+    - docker/komodo.yml
     - docker/jenkins.yml
     - docker/it-tools.yml
     - docker/makemkv.yml
