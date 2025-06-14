@@ -23,7 +23,6 @@ services:
         --keep-daily 7
         --keep-weekly 4
         --keep-monthly 12
-        --prune
       DISCORD_WEBHOOK: ${DISCORD_WEBHOOK}
       POST_COMMANDS_FAILURE: >-
         curl
@@ -33,6 +32,26 @@ services:
       TZ: ${TZ}
     volumes:
       - ${RESTIC_SOURCE}:/mnt/source:ro
+
+  restic-prune:
+    image: mazzolino/restic
+    hostname: restic-prune
+    restart: unless-stopped
+    environment:
+      SKIP_INIT: "true"
+      RUN_ON_STARTUP: "false"
+      PRUNE_CRON: "0 30 4 * * 0"
+      RESTIC_REPOSITORY: ${RESTIC_REPOSITORY}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      DISCORD_WEBHOOK: ${DISCORD_WEBHOOK}
+      POST_COMMANDS_FAILURE: >-
+        curl
+        -H "Content-Type:application/json"
+        -d '{"content": "Restic prune failed"}'
+        $$DISCORD_WEBHOOK
+      TZ: ${TZ}
 
   restic-check:
     image: mazzolino/restic:latest
