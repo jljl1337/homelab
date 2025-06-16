@@ -46,6 +46,10 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD}
       DISCORD_WEBHOOK: ${DISCORD_WEBHOOK}
+      POST_COMMANDS_SUCCESS: >-
+        curl
+        -H "Content-Type:application/json"
+        -d '{"content": "Restic prune succeeded"}'
       POST_COMMANDS_FAILURE: >-
         curl
         -H "Content-Type:application/json"
