@@ -50,6 +50,7 @@ services:
         curl
         -H "Content-Type:application/json"
         -d '{"content": "Restic prune succeeded"}'
+        $$DISCORD_WEBHOOK
       POST_COMMANDS_FAILURE: >-
         curl
         -H "Content-Type:application/json"
