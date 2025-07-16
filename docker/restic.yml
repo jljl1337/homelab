@@ -34,7 +34,7 @@ services:
       - ${RESTIC_SOURCE}:/mnt/source:ro
 
   restic-prune:
-    image: mazzolino/restic
+    image: mazzolino/restic:latest
     hostname: restic-prune
     restart: unless-stopped
     environment:
