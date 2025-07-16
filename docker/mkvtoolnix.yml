@@ -3,11 +3,26 @@ services:
   mkvtoolnix:
     image: jlesage/mkvtoolnix
     restart: unless-stopped
-    ports:
-      - ${MKVTOOLNIX_PORT}:5800
     volumes:
       - mkvtoolnix_config:/config
       - ${MKVTOOLNIX_STORAGE}:/storage
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.mkvtoolnix-local.rule=Host(`mkvtoolnix.local.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.mkvtoolnix-local.entrypoints=websecure"
+      - "traefik.http.routers.mkvtoolnix-local.tls.certresolver=cloudflare-local"
+      - "traefik.http.routers.mkvtoolnix-local.tls.domains[0].main=local.${DOMAIN_NAME}"
+      - "traefik.http.routers.mkvtoolnix-local.tls.domains[0].sans=*.local.${DOMAIN_NAME}"
+
+      - "traefik.http.routers.mkvtoolnix-remote.rule=Host(`mkvtoolnix.remote.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.mkvtoolnix-remote.entrypoints=websecure"
+      - "traefik.http.routers.mkvtoolnix-remote.tls.certresolver=cloudflare-remote"
+      - "traefik.http.routers.mkvtoolnix-remote.tls.domains[0].main=remote.${DOMAIN_NAME}"
+      - "traefik.http.routers.mkvtoolnix-remote.tls.domains[0].sans=*.remote.${DOMAIN_NAME}"
+
+      - "traefik.http.services.mkvtoolnix.loadbalancer.server.port=5800"
+
 
 volumes:
   mkvtoolnix_config:

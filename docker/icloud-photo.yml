@@ -5,8 +5,6 @@ services:
     restart: unless-stopped
     volumes:
       - ${ICLOUD_PHOTO_DATA}:/data
-    ports:
-      - ${ICLOUD_PHOTO_PORT}:8080
     environment:
       - TZ=${TZ}
     command: >-
@@ -16,3 +14,19 @@ services:
       --password-provider webui
       --mfa-provider webui
       --watch-with-interval 3600
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.icloud-photo-local.rule=Host(`icloud-photo.local.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.icloud-photo-local.entrypoints=websecure"
+      - "traefik.http.routers.icloud-photo-local.tls.certresolver=cloudflare-local"
+      - "traefik.http.routers.icloud-photo-local.tls.domains[0].main=local.${DOMAIN_NAME}"
+      - "traefik.http.routers.icloud-photo-local.tls.domains[0].sans=*.local.${DOMAIN_NAME}"
+
+      - "traefik.http.routers.icloud-photo-remote.rule=Host(`icloud-photo.remote.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.icloud-photo-remote.entrypoints=websecure"
+      - "traefik.http.routers.icloud-photo-remote.tls.certresolver=cloudflare-remote"
+      - "traefik.http.routers.icloud-photo-remote.tls.domains[0].main=remote.${DOMAIN_NAME}"
+      - "traefik.http.routers.icloud-photo-remote.tls.domains[0].sans=*.remote.${DOMAIN_NAME}"
+
+      - "traefik.http.services.icloud-photo.loadbalancer.server.port=8080"

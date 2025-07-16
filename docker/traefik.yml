@@ -1,0 +1,55 @@
+services:
+
+  traefik:
+    image: traefik:v3
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - CLOUDFLARE_DNS_API_TOKEN=${CF_API_TOKEN}
+      - CLOUDFLARE_ZONE_API_TOKEN=${CF_API_TOKEN}
+    command:
+      # Entry points
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      # Docker provider
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      # Certificate resolvers for both domains using Cloudflare DNS challenge
+      # - --certificatesresolvers.cloudflare-local.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --certificatesresolvers.cloudflare-local.acme.email=${EMAIL}
+      - --certificatesresolvers.cloudflare-local.acme.storage=/letsencrypt/acme-local.json
+      - --certificatesresolvers.cloudflare-local.acme.dnschallenge=true
+      - --certificatesresolvers.cloudflare-local.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.cloudflare-local.acme.dnschallenge.propagation.delayBeforeChecks=10s
+      - --certificatesresolvers.cloudflare-local.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53
+      # - --certificatesresolvers.cloudflare-remote.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --certificatesresolvers.cloudflare-remote.acme.email=${EMAIL}
+      - --certificatesresolvers.cloudflare-remote.acme.storage=/letsencrypt/acme-remote.json
+      - --certificatesresolvers.cloudflare-remote.acme.dnschallenge=true
+      - --certificatesresolvers.cloudflare-remote.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.cloudflare-remote.acme.dnschallenge.propagation.delayBeforeChecks=10s
+      - --certificatesresolvers.cloudflare-remote.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53
+      # Global redirect from HTTP to HTTPS
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      # Disable API and dashboard
+      - --api=false
+      - --api.dashboard=false
+      # Logging
+      - --log.level=INFO
+      - --accesslog=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-letsencrypt:/letsencrypt
+    networks:
+      - default
+      - traefik
+
+volumes:
+  traefik-letsencrypt:
+
+networks:
+  traefik:
+    external: true

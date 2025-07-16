@@ -3,5 +3,19 @@ services:
   it-tools:
     image: corentinth/it-tools:latest
     restart: unless-stopped
-    ports:
-      - ${IT_TOOLS_PORT}:80
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.it-tools-local.rule=Host(`it-tools.local.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.it-tools-local.entrypoints=websecure"
+      - "traefik.http.routers.it-tools-local.tls.certresolver=cloudflare-local"
+      - "traefik.http.routers.it-tools-local.tls.domains[0].main=local.${DOMAIN_NAME}"
+      - "traefik.http.routers.it-tools-local.tls.domains[0].sans=*.local.${DOMAIN_NAME}"
+
+      - "traefik.http.routers.it-tools-remote.rule=Host(`it-tools.remote.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.it-tools-remote.entrypoints=websecure"
+      - "traefik.http.routers.it-tools-remote.tls.certresolver=cloudflare-remote"
+      - "traefik.http.routers.it-tools-remote.tls.domains[0].main=remote.${DOMAIN_NAME}"
+      - "traefik.http.routers.it-tools-remote.tls.domains[0].sans=*.remote.${DOMAIN_NAME}"
+
+      - "traefik.http.services.it-tools.loadbalancer.server.port=80"

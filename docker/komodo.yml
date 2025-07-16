@@ -14,21 +14,38 @@ services:
   
   komodo-core:
     image: ghcr.io/moghtech/komodo-core:latest
-    labels:
-      komodo.skip: # Prevent Komodo from stopping with StopAllContainers
+    # labels:
+    #   komodo.skip: # Prevent Komodo from stopping with StopAllContainers
     restart: unless-stopped
     depends_on:
       - komodo-ferretdb
     logging:
       driver: local
-    ports:
-      - ${KOMODO_PORT}:9120
     environment:
       KOMODO_DATABASE_ADDRESS: komodo-ferretdb
       KOMODO_FIRST_SERVER: https://komodo-periphery:8120
       KOMODO_LOCAL_AUTH: "true"
     volumes:
       - komodo-repo-cache:/repo-cache
+    labels:
+      - "komodo.skip" # Prevent Komodo from stopping with StopAllContainers
+
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.komodo-local.rule=Host(`komodo.local.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.komodo-local.entrypoints=websecure"
+      - "traefik.http.routers.komodo-local.tls.certresolver=cloudflare-local"
+      - "traefik.http.routers.komodo-local.tls.domains[0].main=local.${DOMAIN_NAME}"
+      - "traefik.http.routers.komodo-local.tls.domains[0].sans=*.local.${DOMAIN_NAME}"
+
+      - "traefik.http.routers.komodo-remote.rule=Host(`komodo.remote.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.komodo-remote.entrypoints=websecure"
+      - "traefik.http.routers.komodo-remote.tls.certresolver=cloudflare-remote"
+      - "traefik.http.routers.komodo-remote.tls.domains[0].main=remote.${DOMAIN_NAME}"
+      - "traefik.http.routers.komodo-remote.tls.domains[0].sans=*.remote.${DOMAIN_NAME}"
+
+      - "traefik.http.services.komodo.loadbalancer.server.port=9120"
+
 
   komodo-periphery:
     image: ghcr.io/moghtech/komodo-periphery:latest

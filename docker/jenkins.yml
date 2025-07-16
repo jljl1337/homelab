@@ -3,12 +3,27 @@ services:
   jenkins:
     image: jljl1337/jenkins-docker:lts
     restart: unless-stopped
-    ports:
-      - ${JENKINS_PORT}:8080
     volumes:
       - jenkins-data:/var/jenkins_home
     environment:
       - DOCKER_HOST=tcp://docker-socket-proxy:2375
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.jenkins-local.rule=Host(`jenkins.local.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.jenkins-local.entrypoints=websecure"
+      - "traefik.http.routers.jenkins-local.tls.certresolver=cloudflare-local"
+      - "traefik.http.routers.jenkins-local.tls.domains[0].main=local.${DOMAIN_NAME}"
+      - "traefik.http.routers.jenkins-local.tls.domains[0].sans=*.local.${DOMAIN_NAME}"
+
+      - "traefik.http.routers.jenkins-remote.rule=Host(`jenkins.remote.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.jenkins-remote.entrypoints=websecure"
+      - "traefik.http.routers.jenkins-remote.tls.certresolver=cloudflare-remote"
+      - "traefik.http.routers.jenkins-remote.tls.domains[0].main=remote.${DOMAIN_NAME}"
+      - "traefik.http.routers.jenkins-remote.tls.domains[0].sans=*.remote.${DOMAIN_NAME}"
+
+      - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
+
 
   docker-socket-proxy:
     image: tecnativa/docker-socket-proxy:latest

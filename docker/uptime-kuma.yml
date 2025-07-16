@@ -3,8 +3,22 @@ services:
   uptime-kuma:
     image: louislam/uptime-kuma:1
     restart: unless-stopped
-    network_mode: host
     volumes:
       - ${UPTIME_KUMA_DATA}:/app/data
-    environment:
-      - PORT=${UPTIME_KUMA_PORT}
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.uptime-kuma-local.rule=Host(`uptime-kuma.local.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.uptime-kuma-local.entrypoints=websecure"
+      - "traefik.http.routers.uptime-kuma-local.tls.certresolver=cloudflare-local"
+      - "traefik.http.routers.uptime-kuma-local.tls.domains[0].main=local.${DOMAIN_NAME}"
+      - "traefik.http.routers.uptime-kuma-local.tls.domains[0].sans=*.local.${DOMAIN_NAME}"
+
+      - "traefik.http.routers.uptime-kuma-remote.rule=Host(`uptime-kuma.remote.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.uptime-kuma-remote.entrypoints=websecure"
+      - "traefik.http.routers.uptime-kuma-remote.tls.certresolver=cloudflare-remote"
+      - "traefik.http.routers.uptime-kuma-remote.tls.domains[0].main=remote.${DOMAIN_NAME}"
+      - "traefik.http.routers.uptime-kuma-remote.tls.domains[0].sans=*.remote.${DOMAIN_NAME}"
+
+      - "traefik.http.services.uptime-kuma.loadbalancer.server.port=3001"
+

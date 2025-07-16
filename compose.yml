@@ -13,3 +13,4 @@ include:
     - docker/makemkv.yml
     - docker/mkvtoolnix.yml
     - docker/scrutiny.yml
+    - docker/traefik.yml

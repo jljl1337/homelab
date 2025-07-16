@@ -3,7 +3,6 @@ services:
   netdata:
     image: netdata/netdata:stable
     pid: host
-    network_mode: host
     restart: unless-stopped
     cap_add:
       - SYS_PTRACE
@@ -25,3 +24,19 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - DISABLE_TELEMETRY=1
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.netdata-local.rule=Host(`netdata.local.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.netdata-local.entrypoints=websecure"
+      - "traefik.http.routers.netdata-local.tls.certresolver=cloudflare-local"
+      - "traefik.http.routers.netdata-local.tls.domains[0].main=local.${DOMAIN_NAME}"
+      - "traefik.http.routers.netdata-local.tls.domains[0].sans=*.local.${DOMAIN_NAME}"
+
+      - "traefik.http.routers.netdata-remote.rule=Host(`netdata.remote.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.netdata-remote.entrypoints=websecure"
+      - "traefik.http.routers.netdata-remote.tls.certresolver=cloudflare-remote"
+      - "traefik.http.routers.netdata-remote.tls.domains[0].main=remote.${DOMAIN_NAME}"
+      - "traefik.http.routers.netdata-remote.tls.domains[0].sans=*.remote.${DOMAIN_NAME}"
+
+      - "traefik.http.services.netdata.loadbalancer.server.port=19999"
