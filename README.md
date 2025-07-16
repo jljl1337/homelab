@@ -61,8 +61,9 @@ sudo systemctl restart smbd
 
 ### Docker
 
-1. Copy the `.env.example` file to `.env` and set the environment variables.
-2. Run `docker compose up -d` to start the services.
+1. Run `docker network create traefik` to create the Traefik network.
+2. Copy the `.env.example` file to `.env` and set the environment variables.
+3. Run `docker compose up -d` to start the services.
 
 ### Restore backup
 
