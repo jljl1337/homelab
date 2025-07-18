@@ -6,7 +6,7 @@ services:
     labels:
       - "traefik.enable=true"
 
-      - "traefik.http.routers.it-tools.rule=Host(`it-tools..${DOMAIN_NAME}`)"
+      - "traefik.http.routers.it-tools.rule=Host(`it-tools.${DOMAIN_NAME}`)"
       - "traefik.http.routers.it-tools.entrypoints=websecure"
       - "traefik.http.routers.it-tools.tls.certresolver=cloudflare"
       - "traefik.http.routers.it-tools.tls.domains[0].main=${DOMAIN_NAME}"
