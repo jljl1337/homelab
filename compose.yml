@@ -14,3 +14,4 @@ include:
     - docker/mkvtoolnix.yml
     - docker/scrutiny.yml
     - docker/traefik.yml
+    - docker/pihole.yml

@@ -65,6 +65,8 @@ sudo systemctl restart smbd
 2. Copy the `.env.example` file to `.env` and set the environment variables.
 3. Run `docker compose up -d` to start the services.
 
+For pihole on Ubuntu, see [here](https://docs.pi-hole.net/docker/tips-and-tricks/#disable-systemd-resolved-port-53).
+
 ### Restore backup
 
 1. Copy the `.env.example` file to `.env` and set the environment variables for restic.

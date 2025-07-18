@@ -1,0 +1,52 @@
+services:
+
+  pihole:
+    image: pihole/pihole:2025.07.1
+    restart: unless-stopped
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - 85:80
+    environment:
+      TZ: ${TZ}
+      FTLCONF_webserver_api_password: ${PIHOLE_PASSWORD}
+      FTLCONF_dns_listeningMode: all
+      FTLCONF_dns_upstreams: "172.30.0.2#5335"
+    volumes:
+      - pihole-data:/etc/pihole
+    networks:
+      - dns_net
+      - default
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.pihole.rule=Host(`pihole.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.pihole.entrypoints=websecure"
+      - "traefik.http.routers.pihole.tls.certresolver=cloudflare"
+      - "traefik.http.routers.pihole.tls.domains[0].main=${DOMAIN_NAME}"
+      - "traefik.http.routers.pihole.tls.domains[0].sans=*.${DOMAIN_NAME}"
+
+      - "traefik.http.services.pihole.loadbalancer.server.port=80"
+
+  unbound:
+    image: mvance/unbound:1.21.1
+    restart: unless-stopped
+    volumes:
+      - ./unbound.conf:/opt/unbound/etc/unbound/unbound.conf:ro
+    networks:
+      dns_net:
+        ipv4_address: 172.30.0.2
+    cap_add:
+      - NET_ADMIN
+    healthcheck:
+      test: ["NONE"]
+
+volumes:
+  pihole-data:
+
+networks:
+  dns_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
