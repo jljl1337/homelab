@@ -9,6 +9,8 @@ services:
     environment:
       - CLOUDFLARE_DNS_API_TOKEN=${CF_API_TOKEN}
       - CLOUDFLARE_ZONE_API_TOKEN=${CF_API_TOKEN}
+      - CLOUDFLARE_POLLING_INTERVAL=10
+      - CLOUDFLARE_PROPAGATION_TIMEOUT=300
     command:
       # Entry points
       - --entrypoints.web.address=:80
@@ -17,20 +19,13 @@ services:
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       # Certificate resolvers for both domains using Cloudflare DNS challenge
-      # - --certificatesresolvers.cloudflare-local.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-      - --certificatesresolvers.cloudflare-local.acme.email=${EMAIL}
-      - --certificatesresolvers.cloudflare-local.acme.storage=/letsencrypt/acme-local.json
-      - --certificatesresolvers.cloudflare-local.acme.dnschallenge=true
-      - --certificatesresolvers.cloudflare-local.acme.dnschallenge.provider=cloudflare
-      - --certificatesresolvers.cloudflare-local.acme.dnschallenge.propagation.delayBeforeChecks=10s
-      - --certificatesresolvers.cloudflare-local.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53
-      # - --certificatesresolvers.cloudflare-remote.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-      - --certificatesresolvers.cloudflare-remote.acme.email=${EMAIL}
-      - --certificatesresolvers.cloudflare-remote.acme.storage=/letsencrypt/acme-remote.json
-      - --certificatesresolvers.cloudflare-remote.acme.dnschallenge=true
-      - --certificatesresolvers.cloudflare-remote.acme.dnschallenge.provider=cloudflare
-      - --certificatesresolvers.cloudflare-remote.acme.dnschallenge.propagation.delayBeforeChecks=10s
-      - --certificatesresolvers.cloudflare-remote.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53
+      # - --certificatesresolvers.cloudflare.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --certificatesresolvers.cloudflare.acme.email=${EMAIL}
+      - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.cloudflare.acme.dnschallenge=true
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.propagation.delayBeforeChecks=10s
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53
       # Global redirect from HTTP to HTTPS
       - --entrypoints.web.http.redirections.entrypoint.to=websecure
       - --entrypoints.web.http.redirections.entrypoint.scheme=https

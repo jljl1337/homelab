@@ -10,17 +10,11 @@ services:
     labels:
       - "traefik.enable=true"
 
-      - "traefik.http.routers.jenkins-local.rule=Host(`jenkins.local.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.jenkins-local.entrypoints=websecure"
-      - "traefik.http.routers.jenkins-local.tls.certresolver=cloudflare-local"
-      - "traefik.http.routers.jenkins-local.tls.domains[0].main=local.${DOMAIN_NAME}"
-      - "traefik.http.routers.jenkins-local.tls.domains[0].sans=*.local.${DOMAIN_NAME}"
-
-      - "traefik.http.routers.jenkins-remote.rule=Host(`jenkins.remote.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.jenkins-remote.entrypoints=websecure"
-      - "traefik.http.routers.jenkins-remote.tls.certresolver=cloudflare-remote"
-      - "traefik.http.routers.jenkins-remote.tls.domains[0].main=remote.${DOMAIN_NAME}"
-      - "traefik.http.routers.jenkins-remote.tls.domains[0].sans=*.remote.${DOMAIN_NAME}"
+      - "traefik.http.routers.jenkins.rule=Host(`jenkins.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.jenkins.entrypoints=websecure"
+      - "traefik.http.routers.jenkins.tls.certresolver=cloudflare"
+      - "traefik.http.routers.jenkins.tls.domains[0].main=${DOMAIN_NAME}"
+      - "traefik.http.routers.jenkins.tls.domains[0].sans=*.${DOMAIN_NAME}"
 
       - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
 

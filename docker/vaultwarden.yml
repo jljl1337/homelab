@@ -10,16 +10,10 @@ services:
     labels:
       - "traefik.enable=true"
 
-      - "traefik.http.routers.vaultwarden-local.rule=Host(`vaultwarden.local.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.vaultwarden-local.entrypoints=websecure"
-      - "traefik.http.routers.vaultwarden-local.tls.certresolver=cloudflare-local"
-      - "traefik.http.routers.vaultwarden-local.tls.domains[0].main=local.${DOMAIN_NAME}"
-      - "traefik.http.routers.vaultwarden-local.tls.domains[0].sans=*.local.${DOMAIN_NAME}"
-
-      - "traefik.http.routers.vaultwarden-remote.rule=Host(`vaultwarden.remote.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.vaultwarden-remote.entrypoints=websecure"
-      - "traefik.http.routers.vaultwarden-remote.tls.certresolver=cloudflare-remote"
-      - "traefik.http.routers.vaultwarden-remote.tls.domains[0].main=remote.${DOMAIN_NAME}"
-      - "traefik.http.routers.vaultwarden-remote.tls.domains[0].sans=*.remote.${DOMAIN_NAME}"
+      - "traefik.http.routers.vaultwarden.rule=Host(`vaultwarden.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.vaultwarden.entrypoints=websecure"
+      - "traefik.http.routers.vaultwarden.tls.certresolver=cloudflare"
+      - "traefik.http.routers.vaultwarden.tls.domains[0].main=${DOMAIN_NAME}"
+      - "traefik.http.routers.vaultwarden.tls.domains[0].sans=*.${DOMAIN_NAME}"
 
       - "traefik.http.services.vaultwarden.loadbalancer.server.port=80"
