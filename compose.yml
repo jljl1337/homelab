@@ -1,17 +1,16 @@
 name: homelab
 
 include:
-  - path:
-    - docker/uptime-kuma.yml
-    - docker/vaultwarden.yml
-    - docker/icloud-photo.yml
-    - docker/restic.yml
-    - docker/netdata.yml
-    - docker/komodo.yml
-    - docker/jenkins.yml
-    - docker/it-tools.yml
-    - docker/makemkv.yml
-    - docker/mkvtoolnix.yml
-    - docker/scrutiny.yml
-    - docker/traefik.yml
-    - docker/pihole.yml
+  - docker/uptime-kuma/compose.yml
+  - docker/vaultwarden/compose.yml
+  - docker/icloud-photo/compose.yml
+  - docker/restic/compose.yml
+  - docker/netdata/compose.yml
+  - docker/komodo/compose.yml
+  - docker/jenkins/compose.yml
+  - docker/it-tools/compose.yml
+  - docker/makemkv/compose.yml
+  - docker/mkvtoolnix/compose.yml
+  - docker/scrutiny/compose.yml
+  - docker/traefik/compose.yml
+  - docker/pihole/compose.yml
