@@ -18,13 +18,8 @@ services:
       - default
     labels:
       - "traefik.enable=true"
-
       - "traefik.http.routers.pihole.rule=Host(`pihole.${DOMAIN_NAME}`)"
       - "traefik.http.routers.pihole.entrypoints=websecure"
-      - "traefik.http.routers.pihole.tls.certresolver=cloudflare"
-      - "traefik.http.routers.pihole.tls.domains[0].main=${DOMAIN_NAME}"
-      - "traefik.http.routers.pihole.tls.domains[0].sans=*.${DOMAIN_NAME}"
-
       - "traefik.http.services.pihole.loadbalancer.server.port=80"
 
   unbound:

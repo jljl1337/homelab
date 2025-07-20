@@ -26,11 +26,6 @@ services:
       - DISABLE_TELEMETRY=1
     labels:
       - "traefik.enable=true"
-
       - "traefik.http.routers.netdata.rule=Host(`netdata.${DOMAIN_NAME}`)"
       - "traefik.http.routers.netdata.entrypoints=websecure"
-      - "traefik.http.routers.netdata.tls.certresolver=cloudflare"
-      - "traefik.http.routers.netdata.tls.domains[0].main=${DOMAIN_NAME}"
-      - "traefik.http.routers.netdata.tls.domains[0].sans=*.${DOMAIN_NAME}"
-
       - "traefik.http.services.netdata.loadbalancer.server.port=19999"

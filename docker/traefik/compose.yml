@@ -12,9 +12,6 @@ services:
       - CLOUDFLARE_POLLING_INTERVAL=10
       - CLOUDFLARE_PROPAGATION_TIMEOUT=300
     command:
-      # Entry points
-      - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
       # Docker provider
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
@@ -26,9 +23,16 @@ services:
       - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
       - --certificatesresolvers.cloudflare.acme.dnschallenge.propagation.delayBeforeChecks=10s
       - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53
-      # Global redirect from HTTP to HTTPS
+      # HTTP
+      - --entrypoints.web.address=:80
       - --entrypoints.web.http.redirections.entrypoint.to=websecure
       - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      # HTTPS
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.http.tls=true
+      - --entrypoints.websecure.http.tls.certresolver=cloudflare
+      - --entrypoints.websecure.http.tls.domains[0].main=${DOMAIN_NAME}
+      - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN_NAME}
       # Disable API and dashboard
       - --api=false
       - --api.dashboard=false

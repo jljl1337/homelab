@@ -9,13 +9,8 @@ services:
       - DOCKER_HOST=tcp://docker-socket-proxy:2375
     labels:
       - "traefik.enable=true"
-
       - "traefik.http.routers.jenkins.rule=Host(`jenkins.${DOMAIN_NAME}`)"
       - "traefik.http.routers.jenkins.entrypoints=websecure"
-      - "traefik.http.routers.jenkins.tls.certresolver=cloudflare"
-      - "traefik.http.routers.jenkins.tls.domains[0].main=${DOMAIN_NAME}"
-      - "traefik.http.routers.jenkins.tls.domains[0].sans=*.${DOMAIN_NAME}"
-
       - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
 
 

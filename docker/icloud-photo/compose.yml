@@ -16,11 +16,6 @@ services:
       --watch-with-interval 3600
     labels:
       - "traefik.enable=true"
-
       - "traefik.http.routers.icloud-photo.rule=Host(`icloud-photo.${DOMAIN_NAME}`)"
       - "traefik.http.routers.icloud-photo.entrypoints=websecure"
-      - "traefik.http.routers.icloud-photo.tls.certresolver=cloudflare"
-      - "traefik.http.routers.icloud-photo.tls.domains[0].main=${DOMAIN_NAME}"
-      - "traefik.http.routers.icloud-photo.tls.domains[0].sans=*.${DOMAIN_NAME}"
-
       - "traefik.http.services.icloud-photo.loadbalancer.server.port=8080"

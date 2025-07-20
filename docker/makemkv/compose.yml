@@ -11,13 +11,8 @@ services:
       - makemkv_config:/config
     labels:
       - "traefik.enable=true"
-
       - "traefik.http.routers.makemkv.rule=Host(`makemkv.${DOMAIN_NAME}`)"
       - "traefik.http.routers.makemkv.entrypoints=websecure"
-      - "traefik.http.routers.makemkv.tls.certresolver=cloudflare"
-      - "traefik.http.routers.makemkv.tls.domains[0].main=${DOMAIN_NAME}"
-      - "traefik.http.routers.makemkv.tls.domains[0].sans=*.${DOMAIN_NAME}"
-
       - "traefik.http.services.makemkv.loadbalancer.server.port=5800"
 
 

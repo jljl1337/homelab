@@ -8,13 +8,8 @@ services:
       - ${MKVTOOLNIX_STORAGE}:/storage
     labels:
       - "traefik.enable=true"
-
       - "traefik.http.routers.mkvtoolnix.rule=Host(`mkvtoolnix.${DOMAIN_NAME}`)"
       - "traefik.http.routers.mkvtoolnix.entrypoints=websecure"
-      - "traefik.http.routers.mkvtoolnix.tls.certresolver=cloudflare"
-      - "traefik.http.routers.mkvtoolnix.tls.domains[0].main=${DOMAIN_NAME}"
-      - "traefik.http.routers.mkvtoolnix.tls.domains[0].sans=*.${DOMAIN_NAME}"
-
       - "traefik.http.services.mkvtoolnix.loadbalancer.server.port=5800"
 
 

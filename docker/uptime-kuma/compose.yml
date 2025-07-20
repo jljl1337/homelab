@@ -7,12 +7,7 @@ services:
       - ${UPTIME_KUMA_DATA}:/app/data
     labels:
       - "traefik.enable=true"
-
       - "traefik.http.routers.uptime-kuma.rule=Host(`uptime-kuma.${DOMAIN_NAME}`)"
       - "traefik.http.routers.uptime-kuma.entrypoints=websecure"
-      - "traefik.http.routers.uptime-kuma.tls.certresolver=cloudflare"
-      - "traefik.http.routers.uptime-kuma.tls.domains[0].main=${DOMAIN_NAME}"
-      - "traefik.http.routers.uptime-kuma.tls.domains[0].sans=*.${DOMAIN_NAME}"
-
       - "traefik.http.services.uptime-kuma.loadbalancer.server.port=3001"
 

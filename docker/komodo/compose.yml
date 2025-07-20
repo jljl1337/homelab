@@ -31,13 +31,8 @@ services:
       - "komodo.skip" # Prevent Komodo from stopping with StopAllContainers
 
       - "traefik.enable=true"
-
       - "traefik.http.routers.komodo.rule=Host(`komodo.${DOMAIN_NAME}`)"
       - "traefik.http.routers.komodo.entrypoints=websecure"
-      - "traefik.http.routers.komodo.tls.certresolver=cloudflare"
-      - "traefik.http.routers.komodo.tls.domains[0].main=${DOMAIN_NAME}"
-      - "traefik.http.routers.komodo.tls.domains[0].sans=*.${DOMAIN_NAME}"
-
       - "traefik.http.services.komodo.loadbalancer.server.port=9120"
 
 

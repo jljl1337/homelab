@@ -17,13 +17,8 @@ services:
       - "COLLECTOR_CRON_SCHEDULE=30 4 * * *"
     labels:
       - "traefik.enable=true"
-
       - "traefik.http.routers.scrutiny.rule=Host(`scrutiny.${DOMAIN_NAME}`)"
       - "traefik.http.routers.scrutiny.entrypoints=websecure"
-      - "traefik.http.routers.scrutiny.tls.certresolver=cloudflare"
-      - "traefik.http.routers.scrutiny.tls.domains[0].main=${DOMAIN_NAME}"
-      - "traefik.http.routers.scrutiny.tls.domains[0].sans=*.${DOMAIN_NAME}"
-
       - "traefik.http.services.scrutiny.loadbalancer.server.port=8080"
 
 
