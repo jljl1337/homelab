@@ -1,7 +1,8 @@
 services:
 
   komodo-ferretdb:
-    image: ghcr.io/ferretdb/ferretdb:1
+    image: ghcr.io/ferretdb/ferretdb:1.24.0
+    container_name: homelab-komodo-ferretdb
     labels:
       komodo.skip: # Prevent Komodo from stopping with StopAllContainers
     restart: unless-stopped
@@ -13,7 +14,8 @@ services:
       - FERRETDB_HANDLER=sqlite
   
   komodo-core:
-    image: ghcr.io/moghtech/komodo-core:latest
+    image: ghcr.io/moghtech/komodo-core:1.18.4
+    container_name: homelab-komodo-core
     # labels:
     #   komodo.skip: # Prevent Komodo from stopping with StopAllContainers
     restart: unless-stopped
@@ -37,7 +39,8 @@ services:
 
 
   komodo-periphery:
-    image: ghcr.io/moghtech/komodo-periphery:latest
+    image: ghcr.io/moghtech/komodo-periphery:1.18.4
+    container_name: homelab-komodo-periphery
     labels:
       komodo.skip: # Prevent Komodo from stopping with StopAllContainers
     restart: unless-stopped

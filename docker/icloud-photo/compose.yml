@@ -1,7 +1,8 @@
 services:
 
   icloud-photo:
-    image: icloudpd/icloudpd:latest
+    image: icloudpd/icloudpd:1.29.0
+    container_name: homelab-icloud-photo
     restart: unless-stopped
     volumes:
       - ${ICLOUD_PHOTO_DATA}:/data

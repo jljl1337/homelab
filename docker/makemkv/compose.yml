@@ -1,7 +1,8 @@
 services:
 
   makemkv:
-    image: jlesage/makemkv
+    image: jlesage/makemkv:v25.07.1
+    container_name: homelab-makemkv
     restart: unless-stopped
     devices:
       - ${MAKEMKV_DEVICE_SR}

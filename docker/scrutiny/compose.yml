@@ -1,7 +1,8 @@
 services:
 
   scrutiny:
-    image: ghcr.io/analogj/scrutiny:master-omnibus
+    image: ghcr.io/analogj/scrutiny:v0.8.1-omnibus
+    container_name: homelab-scrutiny
     cap_add:
       - SYS_RAWIO
     volumes:

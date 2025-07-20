@@ -2,6 +2,7 @@ services:
 
   pihole:
     image: pihole/pihole:2025.07.1
+    container_name: homelab-pihole
     restart: unless-stopped
     ports:
       - "53:53/tcp"
@@ -24,6 +25,7 @@ services:
 
   unbound:
     image: mvance/unbound:1.21.1
+    container_name: homelab-unbound
     restart: unless-stopped
     volumes:
       - ./unbound.conf:/opt/unbound/etc/unbound/unbound.conf:ro

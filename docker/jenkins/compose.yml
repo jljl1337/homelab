@@ -1,7 +1,8 @@
 services:
 
   jenkins:
-    image: jljl1337/jenkins-docker:lts
+    image: jljl1337/jenkins-docker:2.504.3-lts-slim
+    container_name: homelab-jenkins
     restart: unless-stopped
     volumes:
       - jenkins-data:/var/jenkins_home
@@ -15,7 +16,8 @@ services:
 
 
   docker-socket-proxy:
-    image: tecnativa/docker-socket-proxy:latest
+    image: tecnativa/docker-socket-proxy:0.3.0
+    container_name: homelab-docker-socket-proxy
     restart: unless-stopped
     privileged: true
     volumes:

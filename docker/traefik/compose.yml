@@ -1,7 +1,8 @@
 services:
 
   traefik:
-    image: traefik:v3
+    image: traefik:v3.4.4
+    container_name: homelab-traefik
     restart: unless-stopped
     ports:
       - "80:80"
