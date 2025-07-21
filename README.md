@@ -33,14 +33,7 @@ chsh -s $(which zsh)
 - [tailscale](https://tailscale.com/download/linux)
 - [git username and email](https://stackoverflow.com/a/33024593/11027944)
 - [Docker](https://docs.docker.com/engine/install/ubuntu/)
-- [AnyDesk](https://anydesk.com/en/downloads/linux)
-- [Sunshine](https://docs.lizardbyte.dev/projects/sunshine/en/latest/about/setup.html)
-
-Restart the service if having issues to connect to the sunshine server:
-
-```sh
-systemctl --user restart sunshine
-```
+- [RustDesk](https://rustdesk.com/download)
 
 ## Usage
 
