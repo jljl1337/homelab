@@ -16,7 +16,7 @@ services:
       # Docker provider
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
-      # Certificate resolvers for both domains using Cloudflare DNS challenge
+      # Certificate resolvers using Cloudflare DNS challenge
       # - --certificatesresolvers.cloudflare.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
       - --certificatesresolvers.cloudflare.acme.email=${EMAIL}
       - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
