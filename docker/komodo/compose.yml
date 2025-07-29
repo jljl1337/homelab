@@ -1,7 +1,7 @@
 services:
 
   komodo-mongo:
-    image: mongo:8.0.11
+    image: mongo:8.0.12
     container_name: homelab-komodo-mongo
     restart: unless-stopped
     labels:
