@@ -5,10 +5,12 @@ services:
     container_name: homelab-uptime-kuma
     restart: unless-stopped
     volumes:
-      - ${UPTIME_KUMA_DATA}:/app/data
+      - uptime-kuma-data:/app/data
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.uptime-kuma.rule=Host(`uptime-kuma.${DOMAIN_NAME}`)"
       - "traefik.http.routers.uptime-kuma.entrypoints=websecure"
       - "traefik.http.services.uptime-kuma.loadbalancer.server.port=3001"
 
+volumnes:
+  uptime-kuma-data:

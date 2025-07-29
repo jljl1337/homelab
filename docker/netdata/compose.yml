@@ -11,9 +11,9 @@ services:
     security_opt:
       - apparmor:unconfined
     volumes:
-      - ${NETDATA_DATA}/config:/etc/netdata
-      - ${NETDATA_DATA}/lib:/var/lib/netdata
-      - ${NETDATA_DATA}/cache:/var/cache/netdata
+      - netdata-config:/etc/netdata
+      - netdata-lib:/var/lib/netdata
+      - netdata-cache:/var/cache/netdata
       - /:/host/root:ro,rslave
       - /etc/passwd:/host/etc/passwd:ro
       - /etc/group:/host/etc/group:ro
@@ -30,3 +30,8 @@ services:
       - "traefik.http.routers.netdata.rule=Host(`netdata.${DOMAIN_NAME}`)"
       - "traefik.http.routers.netdata.entrypoints=websecure"
       - "traefik.http.services.netdata.loadbalancer.server.port=19999"
+
+volumes:
+  netdata-config:
+  netdata-lib:
+  netdata-cache:
