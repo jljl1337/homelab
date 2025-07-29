@@ -34,9 +34,8 @@ services:
       - --entrypoints.websecure.http.tls.certresolver=cloudflare
       - --entrypoints.websecure.http.tls.domains[0].main=${DOMAIN_NAME}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN_NAME}
-      # Disable API and dashboard
-      - --api=false
-      - --api.dashboard=false
+      # Dashboard
+      - --api=true
       # Logging
       - --log.level=INFO
       - --accesslog=true
@@ -46,6 +45,11 @@ services:
     networks:
       - default
       - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.service=api@internal"
 
 volumes:
   traefik-letsencrypt:
