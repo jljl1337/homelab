@@ -12,5 +12,5 @@ services:
       - "traefik.http.routers.uptime-kuma.entrypoints=websecure"
       - "traefik.http.services.uptime-kuma.loadbalancer.server.port=3001"
 
-volumnes:
+volumes:
   uptime-kuma-data:
