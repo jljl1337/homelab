@@ -14,3 +14,4 @@ include:
   - docker/scrutiny/compose.yml
   - docker/traefik/compose.yml
   - docker/pihole/compose.yml
+  - docker/beszel/compose.yml
