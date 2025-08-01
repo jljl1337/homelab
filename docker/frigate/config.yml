@@ -1,0 +1,56 @@
+go2rtc:
+  streams:
+    usb_camera_1:
+      - ffmpeg:device?video=0&video_size=1280x720#video=h264
+    usb_camera_2:
+      - ffmpeg:device?video=2&video_size=1280x720#video=h264
+
+cameras:
+  usb_camera_1:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/usb_camera_1
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+  usb_camera_2:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/usb_camera_2
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+
+detect:
+  enabled: false
+
+# Optional: Database configuration
+database:
+  path: /media/frigate/frigate.db
+
+mqtt:
+  enabled: False
+
+ffmpeg:
+  output_args:
+     record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -vf "drawtext=text='%{localtime}':fontcolor=white:fontsize=24:x=10:y=10:box=1:boxcolor=black@0.5" -c:a aac
+
+record:
+  enabled: True
+  retain:
+    days: 14 # <- number of days to keep continuous recordings
+
+birdseye:
+  # Optional: Enable birdseye view (default: shown below)
+  enabled: True
+  # Optional: Width of the output resolution (default: shown below)
+  width: 1280
+  # Optional: Height of the output resolution (default: shown below)
+  height: 720
+  # Optional: Encoding quality of the mpeg1 feed (default: shown below)
+  # 1 is the highest quality, and 31 is the lowest. Lower quality feeds utilize less CPU resources.
+  quality: 8
+  # Optional: Mode of the view. Available options are: objects, motion, and continuous
+  mode: continuous
