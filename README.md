@@ -18,7 +18,7 @@ sudo reboot
 3. Install packages
 
 ```sh
-sudo apt install -y curl openssh-server git vim samba htop zsh
+sudo apt install -y curl openssh-server git vim samba htop zsh tmux nfs-common
 ```
 
 4. Change the default shell to zsh
