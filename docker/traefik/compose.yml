@@ -50,6 +50,9 @@ services:
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN_NAME}`)"
       - "traefik.http.routers.traefik.entrypoints=websecure"
       - "traefik.http.routers.traefik.service=api@internal"
+      # Truenas Scale
+      - "traefik.http.routers.truenas.rule=Host(`truenas.${DOMAIN_NAME}`)"
+      - "traefik.http.services.truenas.loadbalancer.server.url=http://${TRUENAS_IP}"
 
 volumes:
   traefik-letsencrypt:
