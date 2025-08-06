@@ -107,6 +107,8 @@ Add the following line to the end of the file:
 sudo mount /local/path/to/nfs
 ```
 
+[Reference](https://linuxize.com/post/how-to-mount-an-nfs-share-in-linux/#automatically-mounting-nfs-file-systems-with-etcfstab)
+
 ### Docker
 
 1. Run `docker network create traefik` to create the Traefik network.
