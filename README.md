@@ -68,7 +68,8 @@ git config --global user.name 'Your Name'
 
 ### Install NVIDIA drivers (if you have an NVIDIA GPU)
 
-Find the latest driver version [here](https://www.nvidia.com/en-us/drivers/unix/).
+Replace `***` with the latest version number from
+[here](https://www.nvidia.com/en-us/drivers/unix/).
 
 ```sh
 sudo apt purge nvidia-*
