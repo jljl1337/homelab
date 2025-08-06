@@ -109,7 +109,7 @@ sudo mount /local/path/to/nfs
 
 [Reference](https://linuxize.com/post/how-to-mount-an-nfs-share-in-linux/#automatically-mounting-nfs-file-systems-with-etcfstab)
 
-### Docker
+### Docker Services
 
 1. Run `docker network create traefik` to create the Traefik network.
 2. Copy the `.env.example` file to `.env` and set the environment variables.
