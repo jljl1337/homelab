@@ -109,6 +109,8 @@ sudo mount /local/path/to/nfs
 
 [Reference](https://linuxize.com/post/how-to-mount-an-nfs-share-in-linux/#automatically-mounting-nfs-file-systems-with-etcfstab)
 
+## Usage
+
 ### Docker Services
 
 1. Copy the `.env.example` file to `.env` and set the environment variables.
