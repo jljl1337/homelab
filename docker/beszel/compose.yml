@@ -30,5 +30,8 @@ services:
 
 volumes:
   beszel-data:
+    name: homelab-beszel-data
   beszel-socket:
+    name: homelab-beszel-socket
   beszel-agent-data:
+    name: homelab-beszel-agent-data

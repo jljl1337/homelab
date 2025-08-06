@@ -16,3 +16,4 @@ services:
 
 volumes:
   mkvtoolnix_config:
+    name: homelab-mkvtoolnix-config

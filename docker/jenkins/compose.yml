@@ -34,3 +34,4 @@ services:
 
 volumes:
   jenkins-data:
+    name: homelab-jenkins-data

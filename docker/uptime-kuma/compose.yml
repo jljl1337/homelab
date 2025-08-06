@@ -14,3 +14,4 @@ services:
 
 volumes:
   uptime-kuma-data:
+    name: homelab-uptime-kuma-data

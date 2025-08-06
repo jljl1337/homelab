@@ -56,5 +56,8 @@ services:
 
 volumes:
   komodo-mongo-data:
+    name: homelab-komodo-mongo-data
   komodo-mongo-config:
+    name: homelab-komodo-mongo-config
   komodo-repo-cache:
+    name: homelab-komodo-repo-cache

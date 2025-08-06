@@ -56,3 +56,4 @@ services:
 
 volumes:
   traefik-letsencrypt:
+    name: homelab-traefik-letsencrypt

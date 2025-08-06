@@ -41,6 +41,7 @@ services:
 
 volumes:
   pihole-data:
+    name: homelab-pihole-data
 
 networks:
   dns_net:

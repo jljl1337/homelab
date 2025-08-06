@@ -33,5 +33,8 @@ services:
 
 volumes:
   netdata-config:
+    name: homelab-netdata-config
   netdata-lib:
+    name: homelab-netdata-lib
   netdata-cache:
+    name: homelab-netdata-cache
