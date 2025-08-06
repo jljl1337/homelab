@@ -33,7 +33,19 @@ chsh -s $(which zsh)
 - [tailscale](https://tailscale.com/download/linux)
 - [git username and email](https://stackoverflow.com/a/33024593/11027944)
 - [Docker](https://docs.docker.com/engine/install/ubuntu/)
-- [RustDesk](https://rustdesk.com/download)
+
+6. Install NVIDIA drivers (if you have an NVIDIA GPU)
+
+Find the latest driver version [here](https://www.nvidia.com/en-us/drivers/unix/).
+
+```sh
+sudo apt purge nvidia-*
+sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt update
+sudo apt install nvidia-driver-***
+```
+
+[Reference](https://askubuntu.com/a/903781/2286402)
 
 ## Usage
 
