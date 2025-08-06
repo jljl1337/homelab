@@ -2,6 +2,8 @@
 
 ## Setup
 
+### Basic
+
 1. Update the system
 
 ```sh
@@ -27,14 +29,44 @@ sudo apt install -y curl openssh-server git vim samba htop zsh tmux nfs-common
 chsh -s $(which zsh)
 ```
 
-5. Setup these as you need
+### SSH
 
-- [ssh key](https://askubuntu.com/a/46935)
-- [tailscale](https://tailscale.com/download/linux)
-- [git username and email](https://stackoverflow.com/a/33024593/11027944)
-- [Docker](https://docs.docker.com/engine/install/ubuntu/)
+1. Generate an SSH key (skip this step if you already have an SSH key)
 
-6. Install NVIDIA drivers (if you have an NVIDIA GPU)
+```sh
+ssh-keygen
+```
+
+2. Copy the public key to the server
+
+```sh
+ssh-copy-id <username>@<server-ip>
+```
+
+[Reference](https://askubuntu.com/a/46935)
+
+### Tailscale
+
+```sh
+curl -fsSL https://tailscale.com/install.sh | sh
+```
+
+[Reference](https://tailscale.com/download/linux)
+
+### Git
+
+```sh
+git config --global user.email example@email.com
+git config --global user.name 'Your Name'
+```
+
+[Reference](https://stackoverflow.com/a/33024593/11027944)
+
+### Docker
+
+[Reference](https://docs.docker.com/engine/install/ubuntu/)
+
+### Install NVIDIA drivers (if you have an NVIDIA GPU)
 
 Find the latest driver version [here](https://www.nvidia.com/en-us/drivers/unix/).
 
@@ -43,6 +75,7 @@ sudo apt purge nvidia-*
 sudo add-apt-repository ppa:graphics-drivers/ppa
 sudo apt update
 sudo apt install nvidia-driver-***
+sudo reboot
 ```
 
 [Reference](https://askubuntu.com/a/903781/2286402)
