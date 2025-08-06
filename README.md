@@ -4,7 +4,7 @@
 
 ### Basic
 
-1. Update the system
+1. Update the packages
 
 ```sh
 sudo apt update
@@ -104,7 +104,7 @@ sudo systemctl restart smbd
 2. Copy the `.env.example` file to `.env` and set the environment variables.
 3. Run `docker compose up -d` to start the services.
 
-For pihole on Ubuntu, see [here](https://docs.pi-hole.net/docker/tips-and-tricks/#disable-systemd-resolved-port-53).
+For port conflict issue of pihole on Ubuntu, see [here](https://docs.pi-hole.net/docker/tips-and-tricks/#disable-systemd-resolved-port-53).
 
 ### Restore backup
 
