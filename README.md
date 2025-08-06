@@ -66,10 +66,10 @@ git config --global user.name 'Your Name'
 
 [Reference](https://docs.docker.com/engine/install/ubuntu/)
 
-### Install NVIDIA drivers (if you have an NVIDIA GPU)
+### Install NVIDIA firmwares (if you have an NVIDIA GPU)
 
-Replace `***` with the latest version number from
-[here](https://www.nvidia.com/en-us/drivers/unix/).
+1. Install driver by replacing `***` with the latest version number from
+[here](https://www.nvidia.com/en-us/drivers/unix/) and run:
 
 ```sh
 sudo apt purge nvidia-*
@@ -80,6 +80,10 @@ sudo reboot
 ```
 
 [Reference](https://askubuntu.com/a/903781/2286402)
+
+2. Install [Container toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+
+3. Reboot
 
 ### NFS Client
 
