@@ -20,7 +20,7 @@ sudo reboot
 3. Install packages
 
 ```sh
-sudo apt install -y curl openssh-server git vim samba htop zsh tmux nfs-common
+sudo apt install -y curl openssh-server git vim htop zsh tmux nfs-common
 ```
 
 4. Change the default shell to zsh
@@ -81,21 +81,30 @@ sudo reboot
 
 [Reference](https://askubuntu.com/a/903781/2286402)
 
-## Usage
+### NFS Client
 
-### Samba
-
-1. Copy the content of `smb.conf` to the end of `/etc/samba/smb.conf`.
-2. Add the user to the Samba database.
+1. Create a directory to mount the NFS share
 
 ```sh
-sudo smbpasswd -a <username>
+sudo mkdir -p /local/path/to/nfs
 ```
 
-3. Restart the Samba service.
+2. Open the `/etc/fstab` file
 
 ```sh
-sudo systemctl restart smbd
+sudoedit /etc/fstab
+```
+
+Add the following line to the end of the file:
+
+```
+<server-ip>:/server/path/to/nfs/share /local/path/to/nfs nfs defaults 0 0
+```
+
+3. Mount the NFS share
+
+```sh
+sudo mount /local/path/to/nfs
 ```
 
 ### Docker
