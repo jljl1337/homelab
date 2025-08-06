@@ -17,8 +17,9 @@ services:
     volumes:
       - pihole-data:/etc/pihole
     networks:
-      - dns_net
-      - default
+      dns_net:
+        ipv4_address: 172.30.0.3
+      default:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pihole.rule=Host(`pihole.${DOMAIN_NAME}`)"
