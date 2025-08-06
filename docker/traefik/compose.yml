@@ -44,9 +44,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - traefik-letsencrypt:/letsencrypt
-    networks:
-      - default
-      - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN_NAME}`)"
@@ -59,7 +56,3 @@ services:
 
 volumes:
   traefik-letsencrypt:
-
-networks:
-  traefik:
-    external: true

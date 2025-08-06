@@ -111,9 +111,8 @@ sudo mount /local/path/to/nfs
 
 ### Docker Services
 
-1. Run `docker network create traefik` to create the Traefik network.
-2. Copy the `.env.example` file to `.env` and set the environment variables.
-3. Run `docker compose up -d` to start the services.
+1. Copy the `.env.example` file to `.env` and set the environment variables.
+2. Run `docker compose up -d` to start the services.
 
 For port conflict issue of pihole on Ubuntu, see [here](https://docs.pi-hole.net/docker/tips-and-tricks/#disable-systemd-resolved-port-53).
 
