@@ -9,9 +9,7 @@ include:
   - docker/komodo/compose.yml
   - docker/jenkins/compose.yml
   - docker/it-tools/compose.yml
-  - docker/makemkv/compose.yml
   - docker/mkvtoolnix/compose.yml
-  - docker/scrutiny/compose.yml
   - docker/traefik/compose.yml
   - docker/pihole/compose.yml
   - docker/beszel/compose.yml
