@@ -20,7 +20,7 @@ sudo reboot
 3. Install packages
 
 ```sh
-sudo apt install -y curl openssh-server git vim htop zsh tmux nfs-common
+sudo apt install -y curl openssh-server git vim htop zsh tmux nfs-common v4l-utils ffmpeg
 ```
 
 4. Change the default shell to zsh
@@ -121,6 +121,8 @@ sudo mount /local/path/to/nfs
 2. Run `docker compose up -d` to start the services.
 
 For port conflict issue of pihole on Ubuntu, see [here](https://docs.pi-hole.net/docker/tips-and-tricks/#disable-systemd-resolved-port-53).
+
+Recommended blocklist for pihole: https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt
 
 ### Restore backup
 
