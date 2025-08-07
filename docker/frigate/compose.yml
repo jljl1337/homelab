@@ -18,6 +18,14 @@ services:
         target: /tmp/cache
         tmpfs:
           size: 1000000000
+    # Optional: enable NVIDIA GPU acceleration for object detection
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frigate.rule=Host(`frigate.${DOMAIN_NAME}`)"
