@@ -14,7 +14,7 @@ services:
       - "traefik.http.services.beszel.loadbalancer.server.port=8090"
 
   beszel-agent:
-    image: henrygd/beszel-agent:0.12.3
+    image: henrygd/beszel-agent-nvidia:0.12.3 # Use henrygd/beszel-agent for CPU only
     container_name: homelab-beszel-agent
     restart: unless-stopped
     network_mode: host
@@ -27,6 +27,15 @@ services:
       KEY: ${BESZEL_AGENT_KEY}
       TOKEN: ${BESZEL_AGENT_TOKEN}
       HUB_URL: https://beszel.${DOMAIN_NAME}
+    # Optional: NVIDIA GPU
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - utility
 
 volumes:
   beszel-data:
