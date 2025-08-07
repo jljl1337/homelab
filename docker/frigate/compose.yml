@@ -1,7 +1,7 @@
 services:
 
   frigate:
-    image: ghcr.io/blakeblackshear/frigate:0.15.2
+    image: ghcr.io/blakeblackshear/frigate:0.15.2-tensorrt
     container_name: homelab-frigate
     restart: unless-stopped
     shm_size: "512mb" # update for your cameras based on calculation above
@@ -14,10 +14,15 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./config.yml:/config/config.yml:ro
       - frigate-data:/media/frigate
+      - frigate-model-cache:/config/model_cache
+      - frigate-labelmap:/labelmap
       - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
         target: /tmp/cache
         tmpfs:
           size: 1000000000
+    environment:
+      - YOLO_MODELS=yolov7-tiny-288
+      - USE_FP16=false
     # Optional: enable NVIDIA GPU acceleration for object detection
     deploy:
       resources:
@@ -35,3 +40,7 @@ services:
 volumes:
   frigate-data:
     name: homelab-frigate-data
+  frigate-model-cache:
+    name: homelab-frigate-model-cache
+  frigate-labelmap:
+    name: homelab-frigate-labelmap

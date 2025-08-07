@@ -14,6 +14,7 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - record
+            - detect
   usb_camera_2:
     enabled: true
     ffmpeg:
@@ -22,9 +23,7 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - record
-
-detect:
-  enabled: false
+            - detect
 
 # Optional: Database configuration
 database:
@@ -55,3 +54,20 @@ birdseye:
   quality: 8
   # Optional: Mode of the view. Available options are: objects, motion, and continuous
   mode: continuous
+
+detectors:
+  tensorrt:
+    type: tensorrt
+    device: 0
+
+model:
+  path: /config/model_cache/tensorrt/yolov7-tiny-288.trt
+  labelmap_path: /labelmap/coco-80.txt
+  input_tensor: nchw
+  input_pixel_format: rgb
+  width: 288
+  height: 288
+
+objects:
+  track:
+    - person
