@@ -33,9 +33,14 @@ mqtt:
   enabled: False
 
 ffmpeg:
-  hwaccel_args: preset-nvidia # Optional: NVIDIA GPU acceleration
+  hwaccel_args: preset-nvidia
   output_args:
-     record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -vf "drawtext=text='%{localtime}':fontcolor=white:fontsize=24:x=10:y=10:box=1:boxcolor=black@0.5" -c:a aac
+    record: >-
+      -f segment -segment_time 10 -segment_format mp4
+      -reset_timestamps 1 -strftime 1
+      -c:a aac
+      -vf "hwdownload,format=nv12,drawtext=text='%{localtime}':fontcolor=white:fontsize=24:x=10:y=10:box=1:boxcolor=black@0.5,hwupload_cuda"
+      -c:v h264_nvenc
 
 record:
   enabled: True
