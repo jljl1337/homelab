@@ -1,0 +1,16 @@
+services:
+
+  glance:
+    container_name: homelab-glance
+    image: glanceapp/glance:v0.8.4
+    restart: unless-stopped
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+    volumes:
+      - ./glance.yml:/app/config/glance.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.glance.rule=Host(`glance.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.glance.entrypoints=websecure"
+      - "traefik.http.services.glance.loadbalancer.server.port=8080"

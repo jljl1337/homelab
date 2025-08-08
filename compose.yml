@@ -14,3 +14,4 @@ include:
   - docker/pihole/compose.yml
   - docker/beszel/compose.yml
   - docker/frigate/compose.yml
+  - docker/glance/compose.yml

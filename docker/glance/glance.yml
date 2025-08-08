@@ -1,0 +1,165 @@
+theme:
+  background-color: 0 0 5
+  primary-color: 0 0 90
+  negative-color: 0 90 50
+
+pages:
+  - name: Home
+    # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
+    # hide-desktop-navigation: true
+    columns:
+      - size: small
+        widgets:
+          - type: calendar
+            first-day-of-week: sunday
+
+          - type: server-stats
+            servers:
+              - type: local
+                name: Services
+
+      - size: full
+        widgets:
+          - type: search
+            search-engine: google
+            new-tab: true
+            bangs:
+            - title: YouTube
+              shortcut: "!yt"
+              url: https://www.youtube.com/results?search_query={QUERY}
+            - title: Reddit
+              shortcut: "!rd"
+              url: https://www.reddit.com/search?q={QUERY}
+            - title: GitHub
+              shortcut: "!gh"
+              url: https://github.com/search?q={QUERY}
+            - title: Wikipedia
+              shortcut: "!wp"
+              url: https://en.wikipedia.org/w/index.php?search={QUERY}
+
+          - title: Services
+            type: docker-containers
+            hide-by-default: true
+            containers:
+              homelab-frigate:
+                name: Frigate
+                description: NVR
+                url: https://frigate.${DOMAIN_NAME}
+                icon: si:frigate
+                hide: false
+              homelab-it-tools:
+                name: IT Tools
+                description: Various IT Tools
+                url: https://it-tools.${DOMAIN_NAME}
+                icon: di:it-tools
+                hide: false
+              homelab-komodo-core:
+                name: Komodo
+                description: Docker Management
+                url: https://komodo.${DOMAIN_NAME}
+                icon: di:komodo
+                hide: false
+              homelab-traefik:
+                name: Traefik
+                description: Reverse Proxy
+                url: https://traefik.${DOMAIN_NAME}
+                icon: di:traefik
+                hide: false
+              homelab-vaultwarden:
+                name: Vaultwarden
+                description: Password Management
+                url: https://vaultwarden.${DOMAIN_NAME}
+                icon: di:vaultwarden
+                hide: false
+              homelab-pihole:
+                name: Pi-hole
+                description: Network-wide Ad Blocking
+                url: https://pihole.${DOMAIN_NAME}
+                icon: si:pihole
+                hide: false
+              homelab-mkvtoolnix:
+                name: MKVToolNix
+                description: Video Remuxing
+                url: https://mkvtoolnix.${DOMAIN_NAME}
+                icon: https://mkvtoolnix.download/images/mkvtoolnix_logo.png
+                hide: false
+
+          - title: Monitoring
+            type: docker-containers
+            hide-by-default: true
+            containers:
+              homelab-beszel:
+                name: Beszel
+                description: Simple Monitoring
+                url: https://beszel.${DOMAIN_NAME}
+                icon: di:beszel
+                hide: false
+              homelab-netdata:
+                name: Netdata
+                description: Real-time Monitoring
+                url: https://netdata.${DOMAIN_NAME}
+                icon: di:netdata
+                hide: false
+              homelab-uptime-kuma:
+                name: Uptime Kuma
+                description: Status Monitoring
+                url: https://uptime-kuma.${DOMAIN_NAME}
+                icon: di:uptime-kuma
+                hide: false
+
+          - title: Backup
+            type: docker-containers
+            hide-by-default: true
+            containers:
+              homelab-icloud-photo:
+                name: iCloud Photo
+                description: Photo Backup
+                url: https://icloud-photo.${DOMAIN_NAME}
+                icon: si:icloud
+                hide: false
+              homelab-restic-backup:
+                name: Restic
+                description: Backup
+                url: https://komodo.${DOMAIN_NAME}
+                icon: https://cdn.jsdelivr.net/gh/selfhst/icons/webp/restic.webp
+                hide: false
+
+          - type: bookmarks
+            groups:
+              - title: Artifical Intelligence
+                links:
+                  - title: ChatGPT
+                    url: https://chat.openai.com/
+                  - title: Claude
+                    url: https://claude.ai/
+                  - title: Gemini
+                    url: https://gemini.google.com/app
+              - title: Entertainment
+                links:
+                  - title: YouTube
+                    url: https://www.youtube.com/
+                  - title: Netflix
+                    url: https://www.netflix.com/browse
+              - title: Development
+                links:
+                  - title: Github
+                    url: https://github.com/
+                  - title: Docker Hub
+                    url: https://hub.docker.com/
+
+      - size: small
+        widgets:
+          - type: markets
+            markets:
+              - symbol: SPY
+                name: S&P 500
+              - symbol: BTC-USD
+                name: Bitcoin
+              - symbol: NVDA
+                name: NVIDIA
+              - symbol: AAPL
+                name: Apple
+              - symbol: MSFT
+                name: Microsoft
+              - symbol: GOOGL
+                name: Alphabet
