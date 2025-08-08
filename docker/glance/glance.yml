@@ -69,7 +69,7 @@ pages:
                 name: Vaultwarden
                 description: Password Management
                 url: https://vaultwarden.${DOMAIN_NAME}
-                icon: di:vaultwarden
+                icon: si:vaultwarden
                 hide: false
               homelab-pihole:
                 name: Pi-hole
