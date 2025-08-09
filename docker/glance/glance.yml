@@ -74,7 +74,7 @@ pages:
               homelab-pihole:
                 name: Pi-hole
                 description: Network-wide Ad Blocking
-                url: https://pihole.${DOMAIN_NAME}
+                url: https://pihole.${DOMAIN_NAME}/admin
                 icon: si:pihole
                 hide: false
               homelab-mkvtoolnix:
