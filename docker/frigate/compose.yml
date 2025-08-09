@@ -21,6 +21,7 @@ services:
         tmpfs:
           size: 1000000000
     environment:
+      - TZ=${TZ}
       - YOLO_MODELS=yolov7-tiny-288
       - USE_FP16=false
     # Optional: enable NVIDIA GPU acceleration for object detection
