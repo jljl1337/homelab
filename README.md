@@ -130,7 +130,7 @@ Recommended blocklist for pihole: https://raw.githubusercontent.com/hagezi/dns-b
 2. Start the restic container with the following command:
 
 ```sh
-docker run -it --env-file .env -v <restore-location>:/mnt/restore --entrypoint sh restic/restic
+docker run --rm -it --env-file .env -v <restore-location>:/mnt/restore --entrypoint sh restic/restic
 ```
 
 Get all the snapshots and the corresponding id:
