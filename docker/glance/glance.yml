@@ -124,6 +124,47 @@ pages:
                 icon: https://cdn.jsdelivr.net/gh/selfhst/icons/webp/restic.webp
                 hide: false
 
+          - title: Servarr
+            type: docker-containers
+            hide-by-default: true
+            containers:
+              homelab-qbittorrent:
+                name: qBittorrent
+                description: Torrent Client
+                url: https://qbittorrent.${DOMAIN_NAME}
+                icon: si:qbittorrent
+                hide: false
+              homelab-prowlarr:
+                name: Prowlarr
+                description: Indexer Manager
+                url: https://prowlarr.${DOMAIN_NAME}
+                icon: di:prowlarr
+                hide: false
+              homelab-sonarr:
+                name: Sonarr
+                description: TV Series Manager
+                url: https://sonarr.${DOMAIN_NAME}
+                icon: si:sonarr
+                hide: false
+              homelab-radarr:
+                name: Radarr
+                description: Movie Manager
+                url: https://radarr.${DOMAIN_NAME}
+                icon: si:radarr
+                hide: false
+              homelab-lidarr:
+                name: Lidarr
+                description: Music Manager
+                url: https://lidarr.${DOMAIN_NAME}
+                icon: di:lidarr
+                hide: false
+              homelab-bazarr:
+                name: Bazarr
+                description: Subtitle Manager
+                url: https://bazarr.${DOMAIN_NAME}
+                icon: di:bazarr
+                hide: false
+
           - type: bookmarks
             groups:
               - title: Artifical Intelligence

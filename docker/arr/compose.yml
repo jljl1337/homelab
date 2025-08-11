@@ -1,0 +1,189 @@
+services:
+
+  gluetun:
+    image: qmcgaw/gluetun:v3.40.0
+    container_name: homelab-gluetun
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - homelab-gluetun:/gluetun
+    environment:
+      - VPN_SERVICE_PROVIDER=surfshark
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=${ARR_WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_ADDRESSES=${ARR_WIREGUARD_ADDRESSES}
+      - SERVER_COUNTRIES=${ARR_SERVER_COUNTRIES}
+      - SERVER_CITIES=${ARR_SERVER_CITIES}
+      - HEALTH_VPN_DURATION_INITIAL=120s
+    healthcheck:
+      test: ping -c 1 www.google.com || exit 1
+      interval: 20s
+      timeout: 10s
+      retries: 5
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.${DOMAIN_NAME}`)
+      - traefik.http.routers.qbittorrent.entrypoints=websecure
+      - traefik.http.routers.qbittorrent.service=qbittorrent
+      - traefik.http.services.qbittorrent.loadbalancer.server.port=8080
+
+      - traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.${DOMAIN_NAME}`)
+      - traefik.http.routers.flaresolverr.entrypoints=websecure
+      - traefik.http.routers.flaresolverr.service=flaresolverr
+      - traefik.http.services.flaresolverr.loadbalancer.server.port=8191
+
+      - traefik.http.routers.prowlarr.rule=Host(`prowlarr.${DOMAIN_NAME}`)
+      - traefik.http.routers.prowlarr.entrypoints=websecure
+      - traefik.http.routers.prowlarr.service=prowlarr
+      - traefik.http.services.prowlarr.loadbalancer.server.port=9696
+
+      - traefik.http.routers.sonarr.rule=Host(`sonarr.${DOMAIN_NAME}`)
+      - traefik.http.routers.sonarr.entrypoints=websecure
+      - traefik.http.routers.sonarr.service=sonarr
+      - traefik.http.services.sonarr.loadbalancer.server.port=8989
+
+      - traefik.http.routers.radarr.rule=Host(`radarr.${DOMAIN_NAME}`)
+      - traefik.http.routers.radarr.entrypoints=websecure
+      - traefik.http.routers.radarr.service=radarr
+      - traefik.http.services.radarr.loadbalancer.server.port=7878
+
+      - traefik.http.routers.lidarr.rule=Host(`lidarr.${DOMAIN_NAME}`)
+      - traefik.http.routers.lidarr.entrypoints=websecure
+      - traefik.http.routers.lidarr.service=lidarr
+      - traefik.http.services.lidarr.loadbalancer.server.port=8686
+
+      - traefik.http.routers.bazarr.rule=Host(`bazarr.${DOMAIN_NAME}`)
+      - traefik.http.routers.bazarr.entrypoints=websecure
+      - traefik.http.routers.bazarr.service=bazarr
+      - traefik.http.services.bazarr.loadbalancer.server.port=6767
+
+  qbittorrent:
+    image: linuxserver/qbittorrent:5.1.2
+    container_name: homelab-qbittorrent
+    restart: unless-stopped
+    network_mode: service:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8080
+    volumes:
+      - homelab-qbittorrent:/config
+      - ${ARR_DATA}/downloads:/downloads
+    depends_on:
+      gluetun:
+        condition: service_healthy
+        restart: true
+    healthcheck:
+      test: ping -c 1 www.google.com || exit 1
+      interval: 60s
+      retries: 3
+      start_period: 20s
+      timeout: 10s
+  
+  flaresolverr:
+    image: flaresolverr/flaresolverr:v3.3.25
+    container_name: homelab-flaresolverr
+    restart: unless-stopped
+    network_mode: service:gluetun
+    environment:
+      - LOG_LEVEL=info
+      - TZ=${TZ}
+
+  prowlarr:
+    image: linuxserver/prowlarr:1.37.0
+    container_name: homelab-prowlarr
+    restart: unless-stopped
+    network_mode: service:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - homelab-prowlarr:/config
+    depends_on:
+      gluetun:
+        condition: service_healthy
+        restart: true
+
+  sonarr:
+    image: linuxserver/sonarr:4.0.15
+    container_name: homelab-sonarr
+    restart: unless-stopped
+    network_mode: service:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - homelab-sonarr:/config
+      - ${ARR_DATA}/downloads:/downloads
+      - ${ARR_DATA}/tv:/tv
+
+  radarr:
+    image: linuxserver/radarr:5.26.2
+    container_name: homelab-radarr
+    restart: unless-stopped
+    network_mode: service:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - homelab-radarr:/config
+      - ${ARR_DATA}/downloads:/downloads
+      - ${ARR_DATA}/movies:/movies
+
+  lidarr:
+    container_name: homelab-lidarr
+    image: linuxserver/lidarr:2.12.4
+    restart: unless-stopped
+    network_mode: service:gluetun
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - homelab-lidarr:/config
+      - ${ARR_DATA}/downloads:/downloads
+      - ${ARR_DATA}/music:/music
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+
+  bazarr:
+    image: linuxserver/bazarr:1.5.2
+    container_name: homelab-bazarr
+    restart: unless-stopped
+    network_mode: service:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - homelab-bazarr:/config
+      - ${ARR_DATA}/tv:/tv
+      - ${ARR_DATA}/movies:/movies
+
+volumes:
+  homelab-gluetun:
+    name: homelab-gluetun
+  homelab-qbittorrent:
+    name: homelab-qbittorrent
+  homelab-flaresolverr:
+    name: homelab-flaresolverr
+  homelab-prowlarr:
+    name: homelab-prowlarr
+  homelab-sonarr:
+    name: homelab-sonarr
+  homelab-radarr:
+    name: homelab-radarr
+  homelab-lidarr:
+    name: homelab-lidarr
+  homelab-bazarr:
+    name: homelab-bazarr
