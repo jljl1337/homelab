@@ -15,6 +15,9 @@ cameras:
           roles:
             - record
             - detect
+    objects:
+      mask:
+        - 0.415,0.309,0.412,0.646,1,0.913,1,0.358
   usb_camera_2:
     enabled: true
     ffmpeg:
