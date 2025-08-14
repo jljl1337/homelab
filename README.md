@@ -102,7 +102,7 @@ sudoedit /etc/fstab
 Add the following line to the end of the file:
 
 ```
-<server-ip>:/server/path/to/nfs/share /local/path/to/nfs nfs defaults 0 0
+<server-ip>:/server/path/to/nfs/share /local/path/to/nfs nfs defaults,_netdev 0 0
 ```
 
 3. Mount the NFS share
