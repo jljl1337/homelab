@@ -15,4 +15,4 @@ include:
   - docker/beszel/compose.yml
   - docker/frigate/compose.yml
   - docker/glance/compose.yml
-  - docker/arr/compose.yml
+  - docker/qbittorrent/compose.yml

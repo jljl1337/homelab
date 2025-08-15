@@ -1,0 +1,61 @@
+services:
+
+  gluetun:
+    image: qmcgaw/gluetun:v3.40.0
+    container_name: homelab-gluetun
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - homelab-gluetun:/gluetun
+    environment:
+      - VPN_SERVICE_PROVIDER=surfshark
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=${GLUTEN_WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_ADDRESSES=${GLUTEN_WIREGUARD_ADDRESSES}
+      - SERVER_COUNTRIES=${GLUTEN_SERVER_COUNTRIES}
+      - SERVER_CITIES=${GLUTEN_SERVER_CITIES}
+      - HEALTH_VPN_DURATION_INITIAL=120s
+    healthcheck:
+      test: ping -c 1 www.google.com || exit 1
+      interval: 20s
+      timeout: 10s
+      retries: 5
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.${DOMAIN_NAME}`)
+      - traefik.http.routers.qbittorrent.entrypoints=websecure
+      - traefik.http.routers.qbittorrent.service=qbittorrent
+      - traefik.http.services.qbittorrent.loadbalancer.server.port=8080
+
+  qbittorrent:
+    image: linuxserver/qbittorrent:5.1.2
+    container_name: homelab-qbittorrent
+    restart: unless-stopped
+    network_mode: service:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8080
+    volumes:
+      - homelab-qbittorrent:/config
+      - ${QBITTORRENT_DATA}/downloads:/downloads
+    depends_on:
+      gluetun:
+        condition: service_healthy
+        restart: true
+    healthcheck:
+      test: ping -c 1 www.google.com || exit 1
+      interval: 60s
+      retries: 3
+      start_period: 20s
+      timeout: 10s
+
+volumes:
+  homelab-gluetun:
+    name: homelab-gluetun
+  homelab-qbittorrent:
+    name: homelab-qbittorrent
