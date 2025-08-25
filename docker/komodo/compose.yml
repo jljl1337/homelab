@@ -15,7 +15,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: admin
 
   komodo-core:
-    image: ghcr.io/moghtech/komodo-core:1.18.4
+    image: ghcr.io/moghtech/komodo-core:1.19.1
     container_name: homelab-komodo-core
     # labels:
     #   komodo.skip: # Prevent Komodo from stopping with StopAllContainers
@@ -42,7 +42,7 @@ services:
 
 
   komodo-periphery:
-    image: ghcr.io/moghtech/komodo-periphery:1.18.4
+    image: ghcr.io/moghtech/komodo-periphery:1.19.1
     container_name: homelab-komodo-periphery
     labels:
       komodo.skip: # Prevent Komodo from stopping with StopAllContainers
