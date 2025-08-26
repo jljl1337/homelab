@@ -16,3 +16,4 @@ include:
   - docker/frigate/compose.yml
   - docker/glance/compose.yml
   - docker/qbittorrent/compose.yml
+  - docker/gickup/compose.yml

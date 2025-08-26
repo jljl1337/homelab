@@ -1,0 +1,13 @@
+source:
+  github:
+    - token: GICKUP_GITHUB_TOKEN
+      username: jljl1337 # user is used to clone the repo with
+
+destination:
+  local:
+    - path: /dist
+      structured: true
+      keep: 1
+      mirror: true
+
+cron: 45 * * * *
