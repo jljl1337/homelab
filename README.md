@@ -85,6 +85,53 @@ sudo reboot
 
 3. Reboot
 
+### Install driver for Realtek RTL8125 (optional)
+
+1. Add the Launchpad PPA
+
+```sh
+sudo add-apt-repository ppa:awesometic/ppa
+```
+
+2. Then install the package using apt tool
+
+```sh
+sudo apt install realtek-r8125-dkms -y
+```
+
+[Reference](https://github.com/awesometic/realtek-r8125-dkms?tab=readme-ov-file#launchpad-ppa-recommended)
+
+### Setup secondary network card (optional)
+
+1. Identify the logical name of the network interface
+
+```sh
+sudo lshw -class network
+```
+
+2. Create a Netplan configuration file
+
+```sh
+sudoedit /etc/netplan/00-second-network-card.yaml
+```
+
+Add the following content and replace `<interface-name>` with the logical name
+of your network interface:
+
+```yaml
+network:
+  version: 2
+  ethernets:
+     <interface-name>:
+        dhcp4: true
+```
+
+3. Apply the changes
+
+```sh
+sudo netplan apply
+```
+
 ### NFS Client
 
 1. Create a directory to mount the NFS share
