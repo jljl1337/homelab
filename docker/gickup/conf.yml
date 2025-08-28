@@ -6,8 +6,6 @@ source:
 destination:
   local:
     - path: /dist
-      structured: true
-      keep: 1
       mirror: true
 
 cron: 45 * * * *
