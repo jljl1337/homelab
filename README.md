@@ -167,10 +167,6 @@ sudo mount /local/path/to/nfs
 1. Copy the `.env.example` file to `.env` and set the environment variables.
 2. Run `docker compose up -d` to start the services.
 
-For port conflict issue of pihole on Ubuntu, see [here](https://docs.pi-hole.net/docker/tips-and-tricks/#disable-systemd-resolved-port-53).
-
-Recommended blocklist for pihole: https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt
-
 ### Restore backup
 
 1. Copy the `.env.example` file to `.env` and set the environment variables for restic.
