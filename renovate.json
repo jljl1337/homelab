@@ -3,5 +3,12 @@
   "extends": ["config:recommended", "group:allNonMajor"],
   "schedule": ["* * * * 6"],
   "minimumReleaseAge": "7 days",
-  "assignees": ["jljl1337"]
+  "assignees": ["jljl1337"],
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/blakeblackshear/frigate"],
+      "enabled": false
+    }
+  ]
 }
