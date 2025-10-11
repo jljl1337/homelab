@@ -1,7 +1,7 @@
 services:
 
   beszel:
-    image: henrygd/beszel:0.12.12
+    image: henrygd/beszel:0.13.0
     container_name: homelab-beszel
     restart: unless-stopped
     volumes:
@@ -14,7 +14,7 @@ services:
       - "traefik.http.services.beszel.loadbalancer.server.port=8090"
 
   beszel-agent:
-    image: henrygd/beszel-agent-nvidia:0.12.12 # Use henrygd/beszel-agent for CPU only
+    image: henrygd/beszel-agent-nvidia:0.13.0 # Use henrygd/beszel-agent for CPU only
     container_name: homelab-beszel-agent
     restart: unless-stopped
     network_mode: host
