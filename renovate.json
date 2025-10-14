@@ -9,6 +9,11 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/blakeblackshear/frigate"],
       "enabled": false
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["linuxserver/qbittorrent"],
+      "allowedVersions": "!/^20\\.04\\.1$/"
     }
   ]
 }
