@@ -13,9 +13,9 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./config.yml:/config/config.yml:ro
-      - frigate-data:/media/frigate
-      - frigate-model-cache:/config/model_cache
-      - frigate-labelmap:/labelmap
+      - ${FAST_STORAGE}/frigate/data:/media/frigate
+      - ${FAST_STORAGE}/frigate/model-cache:/config/model_cache
+      - ${FAST_STORAGE}/frigate/labelmap:/labelmap
       - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
         target: /tmp/cache
         tmpfs:
@@ -37,11 +37,3 @@ services:
       - "traefik.http.routers.frigate.rule=Host(`frigate.${DOMAIN_NAME}`)"
       - "traefik.http.routers.frigate.entrypoints=websecure"
       - "traefik.http.services.frigate.loadbalancer.server.port=5000"
-
-volumes:
-  frigate-data:
-    name: homelab-frigate-data
-  frigate-model-cache:
-    name: homelab-frigate-model-cache
-  frigate-labelmap:
-    name: homelab-frigate-labelmap

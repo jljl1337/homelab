@@ -43,7 +43,7 @@ services:
       - --serversTransport.insecureSkipVerify=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - traefik-letsencrypt:/letsencrypt
+      - ${FAST_STORAGE}/traefik/letsencrypt:/letsencrypt
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN_NAME}`)"
@@ -53,7 +53,3 @@ services:
       - "traefik.http.routers.truenas.rule=Host(`truenas.${DOMAIN_NAME}`)"
       - "traefik.http.routers.truenas.entrypoints=websecure"
       - "traefik.http.services.truenas.loadbalancer.server.url=https://${TRUENAS_IP}"
-
-volumes:
-  traefik-letsencrypt:
-    name: homelab-traefik-letsencrypt
