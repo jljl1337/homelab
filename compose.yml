@@ -1,13 +1,11 @@
 name: homelab
 
 include:
-  - docker/uptime-kuma/compose.yml
   - docker/vaultwarden/compose.yml
   - docker/icloud-photo/compose.yml
   - docker/restic/compose.yml
   - docker/netdata/compose.yml
   - docker/komodo/compose.yml
-  - docker/jenkins/compose.yml
   - docker/it-tools/compose.yml
   - docker/mkvtoolnix/compose.yml
   - docker/traefik/compose.yml

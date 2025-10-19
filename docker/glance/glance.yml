@@ -106,12 +106,6 @@ pages:
                 url: https://netdata.${DOMAIN_NAME}
                 icon: di:netdata
                 hide: false
-              homelab-uptime-kuma:
-                name: Uptime Kuma
-                description: Status Monitoring
-                url: https://uptime-kuma.${DOMAIN_NAME}
-                icon: di:uptime-kuma
-                hide: false
 
           - title: Backup
             type: docker-containers
