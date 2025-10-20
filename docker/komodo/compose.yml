@@ -8,8 +8,8 @@ services:
       komodo.skip: # Prevent Komodo from stopping with StopAllContainers
     command: --quiet --wiredTigerCacheSizeGB 0.25
     volumes:
-      - ${FAST_STORAGE}/komodo/mongo-data:/data/db
-      - ${FAST_STORAGE}/komodo/mongo-config:/data/configdb
+      - ${FAST_TEMP_STORAGE}/komodo/mongo-data:/data/db
+      - ${FAST_TEMP_STORAGE}/komodo/mongo-config:/data/configdb
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
@@ -31,7 +31,7 @@ services:
       KOMODO_FIRST_SERVER: https://komodo-periphery:8120
       KOMODO_LOCAL_AUTH: "true"
     volumes:
-      - ${FAST_STORAGE}/komodo/repo-cache:/repo-cache
+      - ${FAST_TEMP_STORAGE}/komodo/repo-cache:/repo-cache
     labels:
       - "komodo.skip" # Prevent Komodo from stopping with StopAllContainers
 

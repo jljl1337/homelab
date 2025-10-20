@@ -5,7 +5,7 @@ services:
     container_name: homelab-mkvtoolnix
     restart: unless-stopped
     volumes:
-      - ${FAST_STORAGE}/mkvtoolnix:/config
+      - ${FAST_TEMP_STORAGE}/mkvtoolnix:/config
       - ${MASS_TEMP_STORAGE}/mkvtoolnix:/storage
     labels:
       - "traefik.enable=true"

@@ -13,9 +13,9 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./config.yml:/config/config.yml:ro
-      - ${FAST_STORAGE}/frigate/data:/media/frigate
-      - ${FAST_STORAGE}/frigate/model-cache:/config/model_cache
-      - ${FAST_STORAGE}/frigate/labelmap:/labelmap
+      - ${FAST_TEMP_STORAGE}/frigate/data:/media/frigate
+      - ${FAST_TEMP_STORAGE}/frigate/model-cache:/config/model_cache
+      - ${FAST_TEMP_STORAGE}/frigate/labelmap:/labelmap
       - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
         target: /tmp/cache
         tmpfs:

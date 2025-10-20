@@ -5,8 +5,8 @@ services:
     container_name: homelab-beszel
     restart: unless-stopped
     volumes:
-      - ${FAST_STORAGE}/beszel/data:/beszel_data
-      - ${FAST_STORAGE}/beszel/socket:/beszel_socket
+      - ${FAST_TEMP_STORAGE}/beszel/data:/beszel_data
+      - ${FAST_TEMP_STORAGE}/beszel/socket:/beszel_socket
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.beszel.rule=Host(`beszel.${DOMAIN_NAME}`)"
@@ -19,8 +19,8 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      - ${FAST_STORAGE}/beszel/agent-data:/var/lib/beszel-agent
-      - ${FAST_STORAGE}/beszel/socket:/beszel_socket
+      - ${FAST_TEMP_STORAGE}/beszel/agent-data:/var/lib/beszel-agent
+      - ${FAST_TEMP_STORAGE}/beszel/socket:/beszel_socket
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       LISTEN: /beszel_socket/beszel.sock

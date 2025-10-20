@@ -9,7 +9,7 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - ${FAST_STORAGE}/gluetun:/gluetun
+      - ${FAST_TEMP_STORAGE}/gluetun:/gluetun
     environment:
       - VPN_SERVICE_PROVIDER=surfshark
       - VPN_TYPE=wireguard
@@ -41,7 +41,7 @@ services:
       - TZ=${TZ}
       - WEBUI_PORT=8080
     volumes:
-      - ${FAST_STORAGE}/qbittorrent:/config
+      - ${FAST_TEMP_STORAGE}/qbittorrent:/config
       - ${MASS_TEMP_STORAGE}/qbittorrent:/downloads
     depends_on:
       gluetun:

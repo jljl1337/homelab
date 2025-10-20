@@ -11,9 +11,9 @@ services:
     security_opt:
       - apparmor:unconfined
     volumes:
-      - ${FAST_STORAGE}/netdata/config:/etc/netdata
-      - ${FAST_STORAGE}/netdata/lib:/var/lib/netdata
-      - ${FAST_STORAGE}/netdata/cache:/var/cache/netdata
+      - ${FAST_TEMP_STORAGE}/netdata/config:/etc/netdata
+      - ${FAST_TEMP_STORAGE}/netdata/lib:/var/lib/netdata
+      - ${FAST_TEMP_STORAGE}/netdata/cache:/var/cache/netdata
       - /:/host/root:ro,rslave
       - /etc/passwd:/host/etc/passwd:ro
       - /etc/group:/host/etc/group:ro
