@@ -5,7 +5,7 @@ services:
     container_name: homelab-vaultwarden
     restart: unless-stopped
     volumes:
-      - ${VAULTWARDEN_DATA}:/data
+      - ${MASS_BACKUP_STORAGE}/data/vaultwarden:/data
     environment:
       - SIGNUPS_ALLOWED=false # Comment this line to allow signups
     labels:

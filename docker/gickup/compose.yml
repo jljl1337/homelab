@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./conf.yml:/gickup/conf.yml
-      - ${GICKUP_DATA}:/dist
+      - ${MASS_BACKUP_STORAGE}/data/gickup:/dist
     environment:
       - GICKUP_GITHUB_TOKEN=${GICKUP_GITHUB_TOKEN}
     command: [ "/gickup/conf.yml" ]

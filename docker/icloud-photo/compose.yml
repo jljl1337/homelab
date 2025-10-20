@@ -5,7 +5,7 @@ services:
     container_name: homelab-icloud-photo
     restart: unless-stopped
     volumes:
-      - ${ICLOUD_PHOTO_DATA}:/data
+      - ${MASS_BACKUP_STORAGE}/data/icloud-photo:/data
     environment:
       - TZ=${TZ}
     command: >-
