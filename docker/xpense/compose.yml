@@ -1,0 +1,16 @@
+services:
+
+  xpense:
+    image: jljl1337/xpense:0.3.3
+    container_name: homelab-xpense
+    restart: unless-stopped
+    volumes:
+      - ${FAST_TEMP_STORAGE}/xpense:/xpense/data/live
+      - ${MASS_BACKUP_STORAGE}/backup/xpense:/xpense/data/backup
+    environment:
+      - BACKUP_CRON_SCHEDULE=45 * * * *
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.xpense.rule=Host(`xpense.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.xpense.entrypoints=websecure"
+      - "traefik.http.services.xpense.loadbalancer.server.port=8080"
