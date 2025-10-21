@@ -8,6 +8,7 @@ services:
       - ${FAST_TEMP_STORAGE}/xpense:/xpense/data/live
       - ${MASS_BACKUP_STORAGE}/backup/xpense:/xpense/data/backup
     environment:
+      - TZ=${TZ}
       - BACKUP_CRON_SCHEDULE=45 * * * *
     labels:
       - "traefik.enable=true"
