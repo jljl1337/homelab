@@ -637,7 +637,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "rate(node_network_receive_bytes_total{device!=\"lo\"}[5m])",
+          "expr": "rate(node_network_receive_bytes_total{device=~\"eth[0-9]+|enp[0-9]+s[0-9]+|eno[0-9]+\"}[5m])",
           "refId": "A",
           "legendFormat": "{{device}} - Receive"
         },
@@ -646,7 +646,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "rate(node_network_transmit_bytes_total{device!=\"lo\"}[5m])",
+          "expr": "rate(node_network_transmit_bytes_total{device=~\"eth[0-9]+|enp[0-9]+s[0-9]+|eno[0-9]+\"}[5m])",
           "refId": "B",
           "legendFormat": "{{device}} - Transmit"
         }
