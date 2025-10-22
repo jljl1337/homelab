@@ -1,6 +1,6 @@
 services:
 
-  portainer:
+  komodo-core:
     ports:
       - "9120:9120"
     labels: !reset []
