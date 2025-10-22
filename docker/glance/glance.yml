@@ -89,6 +89,11 @@ pages:
                 url: https://qbittorrent.${DOMAIN_NAME}
                 icon: si:qbittorrent
                 hide: false
+              homelab-xpense:
+                name: Xpense
+                description: Expense Tracker
+                url: https://xpense.${DOMAIN_NAME}
+                hide: false
 
           - title: Monitoring
             type: docker-containers
