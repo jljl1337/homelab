@@ -2,5 +2,5 @@ services:
 
   portainer:
     ports:
-      - "9120:9120
+      - "9120:9120"
     labels: !reset []
