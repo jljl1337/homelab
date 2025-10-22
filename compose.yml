@@ -5,7 +5,6 @@ include:
   - docker/icloud-photo/compose.yml
   - docker/restic/compose.yml
   - docker/netdata/compose.yml
-  - docker/komodo/compose.yml
   - docker/it-tools/compose.yml
   - docker/mkvtoolnix/compose.yml
   - docker/traefik/compose.yml
@@ -15,3 +14,4 @@ include:
   - docker/qbittorrent/compose.yml
   - docker/gickup/compose.yml
   - docker/xpense/compose.yml
+  - docker/portainer/compose.yml
