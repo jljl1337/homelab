@@ -559,7 +559,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(irate(container_cpu_usage_seconds_total{name!=\"\"}[15s])) by (name) * 100",
+          "expr": "sum(irate(container_cpu_usage_seconds_total{name!=\"\"}[15s])) by (name) * 100 / scalar(count(count(node_cpu_seconds_total) by (cpu)))",
           "refId": "A",
           "legendFormat": "{{name}}"
         }
