@@ -39,15 +39,11 @@ services:
     image: prom/node-exporter:v1.9.1
     container_name: homelab-node-exporter
     restart: unless-stopped
+    pid: host
     volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
+      - '/:/host:ro,rslave'
     command:
-      - '--path.procfs=/host/proc'
-      - '--path.rootfs=/rootfs'
-      - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      - '--path.rootfs=/host'
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.node-exporter.rule=Host(`node-exporter.${DOMAIN_NAME}`)"
