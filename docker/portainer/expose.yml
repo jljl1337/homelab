@@ -1,0 +1,6 @@
+services:
+
+  portainer:
+    ports:
+      - "9000:9000"
+    labels: !reset []

@@ -1,0 +1,5 @@
+name: portainer
+
+include:
+  - docker/portainer/compose.yml
+  - docker/portainer/expose.yml
