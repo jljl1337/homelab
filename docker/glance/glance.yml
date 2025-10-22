@@ -111,6 +111,12 @@ pages:
                 url: https://netdata.${DOMAIN_NAME}
                 icon: di:netdata
                 hide: false
+              homelab-grafana:
+                name: Grafana
+                description: Dashboards
+                url: https://grafana.${DOMAIN_NAME}
+                icon: si:grafana
+                hide: false
 
           - title: Backup
             type: docker-containers
