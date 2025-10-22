@@ -1,0 +1,6 @@
+name: komodo
+
+include:
+  - path:
+    - docker/komodo/compose.yml
+    - docker/komodo/expose.yml

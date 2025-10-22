@@ -14,4 +14,4 @@ include:
   - docker/qbittorrent/compose.yml
   - docker/gickup/compose.yml
   - docker/xpense/compose.yml
-  - docker/portainer/compose.yml
+  - docker/komodo/compose.yml
