@@ -1,7 +1,7 @@
 services:
 
   xpense:
-    image: jljl1337/xpense:0.4.2
+    image: jljl1337/xpense:0.4.3
     container_name: homelab-xpense
     restart: unless-stopped
     volumes:
