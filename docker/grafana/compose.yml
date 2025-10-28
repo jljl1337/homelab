@@ -1,6 +1,6 @@
 services:
   grafana:
-    image: grafana/grafana:12.2.0
+    image: grafana/grafana:12.2.1
     container_name: homelab-grafana
     restart: unless-stopped
     user: "0:0"
@@ -51,7 +51,7 @@ services:
       - '--path.rootfs=/host'
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.52.0
+    image: gcr.io/cadvisor/cadvisor:v0.52.1
     container_name: homelab-cadvisor
     restart: unless-stopped
     privileged: true
