@@ -19,9 +19,13 @@ generate_filename() {
 read -p "Enter file pattern (e.g., *.xls): " pattern
 read -p "Enter renaming pattern (e.g., new_name_#.pdf where # will be replaced with numbers): " rename_pattern
 read -p "Enter padding length for counter (e.g., 3 for 001, 002, etc. or 0 for no padding): " padding
+read -p "Enter starting number (offset, e.g., 1, 10, 100): " offset
+
+# Default offset to 1 if empty
+offset=${offset:-1}
 
 echo "Preview of renaming:"
-counter=1
+counter=$offset
 for i in $pattern ; do 
   # Exit with error if no files match the pattern
   if [ ! -f "$i" ]; then
@@ -36,7 +40,7 @@ done
 read -p "Proceed with renaming? (y/N): " confirm
 if [[ "$confirm" =~ ^[Yy]$ ]]; then
   echo "Renaming files..."
-  counter=1
+  counter=$offset
   for i in $pattern ; do 
     new_name=$(generate_filename $counter "$rename_pattern" $padding)
     mv "$i" "$new_name"
