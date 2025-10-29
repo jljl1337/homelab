@@ -18,7 +18,7 @@ services:
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
 
   prometheus:
-    image: prom/prometheus:v3.7.1
+    image: prom/prometheus:v3.7.2
     container_name: homelab-prometheus
     restart: unless-stopped
     user: "0:0"
@@ -40,7 +40,7 @@ services:
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
 
   node-exporter:
-    image: prom/node-exporter:v1.9.1
+    image: prom/node-exporter:v1.10.2
     container_name: homelab-node-exporter
     restart: unless-stopped
     network_mode: host
