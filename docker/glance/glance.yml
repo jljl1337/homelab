@@ -99,12 +99,6 @@ pages:
             type: docker-containers
             hide-by-default: true
             containers:
-              homelab-beszel:
-                name: Beszel
-                description: Simple Monitoring
-                url: https://beszel.${DOMAIN_NAME}
-                icon: di:beszel
-                hide: false
               homelab-netdata:
                 name: Netdata
                 description: Real-time Monitoring

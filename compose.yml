@@ -8,7 +8,6 @@ include:
   - docker/it-tools/compose.yml
   - docker/mkvtoolnix/compose.yml
   - docker/traefik/compose.yml
-  - docker/beszel/compose.yml
   - docker/frigate/compose.yml
   - docker/glance/compose.yml
   - docker/qbittorrent/compose.yml
