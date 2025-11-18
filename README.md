@@ -34,7 +34,7 @@ chsh -s $(which zsh)
 1. Generate an SSH key (skip this step if you already have an SSH key)
 
 ```sh
-ssh-keygen
+ssh-keygen -t ed25519
 ```
 
 2. Copy the public key to the server
