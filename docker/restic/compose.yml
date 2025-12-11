@@ -1,7 +1,7 @@
 services:
 
   restic-backup:
-    image: mazzolino/restic:1.8.0
+    image: mazzolino/restic:1.8.2
     container_name: homelab-restic-backup
     hostname: restic-backup
     restart: unless-stopped
@@ -35,7 +35,7 @@ services:
       - ${MASS_BACKUP_STORAGE}:/mnt/source:ro
 
   restic-prune:
-    image: mazzolino/restic:1.8.0
+    image: mazzolino/restic:1.8.2
     container_name: homelab-restic-prune
     hostname: restic-prune
     restart: unless-stopped
@@ -61,7 +61,7 @@ services:
       TZ: ${TZ}
 
   restic-check:
-    image: mazzolino/restic:1.8.0
+    image: mazzolino/restic:1.8.2
     container_name: homelab-restic-check
     hostname: restic-check
     restart: unless-stopped
