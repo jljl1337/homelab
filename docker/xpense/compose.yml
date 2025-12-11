@@ -9,7 +9,8 @@ services:
       - ${MASS_BACKUP_STORAGE}/backup/xpense:/xpense/data/backup
     environment:
       - TZ=${TZ}
-      - BACKUP_CRON_SCHEDULE=45 * * * *
+      - SQLITE_BACKUP_CRON_SCHEDULE=45 * * * *
+      - SESSION_CLEANUP_CRON_SCHEDULE=40 * * * 0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.xpense.rule=Host(`xpense.${DOMAIN_NAME}`)"
