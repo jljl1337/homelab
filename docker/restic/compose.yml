@@ -30,6 +30,11 @@ services:
         -H "Content-Type:application/json"
         -d '{"content": "Restic backup failed"}'
         $$DISCORD_WEBHOOK
+      SKIP_COMMANDS: >-
+        curl
+        -H "Content-Type:application/json"
+        -d '{"content": "Restic backup skipped"}'
+        $$DISCORD_WEBHOOK
       TZ: ${TZ}
     volumes:
       - ${MASS_BACKUP_STORAGE}:/mnt/source:ro
