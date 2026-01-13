@@ -165,7 +165,7 @@ sudo mount /local/path/to/nfs
 ### Docker Services
 
 1. Copy the `.env.example` file to `.env` and set the environment variables.
-2. Run `docker compose up -d` to start the services.
+2. Run `docker compose up -d --remove-orphans` to start the services.
 
 ### Restore backup
 
