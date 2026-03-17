@@ -16,3 +16,4 @@ include:
   - docker/komodo/compose.yml
   - docker/grafana/compose.yml
   - docker/oneonefive/compose.yml
+  - docker/makemkv/compose.yml

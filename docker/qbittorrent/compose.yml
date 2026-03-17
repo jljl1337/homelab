@@ -42,7 +42,7 @@ services:
       - WEBUI_PORT=8080
     volumes:
       - ${FAST_TEMP_STORAGE}/qbittorrent:/config
-      - ${MASS_TEMP_STORAGE}/qbittorrent:/downloads
+      - ${MASS_TEMP_STORAGE}/shared:/downloads
     depends_on:
       gluetun:
         condition: service_healthy

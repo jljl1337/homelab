@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     volumes:
       - ${FAST_TEMP_STORAGE}/mkvtoolnix:/config
-      - ${MASS_TEMP_STORAGE}/mkvtoolnix:/storage
+      - ${MASS_TEMP_STORAGE}/shared:/storage
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.mkvtoolnix.rule=Host(`mkvtoolnix.${DOMAIN_NAME}`)"

@@ -1,0 +1,18 @@
+services:
+
+  makemkv:
+    image: jlesage/makemkv:v26.03.1
+    container_name: homelab-makemkv
+    restart: unless-stopped
+    # devices: # Use lsblk to find the correct devices for the optical drive
+    #   - ${MAKEMKV_DEVICE_SR}
+    #   - ${MAKEMKV_DEVICE_SG}
+    volumes:
+      - ${FAST_TEMP_STORAGE}/makemkv:/config
+      - ${MASS_TEMP_STORAGE}/shared:/storage
+      - ${MASS_TEMP_STORAGE}/shared:/output
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.makemkv.rule=Host(`makemkv.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.makemkv.entrypoints=websecure"
+      - "traefik.http.services.makemkv.loadbalancer.server.port=5800"

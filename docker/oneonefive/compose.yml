@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     volumes:
       - ${FAST_TEMP_STORAGE}/oneonefive:/etc/115
-      - ${MASS_TEMP_STORAGE}/oneonefive:/opt/Downloads
+      - ${MASS_TEMP_STORAGE}/shared:/opt/Downloads
     labels:
       - traefik.enable=true
       - traefik.http.routers.oneonefive.rule=Host(`oneonefive.${DOMAIN_NAME}`)
