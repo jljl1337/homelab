@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# extract-iso.sh — Extract ISO files using 7zip
+# extract-iso.sh — Extract ISO files by mounting and copying
 #
 # Usage:
 #   ./extract-iso.sh [OPTIONS] [DIRECTORY]
@@ -8,6 +8,7 @@
 # Options:
 #   -d, --debug      Debug mode: print commands without executing them
 #   -r, --recursive  Recursive mode: scan subdirectories for ISO files
+#   -D, --delete     Delete the ISO file after successful extraction
 #   -h, --help       Show this help message
 #
 # Arguments:
@@ -16,8 +17,8 @@
 # Examples:
 #   ./extract-iso.sh                    # Extract ISOs in current directory
 #   ./extract-iso.sh -d                 # Debug: show what would run
+#   ./extract-iso.sh -D                 # Delete ISO after extraction
 #   ./extract-iso.sh -r /mnt/isos       # Recursively extract in /mnt/isos
-#   ./extract-iso.sh -d -r              # Debug + recursive
 # =============================================================================
 
 set -euo pipefail
@@ -27,6 +28,7 @@ set -euo pipefail
 # ---------------------------------------------------------------------------
 DEBUG=false
 RECURSIVE=false
+DELETE_ISO=false
 SCAN_DIR="."
 
 # ---------------------------------------------------------------------------
@@ -81,6 +83,10 @@ while [[ $# -gt 0 ]]; do
             RECURSIVE=true
             shift
             ;;
+        -D|--delete)
+            DELETE_ISO=true
+            shift
+            ;;
         -h|--help)
             usage
             ;;
@@ -98,11 +104,8 @@ done
 # ---------------------------------------------------------------------------
 # Sanity checks
 # ---------------------------------------------------------------------------
-if ! command -v 7z &>/dev/null; then
-    error "7zip (7z) is not installed or not on PATH."
-    error "Install it with:  sudo apt install p7zip-full   (Debian/Ubuntu)"
-    error "                   sudo dnf install p7zip p7zip-plugins  (Fedora)"
-    error "                   brew install p7zip            (macOS)"
+if ! command -v mount &>/dev/null; then
+    error "mount command is not available."
     exit 1
 fi
 
@@ -122,6 +125,7 @@ echo -e "${BOLD} ISO Extractor${RESET}"
 echo -e "${BOLD}==============================${RESET}"
 echo -e "  Scan dir  : ${CYAN}${SCAN_DIR}${RESET}"
 echo -e "  Recursive : ${CYAN}${RECURSIVE}${RESET}"
+echo -e "  Delete ISO: ${CYAN}${DELETE_ISO}${RESET}"
 echo -e "  Debug     : ${CYAN}${DEBUG}${RESET}"
 $DEBUG && warn "DEBUG MODE — no commands will actually be executed."
 echo ""
@@ -174,27 +178,51 @@ for ISO_PATH in "${ISO_FILES[@]}"; do
         $DEBUG || info "Created directory: ${DEST_DIR}"
     fi
 
-    # Extract with 7z
-    #   x  = extract with full paths
-    #   -o = output directory (no space between -o and path)
-    #   -y = assume Yes on all queries
-    run_cmd 7z x "$ISO_PATH" -o"$DEST_DIR" -y
-
-    EXIT_CODE=$?
+    # Extract by mounting
     if ! $DEBUG; then
+        run_cmd mkdir -p /tmp/iso
+        # +e to allow checking cp status without script failing
+        set +e
+        sudo mount -o loop,ro "$ISO_PATH" /tmp/iso
+        MOUNT_EXIT=$?
+        set -e
+        
+        if [[ $MOUNT_EXIT -eq 0 ]]; then
+            set +e
+            cp -rT /tmp/iso "$DEST_DIR"
+            EXIT_CODE=$?
+            set -e
+
+            sudo umount /tmp/iso
+        else
+            EXIT_CODE=$MOUNT_EXIT
+        fi
+
         if [[ $EXIT_CODE -eq 0 ]]; then
-            if run_cmd rm -f "$ISO_PATH"; then
-                success "Extracted and removed ISO: ${ISO_BASENAME}"
-                (( SUCCESS_COUNT++ )) || true
+            if $DELETE_ISO; then
+                if run_cmd rm -f "$ISO_PATH"; then
+                    success "Extracted and removed ISO: ${ISO_BASENAME}"
+                    (( SUCCESS_COUNT++ )) || true
+                else
+                    error "Extracted but failed to delete ISO: ${ISO_BASENAME}"
+                    (( FAIL_COUNT++ )) || true
+                fi
             else
-                error "Extracted but failed to delete ISO: ${ISO_BASENAME}"
-                (( FAIL_COUNT++ )) || true
+                success "Extracted ISO: ${ISO_BASENAME}"
+                (( SUCCESS_COUNT++ )) || true
             fi
         else
-            error "7z exited with code ${EXIT_CODE} for: ${ISO_BASENAME}"
+            error "Extraction failed with code ${EXIT_CODE} for: ${ISO_BASENAME}"
             (( FAIL_COUNT++ )) || true
         fi
     else
+        debug_cmd "mkdir -p /tmp/iso"
+        debug_cmd "sudo mount -o loop,ro \"$ISO_PATH\" /tmp/iso"
+        debug_cmd "cp -rT /tmp/iso \"$DEST_DIR\""
+        debug_cmd "sudo umount /tmp/iso"
+        if $DELETE_ISO; then
+            debug_cmd "rm -f \"$ISO_PATH\""
+        fi
         (( SKIP_COUNT++ )) || true
     fi
 
