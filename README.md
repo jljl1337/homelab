@@ -20,7 +20,7 @@ sudo reboot
 3. Install packages
 
 ```sh
-sudo apt install -y curl openssh-server git vim htop zsh tmux nfs-common v4l-utils ffmpeg
+sudo apt install -y curl openssh-server git vim htop zsh tmux nfs-common v4l-utils ffmpeg p7zip-full
 ```
 
 4. Change the default shell to zsh
