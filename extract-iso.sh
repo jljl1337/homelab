@@ -44,13 +44,13 @@ RESET='\033[0m'
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
-info()    { echo -e "${CYAN}[INFO]${RESET}  $*"; }
-success() { echo -e "${GREEN}[OK]${RESET}    $*"; }
-warn()    { echo -e "${YELLOW}[WARN]${RESET}  $*"; }
-error()   { echo -e "${RED}[ERROR]${RESET} $*" >&2; }
+info()    { echo -e "$(date '+%Y-%m-%d %H:%M:%S') ${CYAN}[INFO]${RESET}  $*"; }
+success() { echo -e "$(date '+%Y-%m-%d %H:%M:%S') ${GREEN}[OK]${RESET}    $*"; }
+warn()    { echo -e "$(date '+%Y-%m-%d %H:%M:%S') ${YELLOW}[WARN]${RESET}  $*"; }
+error()   { echo -e "$(date '+%Y-%m-%d %H:%M:%S') ${RED}[ERROR]${RESET} $*" >&2; }
 debug_cmd() {
     # Print the command that *would* run, prefixed with a marker
-    echo -e "${YELLOW}[DRY-RUN]${RESET} $*"
+    echo -e "$(date '+%Y-%m-%d %H:%M:%S') ${YELLOW}[DRY-RUN]${RESET} $*"
 }
 
 usage() {
@@ -183,7 +183,7 @@ for ISO_PATH in "${ISO_FILES[@]}"; do
         run_cmd mkdir -p /tmp/iso
         # +e to allow checking cp status without script failing
         set +e
-        sudo mount -o loop,ro "$ISO_PATH" /tmp/iso
+        mount -o loop,ro "$ISO_PATH" /tmp/iso
         MOUNT_EXIT=$?
         set -e
         
@@ -193,7 +193,7 @@ for ISO_PATH in "${ISO_FILES[@]}"; do
             EXIT_CODE=$?
             set -e
 
-            sudo umount /tmp/iso
+            umount /tmp/iso
         else
             EXIT_CODE=$MOUNT_EXIT
         fi
@@ -217,9 +217,9 @@ for ISO_PATH in "${ISO_FILES[@]}"; do
         fi
     else
         debug_cmd "mkdir -p /tmp/iso"
-        debug_cmd "sudo mount -o loop,ro \"$ISO_PATH\" /tmp/iso"
+        debug_cmd "mount -o loop,ro \"$ISO_PATH\" /tmp/iso"
         debug_cmd "cp -rT /tmp/iso \"$DEST_DIR\""
-        debug_cmd "sudo umount /tmp/iso"
+        debug_cmd "umount /tmp/iso"
         if $DELETE_ISO; then
             debug_cmd "rm -f \"$ISO_PATH\""
         fi
