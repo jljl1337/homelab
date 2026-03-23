@@ -104,6 +104,11 @@ done
 # ---------------------------------------------------------------------------
 # Sanity checks
 # ---------------------------------------------------------------------------
+if [[ $EUID -ne 0 ]]; then
+    error "This script must be run as root (e.g., using sudo)."
+    exit 1
+fi
+
 if ! command -v mount &>/dev/null; then
     error "mount command is not available."
     exit 1
