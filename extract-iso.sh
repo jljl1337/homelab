@@ -193,6 +193,10 @@ for ISO_PATH in "${ISO_FILES[@]}"; do
             EXIT_CODE=$?
             set -e
 
+            if [[ $EXIT_CODE -eq 0 ]]; then
+                chown -R 1000 "$DEST_DIR"
+            fi
+
             umount /tmp/iso
         else
             EXIT_CODE=$MOUNT_EXIT
@@ -219,6 +223,7 @@ for ISO_PATH in "${ISO_FILES[@]}"; do
         debug_cmd "mkdir -p /tmp/iso"
         debug_cmd "mount -o loop,ro \"$ISO_PATH\" /tmp/iso"
         debug_cmd "cp -rT /tmp/iso \"$DEST_DIR\""
+        debug_cmd "chown -R 1000 \"$DEST_DIR\""
         debug_cmd "umount /tmp/iso"
         if $DELETE_ISO; then
             debug_cmd "rm -f \"$ISO_PATH\""
