@@ -20,19 +20,30 @@ read -p "Enter file pattern (e.g., *.xls): " pattern
 read -p "Enter renaming pattern (e.g., new_name_#.pdf where # will be replaced with numbers): " rename_pattern
 read -p "Enter padding length for counter (e.g., 3 for 001, 002, etc. or 0 for no padding): " padding
 read -p "Enter starting number (offset, e.g., 1, 10, 100): " offset
+read -p "Reverse file list order before renaming? (y/N): " reverse_order
 
 # Default offset to 1 if empty
 offset=${offset:-1}
 
+# Create array of files and reverse if selected
+files=($pattern)
+if [[ "$reverse_order" =~ ^[Yy]$ ]]; then
+  temp_files=()
+  for (( i=${#files[@]}-1 ; i>=0 ; i-- )) ; do
+    temp_files+=("${files[i]}")
+  done
+  files=("${temp_files[@]}")
+fi
+
 echo "Preview of renaming:"
 counter=$offset
-for i in $pattern ; do 
+for i in "${files[@]}" ; do 
   # Exit with error if no files match the pattern
   if [ ! -f "$i" ]; then
     echo "Error: Files with pattern '$i' not found!"
     exit 1
   fi
-  new_name=$(generate_filename $counter "$rename_pattern" $padding)
+  new_name=$(generate_filename "$counter" "$rename_pattern" "$padding")
   echo "$i -> $new_name"
   ((counter++))
 done
@@ -41,8 +52,8 @@ read -p "Proceed with renaming? (y/N): " confirm
 if [[ "$confirm" =~ ^[Yy]$ ]]; then
   echo "Renaming files..."
   counter=$offset
-  for i in $pattern ; do 
-    new_name=$(generate_filename $counter "$rename_pattern" $padding)
+  for i in "${files[@]}" ; do 
+    new_name=$(generate_filename "$counter" "$rename_pattern" "$padding")
     mv "$i" "$new_name"
     echo "Renamed: $i -> $new_name"
     ((counter++))
