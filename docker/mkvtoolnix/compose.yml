@@ -1,7 +1,7 @@
 services:
 
   mkvtoolnix:
-    image: jlesage/mkvtoolnix:v26.03.1
+    image: jlesage/mkvtoolnix:v26.04.1
     container_name: homelab-mkvtoolnix
     restart: unless-stopped
     volumes:
