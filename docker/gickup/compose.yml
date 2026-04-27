@@ -1,7 +1,7 @@
 services:
 
   gickup:
-    image: buddyspencer/gickup:0.10.39
+    image: buddyspencer/gickup:0.10.40
     container_name: homelab-gickup
     restart: unless-stopped
     volumes:
