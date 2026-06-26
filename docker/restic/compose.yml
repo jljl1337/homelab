@@ -18,7 +18,7 @@ services:
         --tag backup
         --exclude ._*
         --exclude .DS_Store
-        --verbose
+        --verbose 2
       RESTIC_FORGET_ARGS: >-
         --keep-hourly 24
         --keep-daily 7
