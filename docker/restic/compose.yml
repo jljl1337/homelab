@@ -15,6 +15,7 @@ services:
       RESTIC_BACKUP_SOURCES: /mnt/source
       RESTIC_BACKUP_ARGS: >-
         --pack-size=60
+        --compression max
         --tag backup
         --exclude ._*
         --exclude .DS_Store
@@ -48,6 +49,9 @@ services:
       SKIP_INIT: "true"
       RUN_ON_STARTUP: "false"
       PRUNE_CRON: "0 30 4 * * 0"
+      RESTIC_PRUNE_ARGS: >-
+        --pack-size=60
+        --compression max
       RESTIC_REPOSITORY: ${RESTIC_REPOSITORY}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
