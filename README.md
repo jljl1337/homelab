@@ -51,7 +51,16 @@ ssh-copy-id <username>@<server-ip>
 curl -fsSL https://tailscale.com/install.sh | sh
 ```
 
+```sh
+sudo tailscale up --accept-dns=false
+```
+
 [Reference](https://tailscale.com/download/linux)
+
+`--accept-dns=false` is used due to pihole being used as the DNS server.
+If you don't use pihole, you can remove this option.
+
+[Reference](https://tailscale.com/docs/solutions/block-ads-all-devices-anywhere-using-raspberry-pi#step-3-install-tailscale-on-your-raspberry-pi)
 
 ### Git
 

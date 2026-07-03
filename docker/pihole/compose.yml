@@ -1,0 +1,22 @@
+services:
+
+  pihole:
+    image: pihole/pihole:2026.06.0
+    container_name: homelab-pihole
+    restart: unless-stopped
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+    volumes:
+      - ${FAST_TEMP_STORAGE}/pihole:/etc/pihole
+    environment:
+      TZ: ${TZ}
+      FTLCONF_dns_listeningMode: ALL
+      FTLCONF_dns_upstreams: |-
+        1.1.1.1
+        1.0.0.1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pihole.rule=Host(`pihole.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.pihole.entrypoints=websecure"
+      - "traefik.http.services.pihole.loadbalancer.server.port=80"

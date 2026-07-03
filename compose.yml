@@ -17,3 +17,4 @@ include:
   - docker/grafana/compose.yml
   - docker/oneonefive/compose.yml
   - docker/makemkv/compose.yml
+  - docker/pihole/compose.yml
