@@ -1,6 +1,6 @@
 services:
   grafana:
-    image: grafana/grafana:13.0.2
+    image: grafana/grafana:13.1.0
     container_name: homelab-grafana
     restart: unless-stopped
     user: "0:0"
@@ -18,7 +18,7 @@ services:
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
 
   prometheus:
-    image: prom/prometheus:v3.12.0
+    image: prom/prometheus:v3.13.0
     container_name: homelab-prometheus
     restart: unless-stopped
     user: "0:0"
