@@ -31,7 +31,7 @@ services:
       - traefik.http.services.qbittorrent.loadbalancer.server.port=8080
 
   qbittorrent:
-    image: linuxserver/qbittorrent:5.2.1
+    image: linuxserver/qbittorrent:5.2.2
     container_name: homelab-qbittorrent
     restart: unless-stopped
     network_mode: service:gluetun
