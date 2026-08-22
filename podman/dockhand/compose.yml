@@ -1,0 +1,16 @@
+services:
+
+  dockhand:
+    image: fnsys/dockhand:v1.0.42
+    container_name: homelab-dockhand
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - /run/user/${PUID}/podman/podman.sock:/var/run/docker.sock:ro
+      - ${FAST_TEMP_STORAGE}/dockhand:/app/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dockhand.rule=Host(`dockhand.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.dockhand.entrypoints=websecure"
+      - "traefik.http.services.dockhand.loadbalancer.server.port=3000"

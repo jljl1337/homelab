@@ -1,0 +1,10 @@
+source:
+  github:
+    - token: GICKUP_GITHUB_TOKEN
+
+destination:
+  local:
+    - path: /dist
+      mirror: true
+
+cron: 45 * * * *

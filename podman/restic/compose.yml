@@ -1,0 +1,98 @@
+services:
+
+  restic-backup:
+    image: mazzolino/restic:1.8.2
+    container_name: homelab-restic-backup
+    hostname: restic-backup
+    restart: unless-stopped
+    environment:
+      RUN_ON_STARTUP: "true"
+      BACKUP_CRON: "0 0 * * * *"
+      RESTIC_REPOSITORY: ${RESTIC_REPOSITORY}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      RESTIC_BACKUP_SOURCES: /mnt/source
+      RESTIC_BACKUP_ARGS: >-
+        --pack-size=60
+        --compression max
+        --tag backup
+        --exclude ._*
+        --exclude .DS_Store
+        --verbose
+      RESTIC_FORGET_ARGS: >-
+        --keep-hourly 24
+        --keep-daily 7
+        --keep-weekly 4
+        --keep-monthly 12
+      DISCORD_WEBHOOK: ${DISCORD_WEBHOOK}
+      POST_COMMANDS_FAILURE: >-
+        curl
+        -H "Content-Type:application/json"
+        -d '{"content": "Restic backup failed"}'
+        $$DISCORD_WEBHOOK
+      SKIP_COMMANDS: >-
+        curl
+        -H "Content-Type:application/json"
+        -d '{"content": "Restic backup skipped"}'
+        $$DISCORD_WEBHOOK
+      TZ: ${TZ}
+    volumes:
+      - ${MASS_BACKUP_STORAGE}:/mnt/source:ro
+
+  restic-prune:
+    image: mazzolino/restic:1.8.2
+    container_name: homelab-restic-prune
+    hostname: restic-prune
+    restart: unless-stopped
+    environment:
+      SKIP_INIT: "true"
+      RUN_ON_STARTUP: "false"
+      PRUNE_CRON: "0 30 4 * * 0"
+      RESTIC_PRUNE_ARGS: >-
+        --pack-size=60
+        --compression max
+      RESTIC_REPOSITORY: ${RESTIC_REPOSITORY}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      DISCORD_WEBHOOK: ${DISCORD_WEBHOOK}
+      POST_COMMANDS_SUCCESS: >-
+        curl
+        -H "Content-Type:application/json"
+        -d '{"content": "Restic prune succeeded"}'
+        $$DISCORD_WEBHOOK
+      POST_COMMANDS_FAILURE: >-
+        curl
+        -H "Content-Type:application/json"
+        -d '{"content": "Restic prune failed"}'
+        $$DISCORD_WEBHOOK
+      TZ: ${TZ}
+
+  restic-check:
+    image: mazzolino/restic:1.8.2
+    container_name: homelab-restic-check
+    hostname: restic-check
+    restart: unless-stopped
+    environment:
+      SKIP_INIT: "true"
+      RUN_ON_STARTUP: "false"
+      CHECK_CRON: "0 45 4 * * 0,4"
+      RESTIC_CHECK_ARGS: >-
+        --read-data-subset=5G
+      RESTIC_REPOSITORY: ${RESTIC_REPOSITORY}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      DISCORD_WEBHOOK: ${DISCORD_WEBHOOK}
+      POST_COMMANDS_SUCCESS: >-
+        curl
+        -H "Content-Type:application/json"
+        -d '{"content": "Restic check succeeded"}'
+        $$DISCORD_WEBHOOK
+      POST_COMMANDS_FAILURE: >-
+        curl
+        -H "Content-Type:application/json"
+        -d '{"content": "Restic check failed"}'
+        $$DISCORD_WEBHOOK
+      TZ: ${TZ}

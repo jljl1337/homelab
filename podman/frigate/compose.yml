@@ -1,0 +1,39 @@
+services:
+
+  frigate:
+    image: ghcr.io/blakeblackshear/frigate:0.15.2-tensorrt
+    container_name: homelab-frigate
+    restart: unless-stopped
+    shm_size: "512mb" # update for your cameras based on calculation above
+    stop_grace_period: 30s # allow enough time to shut down the various services
+    devices:
+      - /dev/bus/usb:/dev/bus/usb # USB passthrough
+      - /dev/video0:/dev/video0
+      - /dev/video2:/dev/video2
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config.yml:/config/config.yml:ro
+      - ${FAST_TEMP_STORAGE}/frigate/data:/media/frigate
+      - ${FAST_TEMP_STORAGE}/frigate/model-cache:/config/model_cache
+      - ${FAST_TEMP_STORAGE}/frigate/labelmap:/labelmap
+      - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000
+    environment:
+      - TZ=${TZ}
+      - YOLO_MODELS=yolov7-tiny-288
+      - USE_FP16=false
+    # Optional: enable NVIDIA GPU acceleration for object detection
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frigate.rule=Host(`frigate.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.frigate.entrypoints=websecure"
+      - "traefik.http.services.frigate.loadbalancer.server.port=5000"

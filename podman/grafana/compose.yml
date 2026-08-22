@@ -1,0 +1,61 @@
+services:
+
+  grafana:
+    image: grafana/grafana:13.1.3
+    container_name: homelab-grafana
+    restart: unless-stopped
+    userns_mode: "keep-id:uid=472"
+    depends_on:
+      - prometheus
+    volumes:
+      - ./provisioning:/etc/grafana/provisioning
+      - ${FAST_TEMP_STORAGE}/grafana:/var/lib/grafana
+    environment:
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/etc/grafana/provisioning/dashboards/home.json
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+
+  prometheus:
+    image: prom/prometheus:v3.13.2
+    container_name: homelab-prometheus
+    restart: unless-stopped
+    userns_mode: "keep-id:uid=65534"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ${FAST_TEMP_STORAGE}/prometheus:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.prometheus.entrypoints=websecure"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+
+  node-exporter:
+    image: prom/node-exporter:v1.12.1
+    container_name: homelab-node-exporter
+    restart: unless-stopped
+    network_mode: host
+    pid: host
+    volumes:
+      - '/:/host:ro'
+    command:
+      - '--path.rootfs=/host'
+
+  telegraf:
+    image: docker.io/library/telegraf:1.39.3
+    container_name: homelab-telegraf
+    restart: unless-stopped
+    userns_mode: "keep-id"
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /run/user/${PUID}/podman/podman.sock:/var/run/docker.sock:ro

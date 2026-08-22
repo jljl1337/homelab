@@ -20,13 +20,7 @@ sudo reboot
 3. Install packages
 
 ```sh
-sudo apt install -y curl openssh-server git vim htop zsh tmux nfs-common v4l-utils ffmpeg
-```
-
-4. Change the default shell to zsh
-
-```sh
-chsh -s $(which zsh)
+sudo apt install -y curl openssh-server htop nfs-common v4l-utils ffmpeg
 ```
 
 ### SSH
@@ -74,6 +68,28 @@ git config --global user.name 'Your Name'
 ### Docker
 
 [Reference](https://docs.docker.com/engine/install/ubuntu/)
+
+### Podman
+
+Setup Podman socket
+
+```
+systemctl --user enable --now podman.socket
+```
+
+Enable lingering (so it runs after logout):
+
+```
+loginctl enable-linger $USER
+```
+
+Enable rootless Podman to bind to privileged ports by running the following
+commands:
+
+```
+sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0
+echo 'net.ipv4.ip_unprivileged_port_start=0' | sudo tee /etc/sysctl.d/99-rootless-podman-ports.conf
+```
 
 ### Install NVIDIA firmwares (if you have an NVIDIA GPU)
 

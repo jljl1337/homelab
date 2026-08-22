@@ -1,0 +1,18 @@
+name: homelab
+
+include:
+  - podman/vaultwarden/compose.yml
+  - podman/icloud-photo/compose.yml
+  - podman/restic/compose.yml
+  - podman/it-tools/compose.yml
+  - podman/mkvtoolnix/compose.yml
+  - podman/traefik/compose.yml
+  # - podman/frigate/compose.yml
+  - podman/glance/compose.yml
+  - podman/qbittorrent/compose.yml
+  - podman/gickup/compose.yml
+  - podman/grafana/compose.yml
+  - podman/oneonefive/compose.yml
+  - podman/makemkv/compose.yml
+  - podman/pihole/compose.yml
+  - podman/dockhand/compose.yml
