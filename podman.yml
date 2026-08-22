@@ -3,7 +3,7 @@ name: homelab
 include:
   - podman/vaultwarden/compose.yml
   - podman/icloud-photo/compose.yml
-  - podman/restic/compose.yml
+  # - podman/restic/compose.yml
   - podman/it-tools/compose.yml
   - podman/mkvtoolnix/compose.yml
   - podman/traefik/compose.yml
@@ -16,3 +16,4 @@ include:
   - podman/makemkv/compose.yml
   - podman/pihole/compose.yml
   - podman/dockhand/compose.yml
+  - podman/arcane/compose.yml

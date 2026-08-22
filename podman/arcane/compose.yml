@@ -1,0 +1,22 @@
+services:
+
+  arcane:
+    image: ghcr.io/getarcaneapp/manager:v2.8.1
+    container_name: homelab-arcane
+    restart: unless-stopped
+    userns_mode: keep-id
+    cgroup: host
+    volumes:
+      - ${FAST_TEMP_STORAGE}/arcane:/app/data
+      - /run/user/${PUID}/podman/podman.sock:/var/run/docker.sock:ro
+    environment:
+      - APP_URL=http://arcane.${DOMAIN_NAME}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - ENCRYPTION_KEY=${ARCANE_ENCRYPTION_KEY}
+      - JWT_SECRET=${ARCANE_JWT_SECRET}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.arcane.rule=Host(`arcane.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.arcane.entrypoints=websecure"
+      - "traefik.http.services.arcane.loadbalancer.server.port=3552"
