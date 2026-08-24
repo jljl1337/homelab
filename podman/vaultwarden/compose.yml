@@ -1,11 +1,11 @@
 services:
 
   vaultwarden:
-    image: vaultwarden/server:1.37.1
+    image: docker.io/vaultwarden/server:1.37.1
     container_name: homelab-vaultwarden
     restart: unless-stopped
     volumes:
-      - ${MASS_BACKUP_STORAGE}/data/vaultwarden:/data
+      - ${MASS_BACKUP_STORAGE}/data/vaultwarden:/data:z
     environment:
       - SIGNUPS_ALLOWED=false # Comment this line to allow signups
     labels:

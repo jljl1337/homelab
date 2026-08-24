@@ -1,11 +1,11 @@
 services:
 
   icloud-photo:
-    image: icloudpd/icloudpd:1.32.3
+    image: docker.io/icloudpd/icloudpd:1.32.3
     container_name: homelab-icloud-photo
     restart: unless-stopped
     volumes:
-      - ${MASS_BACKUP_STORAGE}/data/icloud-photo:/data
+      - ${MASS_BACKUP_STORAGE}/data/icloud-photo:/data:rw,z
     environment:
       - TZ=${TZ}
     command: >-

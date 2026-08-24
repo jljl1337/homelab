@@ -1,0 +1,29 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.18.0/.schema/devbox.schema.json",
+  "packages": [],
+  "shell": {
+    "init_hook": [
+      "echo 'Welcome to devbox!' > /dev/null"
+    ],
+    "scripts": {
+      "dup": [
+        "podman compose down --remove-orphans && podman compose up -d --remove-orphans --no-recreate"
+      ],
+      "up": [
+        "podman compose up -d --remove-orphans --no-recreate"
+      ],
+      "down": [
+        "podman compose down --remove-orphans"
+      ],
+      "ps": [
+        "podman ps -a"
+      ],
+      "logs": [
+        "podman logs --tail 100 \"$@\""
+      ],
+      "wlogs": [
+        "watch -c -n 1 podman logs --tail 100 \"$@\""
+      ]
+    }
+  }
+}

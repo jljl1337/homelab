@@ -1,9 +1,9 @@
-# pihole
+# adguard
 
-This is used for ad blocking when connected to the VPN.
+This is only used for ad blocking when connected to the VPN.
 It is not used for the local network.
 
-Recommended blocklist for pihole: 
+Recommended blocklist for: 
 
 ```
 https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt
@@ -13,7 +13,7 @@ https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt
 
 ## Troubleshooting
 
-For port conflict issue of pihole on Ubuntu:
+For port conflict issue on Fedora and Ubuntu:
 
 ```sh
 sudo sh -c 'mkdir -p /etc/systemd/resolved.conf.d && printf "[Resolve]\nDNSStubListener=no\n" | tee /etc/systemd/resolved.conf.d/no-stub.conf'

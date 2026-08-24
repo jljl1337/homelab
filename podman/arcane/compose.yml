@@ -6,9 +6,12 @@ services:
     restart: unless-stopped
     userns_mode: keep-id
     cgroup: host
+    # For mounting the Podman socket
+    security_opt:
+      [label=disable]
     volumes:
-      - ${FAST_TEMP_STORAGE}/arcane:/app/data
-      - /run/user/${PUID}/podman/podman.sock:/var/run/docker.sock:ro
+      - ${FAST_TEMP_STORAGE}/arcane:/app/data:rw,Z
+      - /run/user/${PUID}/podman/podman.sock:/var/run/docker.sock:ro,z
     environment:
       - APP_URL=http://arcane.${DOMAIN_NAME}
       - PUID=${PUID}

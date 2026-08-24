@@ -1,7 +1,7 @@
 services:
 
   gluetun:
-    image: qmcgaw/gluetun:v3.41.3
+    image: docker.io/qmcgaw/gluetun:v3.41.3
     container_name: homelab-gluetun
     restart: unless-stopped
     cap_add:
@@ -9,7 +9,7 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - ${FAST_TEMP_STORAGE}/gluetun:/gluetun
+      - ${FAST_TEMP_STORAGE}/gluetun:/gluetun:rw,Z
     environment:
       - VPN_SERVICE_PROVIDER=surfshark
       - VPN_TYPE=wireguard
@@ -31,18 +31,18 @@ services:
       - traefik.http.services.qbittorrent.loadbalancer.server.port=8080
 
   qbittorrent:
-    image: linuxserver/qbittorrent:5.2.3
+    image: docker.io/linuxserver/qbittorrent:5.2.3
     container_name: homelab-qbittorrent
     restart: unless-stopped
     network_mode: service:gluetun
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - PUID=0
+      - PGID=0
       - TZ=${TZ}
       - WEBUI_PORT=8080
     volumes:
-      - ${FAST_TEMP_STORAGE}/qbittorrent:/config
-      - ${MASS_TEMP_STORAGE}/shared:/downloads
+      - ${FAST_TEMP_STORAGE}/qbittorrent:/config:rw,Z
+      - ${MASS_TEMP_STORAGE}/shared:/downloads:rw,z
     depends_on:
       gluetun:
         condition: service_healthy

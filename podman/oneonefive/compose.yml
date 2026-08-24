@@ -1,12 +1,12 @@
 services:
 
   oneonefive:
-    image: xiuxiu10201/115:latest
+    image: docker.io/xiuxiu10201/115:latest
     container_name: homelab-oneonefive
     restart: unless-stopped
     volumes:
-      - ${FAST_TEMP_STORAGE}/oneonefive:/etc/115
-      - ${MASS_TEMP_STORAGE}/shared:/opt/Downloads
+      - ${FAST_TEMP_STORAGE}/oneonefive:/etc/115:rw,Z
+      - ${MASS_TEMP_STORAGE}/shared:/opt/Downloads:rw,z
     labels:
       - traefik.enable=true
       - traefik.http.routers.oneonefive.rule=Host(`oneonefive.${DOMAIN_NAME}`)

@@ -11,11 +11,11 @@ services:
       - /dev/video0:/dev/video0
       - /dev/video2:/dev/video2
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./config.yml:/config/config.yml:ro
-      - ${FAST_TEMP_STORAGE}/frigate/data:/media/frigate
-      - ${FAST_TEMP_STORAGE}/frigate/model-cache:/config/model_cache
-      - ${FAST_TEMP_STORAGE}/frigate/labelmap:/labelmap
+      - /etc/localtime:/etc/localtime:ro,z
+      - ${CURRENT_DIR}/podman/frigate/config.yml:/config/config.yml:ro,z
+      - ${FAST_TEMP_STORAGE}/frigate/data:/media/frigate:rw,Z
+      - ${FAST_TEMP_STORAGE}/frigate/model-cache:/config/model_cache:rw,Z
+      - ${FAST_TEMP_STORAGE}/frigate/labelmap:/labelmap:rw,Z
       - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
         target: /tmp/cache
         tmpfs:

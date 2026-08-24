@@ -1,12 +1,15 @@
 services:
 
   traefik:
-    image: traefik:v3.7.10
+    image: docker.io/library/traefik:v3.7.10
     container_name: homelab-traefik
     restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
+    # For mounting the Podman socket
+    security_opt:
+      [label=disable]
     environment:
       - CLOUDFLARE_DNS_API_TOKEN=${CF_API_TOKEN}
       - CLOUDFLARE_ZONE_API_TOKEN=${CF_API_TOKEN}
@@ -16,7 +19,9 @@ services:
       # Docker provider
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
-      # Certificate resolvers using Cloudflare DNS challenge
+      # Staging certificate resolvers, for testing purposes only. When
+      # switching to production, comment out the following line and also
+      # remove the letsencrypt folder in the volume mount to start fresh
       # - --certificatesresolvers.cloudflare.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
       - --certificatesresolvers.cloudflare.acme.email=${EMAIL}
       - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
@@ -42,15 +47,10 @@ services:
       # Skip TLS verification
       - --serversTransport.insecureSkipVerify=true
     volumes:
-      # - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /run/user/${PUID}/podman/podman.sock:/var/run/docker.sock:ro
-      - ${FAST_TEMP_STORAGE}/traefik/letsencrypt:/letsencrypt
+      - /run/user/${PUID}/podman/podman.sock:/var/run/docker.sock:ro,z
+      - ${FAST_TEMP_STORAGE}/traefik/letsencrypt:/letsencrypt:Z
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN_NAME}`)"
       - "traefik.http.routers.traefik.entrypoints=websecure"
       - "traefik.http.routers.traefik.service=api@internal"
-      # Truenas Scale
-      - "traefik.http.routers.truenas.rule=Host(`truenas.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.truenas.entrypoints=websecure"
-      - "traefik.http.services.truenas.loadbalancer.server.url=https://${TRUENAS_IP}"

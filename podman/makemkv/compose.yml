@@ -1,16 +1,21 @@
 services:
 
   makemkv:
-    image: jlesage/makemkv:v26.07.2
+    image: docker.io/jlesage/makemkv:v26.07.2
     container_name: homelab-makemkv
     restart: unless-stopped
     # devices: # Use lsblk to find the correct devices for the optical drive
     #   - ${MAKEMKV_DEVICE_SR}
     #   - ${MAKEMKV_DEVICE_SG}
     volumes:
-      - ${FAST_TEMP_STORAGE}/makemkv:/config
-      - ${MASS_TEMP_STORAGE}/shared:/storage
-      - ${MASS_TEMP_STORAGE}/shared:/output
+      - ${FAST_TEMP_STORAGE}/makemkv:/config:rw,Z
+      - ${MASS_TEMP_STORAGE}/shared:/storage:rw,z
+      - ${MASS_TEMP_STORAGE}/shared:/output:rw,z
+    environment:
+      # userns_mode does not work with jlesage containers, so run as root inside
+      - USER_ID=0
+      - GROUP_ID=0
+      - TZ=${TZ}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.makemkv.rule=Host(`makemkv.${DOMAIN_NAME}`)"
