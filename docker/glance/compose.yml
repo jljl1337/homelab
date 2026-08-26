@@ -4,14 +4,11 @@ services:
     container_name: homelab-glance
     image: docker.io/glanceapp/glance:v0.8.5
     restart: unless-stopped
-    # For mounting the Podman socket
-    security_opt:
-      [label=disable]
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
     volumes:
-      - ${CURRENT_DIR}/podman/glance/glance.yml:/app/config/glance.yml:ro,Z
-      - /run/user/${PUID}/podman/podman.sock:/var/run/docker.sock:ro,z
+      - ./glance.yml:/app/config/glance.yml:ro,Z
+      - /run/user/${PUID}/docker.sock:/var/run/docker.sock:ro,z
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.glance.rule=Host(`glance.${DOMAIN_NAME}`)"

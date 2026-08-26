@@ -1,0 +1,19 @@
+services:
+
+  frontend:
+    image: docker.io/jljl1337/testpod
+    environment:
+      - API_URL=http://backend:8000/api
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.testpod.rule=Host(`testpod.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.testpod.entrypoints=websecure"
+      - "traefik.http.services.testpod.loadbalancer.server.port=8000"
+
+  backend:
+    image: docker.io/jljl1337/testpod
+    environment:
+      - API_URL=http://database:8000/api
+
+  database:
+    image: docker.io/jljl1337/testpod

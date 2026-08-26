@@ -2,24 +2,27 @@ name: homelab
 
 include:
   # Reverse Proxy
-  - podman/traefik/compose.yml
+  - docker/traefik/compose.yml
 
   # Services with backup
-  # - podman/restic/compose.yml
-  - podman/vaultwarden/compose.yml
-  - podman/icloud-photo/compose.yml
-  - podman/gickup/compose.yml
+  - docker/restic/compose.yml
+  - docker/vaultwarden/compose.yml
+  - docker/icloud-photo/compose.yml
+  - docker/gickup/compose.yml
 
   # Services without backup
-  - podman/it-tools/compose.yml
-  - podman/arcane/compose.yml
-  - podman/glance/compose.yml
-  # - podman/grafana/compose.yml
-  # - podman/frigate/compose.yml
-  - podman/adguard/compose.yml
+  - docker/it-tools/compose.yml
+  - docker/arcane/compose.yml
+  - docker/glance/compose.yml
+  - docker/grafana/compose.yml
+  # - docker/frigate/compose.yml
+  - docker/adguard/compose.yml
 
   # Services for media
-  - podman/qbittorrent/compose.yml
-  - podman/oneonefive/compose.yml
-  - podman/mkvtoolnix/compose.yml
-  - podman/makemkv/compose.yml
+  - docker/qbittorrent/compose.yml
+  - docker/oneonefive/compose.yml
+  - docker/mkvtoolnix/compose.yml
+  - docker/makemkv/compose.yml
+
+  # Testing services
+  # - docker/testpod/compose.yml

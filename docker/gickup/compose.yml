@@ -5,7 +5,7 @@ services:
     container_name: homelab-gickup
     restart: unless-stopped
     volumes:
-      - ${CURRENT_DIR}/podman/gickup/conf.yml:/gickup/conf.yml:ro,Z
+      - ./conf.yml:/gickup/conf.yml:ro,Z
       - ${MASS_BACKUP_STORAGE}/data/gickup:/dist:rw,z
     environment:
       - GICKUP_GITHUB_TOKEN=${GICKUP_GITHUB_TOKEN}

@@ -8,7 +8,6 @@ services:
       - ${FAST_TEMP_STORAGE}/mkvtoolnix:/config:rw,Z
       - ${MASS_TEMP_STORAGE}/shared:/storage:rw,z
     environment:
-      # userns_mode does not work with jlesage containers, so run as root inside
       - USER_ID=0
       - GROUP_ID=0
       - TZ=${TZ}

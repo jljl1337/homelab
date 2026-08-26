@@ -12,7 +12,6 @@ services:
       - ${MASS_TEMP_STORAGE}/shared:/storage:rw,z
       - ${MASS_TEMP_STORAGE}/shared:/output:rw,z
     environment:
-      # userns_mode does not work with jlesage containers, so run as root inside
       - USER_ID=0
       - GROUP_ID=0
       - TZ=${TZ}

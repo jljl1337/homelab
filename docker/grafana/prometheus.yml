@@ -17,8 +17,8 @@ scrape_configs:
         labels:
           group: 'host'
 
-  - job_name: 'telegraf-podman'
+  - job_name: 'cadvisor'
     static_configs:
-      - targets: ['telegraf:9273']
+      - targets: ['cadvisor:8080']
         labels:
           group: 'containers'

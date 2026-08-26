@@ -559,9 +559,9 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "docker_container_cpu_usage_percent{container_name!=\"\", cpu=\"cpu-total\"}",
+          "expr": "sum(irate(container_cpu_usage_seconds_total{name!=\"\"}[15s])) by (name) * 100 / scalar(count(count(node_cpu_seconds_total) by (cpu)))",
           "refId": "A",
-          "legendFormat": "{{container_name}}"
+          "legendFormat": "{{name}}"
         }
       ],
       "title": "Container CPU Usage",
@@ -742,9 +742,9 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "docker_container_mem_usage{container_name!=\"\"} - docker_container_mem_cache{container_name!=\"\"}",
+          "expr": "container_memory_working_set_bytes{name!=\"\"}",
           "refId": "A",
-          "legendFormat": "{{container_name}}"
+          "legendFormat": "{{name}}"
         }
       ],
       "title": "Container Memory Usage",
@@ -925,18 +925,18 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(irate(docker_container_blkio_io_service_bytes_recursive_read{container_name!=\"\"}[15s])) by (container_name)",
+          "expr": "sum(irate(container_fs_reads_bytes_total{name!=\"\"}[15s])) by (name)",
           "refId": "A",
-          "legendFormat": "{{container_name}} - Read"
+          "legendFormat": "{{name}} - Read"
         },
         {
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(irate(docker_container_blkio_io_service_bytes_recursive_write{container_name!=\"\"}[15s])) by (container_name)",
+          "expr": "sum(irate(container_fs_writes_bytes_total{name!=\"\"}[15s])) by (name)",
           "refId": "B",
-          "legendFormat": "{{container_name}} - Write"
+          "legendFormat": "{{name}} - Write"
         }
       ],
       "title": "Container Disk I/O",
@@ -1117,18 +1117,18 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(rate(docker_container_net_rx_bytes{container_name!=\"\"}[15s])) by (container_name)",
+          "expr": "sum(rate(container_network_receive_bytes_total{name!=\"\"}[15s])) by (name)",
           "refId": "A",
-          "legendFormat": "{{container_name}} - Receive"
+          "legendFormat": "{{name}} - Receive"
         },
         {
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(rate(docker_container_net_tx_bytes{container_name!=\"\"}[15s])) by (container_name)",
+          "expr": "sum(rate(container_network_transmit_bytes_total{name!=\"\"}[15s])) by (name)",
           "refId": "B",
-          "legendFormat": "{{container_name}} - Transmit"
+          "legendFormat": "{{name}} - Transmit"
         }
       ],
       "title": "Container Network Traffic",
@@ -1426,7 +1426,7 @@
   "refresh": "5s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["prometheus", "node-exporter", "telegraf"],
+  "tags": ["prometheus", "node-exporter", "cadvisor"],
   "templating": {
     "list": []
   },
@@ -1438,6 +1438,6 @@
   "timezone": "",
   "title": "Home Dashboard",
   "uid": "home-dashboard",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }

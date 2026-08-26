@@ -7,9 +7,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    # For mounting the Podman socket
-    security_opt:
-      [label=disable]
+    extra_hosts:
+      - "host.docker.internal:10.0.2.2"
     environment:
       - CLOUDFLARE_DNS_API_TOKEN=${CF_API_TOKEN}
       - CLOUDFLARE_ZONE_API_TOKEN=${CF_API_TOKEN}
@@ -47,10 +46,14 @@ services:
       # Skip TLS verification
       - --serversTransport.insecureSkipVerify=true
     volumes:
-      - /run/user/${PUID}/podman/podman.sock:/var/run/docker.sock:ro,z
+      - /run/user/${PUID}/docker.sock:/var/run/docker.sock:ro,z
       - ${FAST_TEMP_STORAGE}/traefik/letsencrypt:/letsencrypt:Z
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN_NAME}`)"
       - "traefik.http.routers.traefik.entrypoints=websecure"
       - "traefik.http.routers.traefik.service=api@internal"
+      # Cockpit
+      - "traefik.http.routers.cockpit.rule=Host(`cockpit.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.cockpit.entrypoints=websecure"
+      - "traefik.http.services.cockpit.loadbalancer.server.url=https://host.docker.internal:9090"
