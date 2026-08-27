@@ -5,8 +5,8 @@ services:
     container_name: homelab-adguard
     restart: unless-stopped
     ports:
-      - "53:53/tcp"
-      - "53:53/udp"
+      - "5053:53/tcp"
+      - "5053:53/udp"
     volumes:
       - ${FAST_TEMP_STORAGE}/adguard/work:/opt/adguardhome/work:rw,Z
       - ${FAST_TEMP_STORAGE}/adguard/conf:/opt/adguardhome/conf:rw,Z
