@@ -1,3 +1,10 @@
+# Uncomment for resetting the admin password
+# auth:
+#   reset_admin_password: true
+
+tls:
+  enabled: false
+
 go2rtc:
   streams:
     usb_camera_1:
@@ -36,19 +43,19 @@ database:
 mqtt:
   enabled: False
 
-ffmpeg:
-  hwaccel_args: preset-nvidia
-  output_args:
-    record: >-
-      -f segment -segment_time 10 -segment_format mp4
-      -reset_timestamps 1 -strftime 1
-      -c:a aac
-      -vf "hwdownload,format=nv12,drawtext=text='%{localtime}':fontcolor=white:fontsize=24:x=10:y=10:box=1:boxcolor=black@0.5,hwupload_cuda"
-      -c:v h264_nvenc
-
+# ffmpeg:
+#   hwaccel_args: preset-nvidia
+#   output_args:
+#     record: >-
+#       -f segment -segment_time 10 -segment_format mp4
+#       -reset_timestamps 1 -strftime 1
+#       -c:a aac
+#       -vf "hwdownload,format=nv12,drawtext=text='%{localtime}':fontcolor=white:fontsize=24:x=10:y=10:box=1:boxcolor=black@0.5,hwupload_cuda"
+#       -c:v h264_nvenc
+#
 record:
   enabled: True
-  retain:
+  continuous:
     days: 14 # <- number of days to keep continuous recordings
 
 birdseye:
@@ -64,18 +71,19 @@ birdseye:
   # Optional: Mode of the view. Available options are: objects, motion, and continuous
   mode: continuous
 
-detectors:
-  tensorrt:
-    type: tensorrt
-    device: 0
-
-model:
-  path: /config/model_cache/tensorrt/yolov7-tiny-288.trt
-  input_tensor: nchw
-  input_pixel_format: rgb
-  width: 288
-  height: 288
-
-objects:
-  track:
-    - person
+# detectors:
+#   tensorrt:
+#     type: onnx
+#
+# model:
+#   model_type: yolox
+#   width: 416 # <--- should match the imgsize set during model export
+#   height: 416 # <--- should match the imgsize set during model export
+#   input_tensor: nchw
+#   input_dtype: float_denorm
+#   path: /config/model_cache/yolox_tiny.onnx
+#   labelmap_path: /labelmap/coco-80.txt
+#
+# objects:
+#   track:
+#     - person
