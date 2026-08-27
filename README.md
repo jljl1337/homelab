@@ -1,14 +1,37 @@
 # homelab
 
+## Fedora installation
+
+Download [Fedora Media Writer](https://github.com/FedoraQt/MediaWriter/releases)
+and the [Fedora Server ISO](https://fedoraproject.org/server/download/), and
+create a bootable USB drive.
+
+On macOS, run the following command to remove the quarantine attribute from
+the Fedora Media Writer app:
+
+```sh
+xattr -d com.apple.quarantine /Applications/FedoraMediaWriter.app
+```
+
+When installing Fedora, disable Secure Boot and Legacy Boot, use UEFI boot only.
+If still not able to boot, disable Fast Boot, try USB ports with 2.0 speeds.
+
+With NVIDIA GPU, in the GRUB boot menu, press `e` to edit the boot parameters,
+and add `nomodeset` to the end of the line starting with `linux`, then press
+`Ctrl + X` to boot.
+
 ## Setup
+
+### Prerequisites
+
+Setup dotfiles from [here](https://github.com/jljl1337/dotfiles)
 
 ### Basic
 
 1. Update the packages
 
 ```sh
-sudo apt update
-sudo apt upgrade -y
+sudo dnf upgrade -y
 ```
 
 2. Reboot
@@ -17,15 +40,10 @@ sudo apt upgrade -y
 sudo reboot
 ```
 
-3. Install packages
-
-```sh
-sudo apt install -y curl openssh-server htop nfs-common v4l-utils ffmpeg
-```
-
 ### SSH
 
-1. Generate an SSH key (skip this step if you already have an SSH key)
+1. On your client, generate an SSH key (skip this step if you already have an
+SSH key)
 
 ```sh
 ssh-keygen -t ed25519
@@ -37,153 +55,316 @@ ssh-keygen -t ed25519
 ssh-copy-id <username>@<server-ip>
 ```
 
-[Reference](https://askubuntu.com/a/46935)
+3. Disable password authentication by
+`sudoedit /etc/ssh/sshd_config.d/50-disable-password.conf` and set the
+following options:
 
-### Tailscale
+```conf
+PasswordAuthentication no
+```
+
+### Firewall
+
+Add the following rules to the firewall:
 
 ```sh
-curl -fsSL https://tailscale.com/install.sh | sh
+sudo firewall-cmd --permanent --add-service=ssh
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --permanent --add-service=samba
 ```
+
+Reload the firewall:
 
 ```sh
-sudo tailscale up --accept-dns=false
+sudo firewall-cmd --reload
 ```
 
-[Reference](https://tailscale.com/download/linux)
-
-`--accept-dns=false` is used due to pihole being used as the DNS server.
-If you don't use pihole, you can remove this option.
-
-[Reference](https://tailscale.com/docs/solutions/block-ads-all-devices-anywhere-using-raspberry-pi#step-3-install-tailscale-on-your-raspberry-pi)
-
-### Git
+Verify the firewall rules:
 
 ```sh
-git config --global user.email example@email.com
-git config --global user.name 'Your Name'
+sudo firewall-cmd --list-all
 ```
 
-[Reference](https://stackoverflow.com/a/33024593/11027944)
+### Netbird 
 
-### Docker
+Go to [Netbird dashboard](https://app.netbird.io/peers) and select "Add peer",
+and select "Server" and copy the command to run on the server.
 
-[Reference](https://docs.docker.com/engine/install/ubuntu/)
+### ZFS
 
-### Podman
+To install, follow the instructions from
+[here](https://openzfs.github.io/openzfs-docs/Getting%20Started/Fedora/index.html#installation).
 
-Setup Podman socket
+To list all available ZFS pools to be imported, run the following command:
 
-```
-systemctl --user enable --now podman.socket
-```
-
-Enable lingering (so it runs after logout):
-
-```
-loginctl enable-linger $USER
+```sh
+sudo zpool import
 ```
 
-Enable rootless Podman to bind to privileged ports by running the following
-commands:
+To import a ZFS pool, run the following command:
 
+```sh
+sudo zpool import <pool-name>
 ```
-sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0
-echo 'net.ipv4.ip_unprivileged_port_start=0' | sudo tee /etc/sysctl.d/99-rootless-podman-ports.conf
+
+To mount a ZFS pool, run the following command:
+
+```sh
+sudo zfs mount <pool-name>
+```
+
+To specify a mount point for a ZFS pool, run the following command:
+
+```sh
+sudo zfs set mountpoint=/path/to/mount <pool-name>
+```
+
+To enable auto-mounting of ZFS pools on boot, run the following command:
+
+```sh
+sudo systemctl enable zfs-import-cache.service
+sudo systemctl enable zfs-import-scan.service
+sudo systemctl enable zfs-mount.service
+sudo systemctl enable zfs.target
+```
+
+To export a ZFS pool before migrating to another system, run the following
+command:
+
+```sh
+sudo zpool export <pool-name>
+```
+
+### SMB Share
+
+To install, run the following command:
+
+```sh
+sudo dnf install samba samba-common samba-client
+```
+
+Since some containers require read/write access to the SMB share, you need to
+enable SMB to allow read/write access to all files by running the following
+command:
+
+```sh
+sudo setsebool -P samba_export_all_rw on
+```
+
+SMB uses user from the host system, but the password is stored separately, to
+set the password for the user, run the following command:
+
+```sh
+sudo smbpasswd -a <username>
+```
+
+To enable the user, run the following command:
+
+```sh
+sudo smbpasswd -e <username>
+```
+
+Edit the `/etc/samba/smb.conf` file and add the following lines under the
+`[global]` section for iOS write access:
+
+```conf
+vfs objects = streams_xattr
+```
+
+Add a new section for each share:
+```conf
+[myshare]
+path = /path/to/share
+valid users = username
+guest ok = no
+writable = yes
+browsable = yes
+```
+
+Start the SMB service and enable it to start on boot:
+
+```sh
+sudo systemctl enable --now smb nmb
 ```
 
 ### Install NVIDIA firmwares (if you have an NVIDIA GPU)
 
-1. Install driver by replacing `***` with the latest version number from
-[here](https://www.nvidia.com/en-us/drivers/unix/) and run:
+Install kernel headers for module building:
 
 ```sh
-sudo apt purge nvidia-*
-sudo add-apt-repository ppa:graphics-drivers/ppa
-sudo apt update
-sudo apt install nvidia-driver-***
-sudo reboot
+sudo dnf install -y kernel-devel kernel-headers gcc make dkms acpid
 ```
 
-[Reference](https://askubuntu.com/a/903781/2286402)
+To install the driver, see the instructions from
+[here](https://rpmfusion.org/Howto/NVIDIA#Installing_the_drivers), different
+GPU architectures have different instructions, so make sure to follow the
+correct instructions for the GPU architecture you have.
 
-2. Install [Container toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
-
-3. Reboot
-
-### Install driver for Realtek RTL8125 (optional)
-
-1. Add the Launchpad PPA
+Wait until the module is built, to verify that the module is built, run the following command:
 
 ```sh
-sudo add-apt-repository ppa:awesometic/ppa
+modinfo -F version nvidia
 ```
 
-2. Then install the package using apt tool
+It should print the version of the NVIDIA driver and not
+`modinfo: ERROR: Module nvidia not found.`
+
+To rebuild the module, run the following command:
 
 ```sh
-sudo apt install realtek-r8125-dkms -y
+sudo akmods --force
 ```
 
-[Reference](https://github.com/awesometic/realtek-r8125-dkms?tab=readme-ov-file#launchpad-ppa-recommended)
-
-### Setup secondary network card (optional)
-
-1. Identify the logical name of the network interface
+Then reboot with `sudo reboot` and verify with this command:
 
 ```sh
-sudo lshw -class network
+nvidia-smi
 ```
 
-2. Create a Netplan configuration file
+### Unprivileged ports
+
+Enable rootless Docker to bind to privileged ports by running the following
+commands:
 
 ```sh
-sudoedit /etc/netplan/00-second-network-card.yaml
+sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0
+echo 'net.ipv4.ip_unprivileged_port_start=0' | sudo tee /etc/sysctl.d/99-rootless-docker-ports.conf
 ```
 
-Add the following content and replace `<interface-name>` with the logical name
-of your network interface:
-
-```yaml
-network:
-  version: 2
-  ethernets:
-     <interface-name>:
-        dhcp4: true
-```
-
-3. Apply the changes
+To verify:
 
 ```sh
-sudo netplan apply
+sysctl net.ipv4.ip_unprivileged_port_start
 ```
 
-### NFS Client
+Something like this should be printed:
 
-1. Create a directory to mount the NFS share
+```
+net.ipv4.ip_unprivileged_port_start = 0
+```
+
+If not, apply the changes with:
 
 ```sh
-sudo mkdir -p /local/path/to/nfs
+sudo sysctl --system
 ```
 
-2. Open the `/etc/fstab` file
+### Docker (rootless)
+
+Setup the repository:
 
 ```sh
-sudoedit /etc/fstab
+sudo dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
 ```
 
-Add the following line to the end of the file:
-
-```
-<server-ip>:/server/path/to/nfs/share /local/path/to/nfs nfs defaults,_netdev 0 0
-```
-
-3. Mount the NFS share
+Install Docker:
 
 ```sh
-sudo mount /local/path/to/nfs
+sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-[Reference](https://linuxize.com/post/how-to-mount-an-nfs-share-in-linux/#automatically-mounting-nfs-file-systems-with-etcfstab)
+Then skip starting the rootful service, and install the rootless service:
+
+```sh
+dockerd-rootless-setuptool.sh install
+```
+
+Verify the context:
+
+```sh
+docker info
+```
+
+Setup Docker socket
+
+```sh
+systemctl --user enable --now docker.socket
+```
+
+Enable lingering (so it runs after logout):
+
+```sh
+loginctl enable-linger $USER
+```
+
+To allow rootless to access the ports of the host with `10.0.2.2`, edit
+`~/.config/systemd/user/docker.service.d/override.conf` and add the following
+lines:
+
+```ini
+[Service]
+Environment="DOCKERD_ROOTLESS_ROOTLESSKIT_DISABLE_HOST_LOOPBACK=false"
+```
+
+Then reload the systemd daemon and restart Docker:
+
+```sh
+systemctl --user daemon-reload
+systemctl --user restart docker
+```
+
+### Enable GPU support for rootless Docker
+
+Add the NVIDIA repository:
+
+```sh
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | \
+  sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
+```
+
+Install the NVIDIA container toolkit:
+
+```sh
+sudo dnf install -y nvidia-container-toolkit
+```
+
+Generate the CDI specs:
+
+```sh
+sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
+```
+
+Verify the CDI specs:
+
+```sh
+nvidia-ctk cdi list
+```
+
+Verify with GPU access:
+
+```sh
+docker run --rm --device nvidia.com/gpu=all docker.io/nvidia/cuda:11.0.3-base-ubuntu20.04 nvidia-smi
+```
+
+If it does not work, restart the Docker service:
+
+```sh
+systemctl --user restart docker
+```
+
+If it still does not work, run
+`sudoedit /etc/nvidia-container-runtime/config.toml` and change the
+`no-cgroups` option to `true`:
+
+```toml
+no-cgroups = true
+```
+
+If it still does not work, create `~/.config/docker/daemon.json` to configure
+the NVIDIA runtime for rootless Docker:
+
+```json
+{
+    "default-runtime": "nvidia",
+    "runtimes": {
+        "nvidia": {
+            "path": "nvidia-container-runtime",
+            "args": []
+        }
+    }
+}
+```
 
 ## Usage
 
