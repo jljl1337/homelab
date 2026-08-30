@@ -1,7 +1,7 @@
 services:
 
   vaultwarden:
-    image: docker.io/vaultwarden/server:1.37.1
+    image: docker.io/vaultwarden/server:1.37.2
     container_name: homelab-vaultwarden
     restart: unless-stopped
     volumes:

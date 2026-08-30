@@ -1,7 +1,7 @@
 services:
 
   makemkv:
-    image: docker.io/jlesage/makemkv:v26.07.2
+    image: docker.io/jlesage/makemkv:v26.08.2
     container_name: homelab-makemkv
     restart: unless-stopped
     # devices: # Use lsblk to find the correct devices for the optical drive
