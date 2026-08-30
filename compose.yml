@@ -17,6 +17,7 @@ include:
   - docker/grafana/compose.yml
   - docker/frigate/compose.yml
   - docker/adguard/compose.yml
+  - docker/ollama/compose.yml
 
   # Services for media
   - docker/qbittorrent/compose.yml
