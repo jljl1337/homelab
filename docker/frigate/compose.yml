@@ -11,10 +11,10 @@ services:
       - /dev/video0:/dev/video0
       - /dev/video2:/dev/video2
       # Optional: enable NVIDIA GPU acceleration for object detection
-      # - nvidia.com/gpu=all 
+      - nvidia.com/gpu=all 
     volumes:
       - /etc/localtime:/etc/localtime:ro,z
-      - ./config.yml:/config/config.yml:ro,z
+      - ./config.yml:/config/config.yml:rw,z
       - ${FAST_TEMP_STORAGE}/frigate/data:/media/frigate:rw,Z
       - ${FAST_TEMP_STORAGE}/frigate/model-cache:/config/model_cache:rw,Z
       - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear

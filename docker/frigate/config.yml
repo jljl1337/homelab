@@ -1,3 +1,5 @@
+version: 0.17-0
+
 # Uncomment for resetting the admin password
 # auth:
 #   reset_admin_password: true
@@ -41,26 +43,26 @@ database:
   path: /media/frigate/frigate.db
 
 mqtt:
-  enabled: False
+  enabled: false
 
-# ffmpeg:
-#   hwaccel_args: preset-nvidia
-#   output_args:
-#     record: >-
-#       -f segment -segment_time 10 -segment_format mp4
-#       -reset_timestamps 1 -strftime 1
-#       -c:a aac
-#       -vf "hwdownload,format=nv12,drawtext=text='%{localtime}':fontcolor=white:fontsize=24:x=10:y=10:box=1:boxcolor=black@0.5,hwupload_cuda"
-#       -c:v h264_nvenc
-#
+ffmpeg:
+  hwaccel_args: preset-nvidia
+  output_args:
+    record: >-
+      -f segment -segment_time 10 -segment_format mp4
+      -reset_timestamps 1 -strftime 1
+      -c:a aac
+      -vf "hwdownload,format=nv12,drawtext=text='%{localtime}':fontcolor=white:fontsize=24:x=10:y=10:box=1:boxcolor=black@0.5,hwupload_cuda"
+      -c:v h264_nvenc
+
 record:
-  enabled: True
+  enabled: true
   continuous:
     days: 14 # <- number of days to keep continuous recordings
 
 birdseye:
   # Optional: Enable birdseye view (default: shown below)
-  enabled: True
+  enabled: true
   # Optional: Width of the output resolution (default: shown below)
   width: 1280
   # Optional: Height of the output resolution (default: shown below)
@@ -71,19 +73,22 @@ birdseye:
   # Optional: Mode of the view. Available options are: objects, motion, and continuous
   mode: continuous
 
-# detectors:
-#   tensorrt:
-#     type: onnx
-#
-# model:
-#   model_type: yolox
-#   width: 416 # <--- should match the imgsize set during model export
-#   height: 416 # <--- should match the imgsize set during model export
-#   input_tensor: nchw
-#   input_dtype: float_denorm
-#   path: /config/model_cache/yolox_tiny.onnx
-#   labelmap_path: /labelmap/coco-80.txt
-#
-# objects:
-#   track:
-#     - person
+detect:
+  enabled: true
+
+detectors:
+  tensorrt:
+    type: onnx
+
+model:
+  model_type: yolox
+  width: 416 # <--- should match the imgsize set during model export
+  height: 416 # <--- should match the imgsize set during model export
+  input_tensor: nchw
+  input_dtype: float_denorm
+  path: /config/model_cache/yolox_tiny.onnx
+  labelmap_path: /labelmap/coco-80.txt
+
+objects:
+  track:
+    - person
