@@ -61,3 +61,12 @@ services:
       - "traefik.http.routers.cadvisor.rule=Host(`cadvisor.${DOMAIN_NAME}`)"
       - "traefik.http.routers.cadvisor.entrypoints=websecure"
       - "traefik.http.services.cadvisor.loadbalancer.server.port=8080"
+
+  nvidia-gpu-exporter:
+    image: docker.io/utkuozdemir/nvidia_gpu_exporter:1.14.0
+    container_name: homelab-nvidia-gpu-exporter
+    restart: unless-stopped
+    devices:
+      - nvidia.com/gpu=all 
+    environment:
+      - NVIDIA_DRIVER_CAPABILITIES=utility
