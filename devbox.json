@@ -6,14 +6,14 @@
       "echo 'Welcome to devbox!' > /dev/null"
     ],
     "scripts": {
-      "dup": [
-        "docker compose down --remove-orphans && docker compose up -d --remove-orphans"
-      ],
       "up": [
         "docker compose up -d --remove-orphans"
       ],
       "down": [
         "docker compose down --remove-orphans"
+      ],
+      "restart": [
+        "docker compose restart \"$@\""
       ],
       "ps": [
         "docker ps -a"
@@ -23,6 +23,9 @@
       ],
       "wlogs": [
         "docker compose logs -n 100 -f \"$@\""
+      ],
+      "smi": [
+        "watch -n 1 nvidia-smi"
       ]
     }
   }
