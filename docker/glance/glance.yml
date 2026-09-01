@@ -104,13 +104,11 @@ pages:
                 name: MakeMKV
                 description: Video Remuxing
                 url: https://makemkv.${DOMAIN_NAME}
-                # icon: si:makemkv
                 hide: false
               homelab-oneonefive:
                 name: 115
                 description: Cloud Storage
                 url: https://oneonefive.${DOMAIN_NAME}/vnc.html
-                # icon: https://mkvtoolnix.download/images/mkvtoolnix_logo.png
                 hide: false
 
           - title: Monitoring
