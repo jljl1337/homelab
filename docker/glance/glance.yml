@@ -53,11 +53,11 @@ pages:
                 url: https://it-tools.${DOMAIN_NAME}
                 icon: di:it-tools
                 hide: false
-              homelab-komodo-core:
-                name: Komodo
+              homelab-arcane:
+                name: Arcane
                 description: Docker Management
-                url: https://komodo.${DOMAIN_NAME}
-                icon: di:komodo
+                url: https://arcane.${DOMAIN_NAME}
+                icon: di:arcane
                 hide: false
               homelab-traefik:
                 name: Traefik
@@ -71,11 +71,28 @@ pages:
                 url: https://vaultwarden.${DOMAIN_NAME}
                 icon: si:vaultwarden
                 hide: false
-              homelab-pihole:
-                name: Pi-hole
+              homelab-adguard:
+                name: AdGuard Home
                 description: Network-wide Ad Blocking
-                url: https://pihole.${DOMAIN_NAME}/admin
-                icon: si:pihole
+                url: https://adguard.${DOMAIN_NAME}
+                icon: si:adguard
+                hide: false
+              homelab-ollama:
+                name: Ollama
+                description: Local LLMs
+                url: https://ai.${DOMAIN_NAME}
+                icon: si:ollama
+                hide: false
+
+          - title: Media
+            type: docker-containers
+            hide-by-default: true
+            containers:
+              homelab-qbittorrent:
+                name: qBittorrent
+                description: Torrent Client
+                url: https://qbittorrent.${DOMAIN_NAME}
+                icon: si:qbittorrent
                 hide: false
               homelab-mkvtoolnix:
                 name: MKVToolNix
@@ -83,28 +100,23 @@ pages:
                 url: https://mkvtoolnix.${DOMAIN_NAME}
                 icon: https://mkvtoolnix.download/images/mkvtoolnix_logo.png
                 hide: false
-              homelab-qbittorrent:
-                name: qBittorrent
-                description: Torrent Client
-                url: https://qbittorrent.${DOMAIN_NAME}
-                icon: si:qbittorrent
+              homelab-makemkv:
+                name: MakeMKV
+                description: Video Remuxing
+                url: https://makemkv.${DOMAIN_NAME}
+                # icon: si:makemkv
                 hide: false
-              homelab-xpense:
-                name: Xpense
-                description: Expense Tracker
-                url: https://xpense.${DOMAIN_NAME}
+              homelab-oneonefive:
+                name: 115
+                description: Cloud Storage
+                url: https://oneonefive.${DOMAIN_NAME}/vnc.html
+                # icon: https://mkvtoolnix.download/images/mkvtoolnix_logo.png
                 hide: false
 
           - title: Monitoring
             type: docker-containers
             hide-by-default: true
             containers:
-              homelab-netdata:
-                name: Netdata
-                description: Real-time Monitoring
-                url: https://netdata.${DOMAIN_NAME}
-                icon: di:netdata
-                hide: false
               homelab-grafana:
                 name: Grafana
                 description: Dashboards
@@ -125,8 +137,14 @@ pages:
               homelab-restic-backup:
                 name: Restic
                 description: Backup
-                url: https://komodo.${DOMAIN_NAME}
+                url: https://arcane.${DOMAIN_NAME}
                 icon: https://cdn.jsdelivr.net/gh/selfhst/icons/webp/restic.webp
+                hide: false
+              homelab-gickup:
+                name: Gickup
+                description: Git Backup
+                url: https://arcane.${DOMAIN_NAME}
+                icon: si:git
                 hide: false
 
           - type: bookmarks
