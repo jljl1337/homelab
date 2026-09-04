@@ -24,18 +24,18 @@ pages:
             search-engine: google
             new-tab: true
             bangs:
-            - title: YouTube
-              shortcut: "!yt"
-              url: https://www.youtube.com/results?search_query={QUERY}
-            - title: Reddit
-              shortcut: "!rd"
-              url: https://www.reddit.com/search?q={QUERY}
-            - title: GitHub
-              shortcut: "!gh"
-              url: https://github.com/search?q={QUERY}
-            - title: Wikipedia
-              shortcut: "!wp"
-              url: https://en.wikipedia.org/w/index.php?search={QUERY}
+              - title: YouTube
+                shortcut: "!yt"
+                url: https://www.youtube.com/results?search_query={QUERY}
+              - title: Reddit
+                shortcut: "!rd"
+                url: https://www.reddit.com/search?q={QUERY}
+              - title: GitHub
+                shortcut: "!gh"
+                url: https://github.com/search?q={QUERY}
+              - title: Wikipedia
+                shortcut: "!wp"
+                url: https://en.wikipedia.org/w/index.php?search={QUERY}
 
           - title: Services
             type: docker-containers
@@ -144,10 +144,16 @@ pages:
                 url: https://arcane.${DOMAIN_NAME}
                 icon: si:git
                 hide: false
+              homelab-immich-server:
+                name: Immich
+                description: Photo Backup
+                url: https://immich.${DOMAIN_NAME}
+                icon: si:immich
+                hide: false
 
           - type: bookmarks
             groups:
-              - title: Artifical Intelligence
+              - title: Artificial Intelligence
                 links:
                   - title: ChatGPT
                     url: https://chat.openai.com/
