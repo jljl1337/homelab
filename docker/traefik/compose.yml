@@ -1,5 +1,4 @@
 services:
-
   traefik:
     image: docker.io/library/traefik:v3.7.11
     container_name: homelab-traefik
@@ -38,6 +37,8 @@ services:
       - --entrypoints.websecure.http.tls.certresolver=cloudflare
       - --entrypoints.websecure.http.tls.domains[0].main=${DOMAIN_NAME}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN_NAME}
+      - --entrypoints.websecure.transport.respondingTimeouts.readTimeout=600s # for immich
+      - --entrypoints.websecure.transport.respondingTimeouts.idleTimeout=600s # for immich
       # Dashboard
       - --api=true
       # Logging

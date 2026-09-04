@@ -9,6 +9,7 @@ include:
   - docker/vaultwarden/compose.yml
   - docker/icloud-photo/compose.yml
   - docker/gickup/compose.yml
+  - docker/immich/compose.yml
 
   # Services without backup
   - docker/it-tools/compose.yml
