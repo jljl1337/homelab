@@ -1,5 +1,4 @@
 services:
-
   gluetun:
     image: docker.io/qmcgaw/gluetun:v3.41.3
     container_name: homelab-gluetun
@@ -11,6 +10,8 @@ services:
     volumes:
       - ${FAST_TEMP_STORAGE}/gluetun:/gluetun:rw,Z
     environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
       - VPN_SERVICE_PROVIDER=surfshark
       - VPN_TYPE=wireguard
       - WIREGUARD_PRIVATE_KEY=${GLUTEN_WIREGUARD_PRIVATE_KEY}
@@ -36,8 +37,8 @@ services:
     restart: unless-stopped
     network_mode: service:gluetun
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${TZ}
       - WEBUI_PORT=8080
     volumes:

@@ -1,10 +1,9 @@
 services:
-
   grafana:
     image: docker.io/grafana/grafana:13.2.1
     container_name: homelab-grafana
     restart: unless-stopped
-    user: 0:0
+    user: ${PUID}:${PGID}
     depends_on:
       - prometheus
     volumes:
@@ -22,18 +21,18 @@ services:
     image: docker.io/prom/prometheus:v3.14.0
     container_name: homelab-prometheus
     restart: unless-stopped
-    user: 0:0
+    user: ${PUID}:${PGID}
     extra_hosts:
-      - "host.docker.internal:10.0.2.2"
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro,Z
       - ${FAST_TEMP_STORAGE}/prometheus:/prometheus:rw,Z
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/etc/prometheus/console_libraries'
-      - '--web.console.templates=/etc/prometheus/consoles'
-      - '--web.enable-lifecycle'
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--web.enable-lifecycle"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus.rule=Host(`prometheus.${DOMAIN_NAME}`)"
@@ -47,13 +46,10 @@ services:
     privileged: true
     volumes:
       - /:/rootfs:ro
+      - /var/run:/var/run:ro
       - /sys:/sys:ro
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-      - /run/user/${PUID}/docker.sock:/var/run/docker.sock:ro,z
-      - /run/user/${PUID}/docker/containerd/containerd.sock:/run/containerd/containerd.sock:ro
-      - ~/.local/share/docker/:/var/lib/docker:ro
+      - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
-      - /etc/machine-id:/etc/machine-id:ro
     devices:
       - /dev/kmsg
     labels:
@@ -66,7 +62,12 @@ services:
     image: docker.io/utkuozdemir/nvidia_gpu_exporter:1.15.1
     container_name: homelab-nvidia-gpu-exporter
     restart: unless-stopped
-    devices:
-      - nvidia.com/gpu=all 
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     environment:
       - NVIDIA_DRIVER_CAPABILITIES=utility

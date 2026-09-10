@@ -224,12 +224,12 @@ nvidia-smi
 
 ### Unprivileged ports
 
-Enable rootless Docker to bind to privileged ports by running the following
+Enable rootless container to bind to privileged ports by running the following
 commands:
 
 ```sh
 sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0
-echo 'net.ipv4.ip_unprivileged_port_start=0' | sudo tee /etc/sysctl.d/99-rootless-docker-ports.conf
+echo 'net.ipv4.ip_unprivileged_port_start=0' | sudo tee /etc/sysctl.d/99-rootless-container-ports.conf
 ```
 
 To verify:
@@ -250,7 +250,7 @@ If not, apply the changes with:
 sudo sysctl --system
 ```
 
-### Docker (rootless)
+### Docker
 
 Setup the repository:
 
@@ -264,47 +264,14 @@ Install Docker:
 sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-Then skip starting the rootful service, and install the rootless service:
+Then start the Docker service and enable it to start on boot:
 
 ```sh
-dockerd-rootless-setuptool.sh install
+sudo systemctl enable --now docker.service
+sudo systemctl enable --now containerd.service
 ```
 
-Verify the context:
-
-```sh
-docker info
-```
-
-Setup Docker socket
-
-```sh
-systemctl --user enable --now docker.socket
-```
-
-Enable lingering (so it runs after logout):
-
-```sh
-loginctl enable-linger $USER
-```
-
-To allow rootless to access the ports of the host with `10.0.2.2`, edit
-`~/.config/systemd/user/docker.service.d/override.conf` and add the following
-lines:
-
-```ini
-[Service]
-Environment="DOCKERD_ROOTLESS_ROOTLESSKIT_DISABLE_HOST_LOOPBACK=false"
-```
-
-Then reload the systemd daemon and restart Docker:
-
-```sh
-systemctl --user daemon-reload
-systemctl --user restart docker
-```
-
-### Enable GPU support for rootless Docker
+### Enable GPU support for Docker
 
 Add the NVIDIA repository:
 
@@ -319,51 +286,16 @@ Install the NVIDIA container toolkit:
 sudo dnf install -y nvidia-container-toolkit
 ```
 
-Generate the CDI specs:
-
-```sh
-sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
-```
-
-Verify the CDI specs:
-
-```sh
-nvidia-ctk cdi list
-```
-
 Verify with GPU access:
 
 ```sh
-docker run --rm --device nvidia.com/gpu=all docker.io/nvidia/cuda:11.0.3-base-ubuntu20.04 nvidia-smi
+sudo docker run --rm --device nvidia.com/gpu=all docker.io/nvidia/cuda:11.0.3-base-ubuntu20.04 nvidia-smi
 ```
 
 If it does not work, restart the Docker service:
 
 ```sh
-systemctl --user restart docker
-```
-
-If it still does not work, run
-`sudoedit /etc/nvidia-container-runtime/config.toml` and change the
-`no-cgroups` option to `true`:
-
-```toml
-no-cgroups = true
-```
-
-If it still does not work, create `~/.config/docker/daemon.json` to configure
-the NVIDIA runtime for rootless Docker:
-
-```json
-{
-    "default-runtime": "nvidia",
-    "runtimes": {
-        "nvidia": {
-            "path": "nvidia-container-runtime",
-            "args": []
-        }
-    }
-}
+sudo systemctl restart docker
 ```
 
 ## Usage

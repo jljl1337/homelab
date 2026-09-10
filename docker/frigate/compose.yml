@@ -1,26 +1,30 @@
 services:
-
   frigate:
     image: ghcr.io/blakeblackshear/frigate:0.17.2-tensorrt
     container_name: homelab-frigate
     restart: unless-stopped
     shm_size: "512mb" # update for your cameras based on calculation above
     stop_grace_period: 30s # allow enough time to shut down the various services
+    # Optional: enable NVIDIA GPU acceleration for object detection
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     devices:
       - /dev/bus/usb:/dev/bus/usb # USB passthrough
       - /dev/video0:/dev/video0
       - /dev/video2:/dev/video2
-      # Optional: enable NVIDIA GPU acceleration for object detection
-      - nvidia.com/gpu=all 
+    tmpfs:
+      - /dev/shm:size=268435456
+      - /tmp/cache:size=1G
     volumes:
-      - /etc/localtime:/etc/localtime:ro,z
+      - /etc/localtime:/etc/localtime:ro
       - ./config.yml:/config/config.yml:rw,z
       - ${FAST_TEMP_STORAGE}/frigate/data:/media/frigate:rw,Z
       - ${FAST_TEMP_STORAGE}/frigate/model-cache:/config/model_cache:rw,Z
-      - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
-        target: /tmp/cache
-        tmpfs:
-          size: 1000000000
     environment:
       - TZ=${TZ}
     labels:

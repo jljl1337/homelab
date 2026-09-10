@@ -1,12 +1,12 @@
 services:
-
   gickup:
     image: docker.io/buddyspencer/gickup:0.10.45
     container_name: homelab-gickup
     restart: unless-stopped
+    user: ${PUID}:${PGID}
     volumes:
       - ./conf.yml:/gickup/conf.yml:ro,Z
       - ${MASS_BACKUP_STORAGE}/data/gickup:/dist:rw,z
     environment:
       - GICKUP_GITHUB_TOKEN=${GICKUP_GITHUB_TOKEN}
-    command: [ "/gickup/conf.yml" ]
+    command: ["/gickup/conf.yml"]

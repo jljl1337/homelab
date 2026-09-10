@@ -7,7 +7,6 @@ include:
   # Services with backup
   - docker/restic/compose.yml
   - docker/vaultwarden/compose.yml
-  - docker/icloud-photo/compose.yml
   - docker/gickup/compose.yml
   - docker/immich/compose.yml
 
@@ -22,7 +21,7 @@ include:
 
   # Services for media
   - docker/qbittorrent/compose.yml
-  - docker/oneonefive/compose.yml
+  # - docker/oneonefive/compose.yml
   - docker/mkvtoolnix/compose.yml
   - docker/makemkv/compose.yml
 

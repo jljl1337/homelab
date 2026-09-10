@@ -6,23 +6,29 @@
       "echo 'Welcome to devbox!' > /dev/null"
     ],
     "scripts": {
+      "pull": [
+        "sudo docker compose pull"
+      ],
       "up": [
-        "docker compose up -d --remove-orphans"
+        "sudo docker compose up -d --remove-orphans"
       ],
       "down": [
-        "docker compose down --remove-orphans"
+        "sudo docker compose down --remove-orphans"
       ],
       "restart": [
-        "docker compose restart \"$@\""
+        "sudo docker compose restart \"$@\""
+      ],
+      "wps": [
+        "sudo watch -n 1 \"docker ps -a --format 'table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.RunningFor}}\t{{.Status}}'\""
       ],
       "ps": [
-        "docker ps -a"
+        "sudo docker ps -a --format 'table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.RunningFor}}\t{{.Status}}'"
       ],
       "logs": [
-        "docker compose logs -n 100 \"$@\""
+        "sudo docker compose logs -n 100 \"$@\""
       ],
       "wlogs": [
-        "docker compose logs -n 100 -f \"$@\""
+        "sudo docker compose logs -n 100 -f \"$@\""
       ],
       "smi": [
         "watch -n 1 nvidia-smi"

@@ -1,5 +1,4 @@
 services:
-
   makemkv:
     image: docker.io/jlesage/makemkv:v26.08.2
     container_name: homelab-makemkv
@@ -12,8 +11,8 @@ services:
       - ${MASS_TEMP_STORAGE}/shared:/storage:rw,z
       - ${MASS_TEMP_STORAGE}/shared:/output:rw,z
     environment:
-      - USER_ID=0
-      - GROUP_ID=0
+      - USER_ID=${PUID}
+      - GROUP_ID=${PGID}
       - TZ=${TZ}
     labels:
       - "traefik.enable=true"

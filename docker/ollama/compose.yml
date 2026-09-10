@@ -1,26 +1,34 @@
 services:
-
   ollama:
     image: docker.io/ollama/ollama:0.33.2
     container_name: homelab-ollama
     restart: unless-stopped
-    devices:
-      # Optional: enable NVIDIA GPU acceleration
-      - nvidia.com/gpu=all 
+    user: ${PUID}:${PGID}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     volumes:
-      - ${FAST_TEMP_STORAGE}/ollama:/root/.ollama:Z
+      - ${FAST_TEMP_STORAGE}/ollama:/home/ollama/.ollama:Z
     environment:
+      - HOME=/home/ollama
+      - OLLAMA_MODELS=/home/ollama/.ollama/models
       - OLLAMA_KEEP_ALIVE=24h
 
   open-webui:
     image: ghcr.io/open-webui/open-webui:v0.11.1
     container_name: homelab-open-webui
     restart: unless-stopped
+    user: ${PUID}:${PGID}
     volumes:
       - ${FAST_TEMP_STORAGE}/open-webui:/app/backend/data:Z
     environment:
       - OLLAMA_BASE_URL=http://ollama:11434
       - WEBUI_AUTH=true # Comment this line to disable login (not recommended)
+      - WEBUI_SECRET_KEY=${OPEN_WEBUI_SECRET_KEY}
     depends_on:
       - ollama
     labels:

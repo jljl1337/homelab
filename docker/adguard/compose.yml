@@ -1,9 +1,9 @@
 services:
-
   adguard:
     image: docker.io/adguard/adguardhome:v0.107.79
     container_name: homelab-adguard
     restart: unless-stopped
+    user: ${PUID}:${PGID}
     ports:
       - "5053:53/tcp"
       - "5053:53/udp"

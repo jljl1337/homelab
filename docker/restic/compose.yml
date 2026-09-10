@@ -1,10 +1,10 @@
 services:
-
   restic-backup:
     image: docker.io/mazzolino/restic:1.8.2
     container_name: homelab-restic-backup
     hostname: restic-backup
     restart: unless-stopped
+    user: ${PUID}:${PGID}
     environment:
       RUN_ON_STARTUP: "false"
       BACKUP_CRON: "0 0 * * * *"
@@ -45,6 +45,7 @@ services:
     container_name: homelab-restic-prune
     hostname: restic-prune
     restart: unless-stopped
+    user: ${PUID}:${PGID}
     environment:
       SKIP_INIT: "true"
       RUN_ON_STARTUP: "false"
@@ -74,6 +75,7 @@ services:
     container_name: homelab-restic-check
     hostname: restic-check
     restart: unless-stopped
+    user: ${PUID}:${PGID}
     environment:
       SKIP_INIT: "true"
       RUN_ON_STARTUP: "false"
