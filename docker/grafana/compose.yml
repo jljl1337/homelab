@@ -1,7 +1,7 @@
 services:
 
   grafana:
-    image: docker.io/grafana/grafana:13.2.0
+    image: docker.io/grafana/grafana:13.2.1
     container_name: homelab-grafana
     restart: unless-stopped
     user: 0:0
@@ -63,7 +63,7 @@ services:
       - "traefik.http.services.cadvisor.loadbalancer.server.port=8080"
 
   nvidia-gpu-exporter:
-    image: docker.io/utkuozdemir/nvidia_gpu_exporter:1.14.0
+    image: docker.io/utkuozdemir/nvidia_gpu_exporter:1.15.1
     container_name: homelab-nvidia-gpu-exporter
     restart: unless-stopped
     devices:
