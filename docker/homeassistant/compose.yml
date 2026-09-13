@@ -1,0 +1,23 @@
+services:
+  homeassistant:
+    image: docker.io/linuxserver/homeassistant:2026.9.1
+    container_name: homelab-homeassistant
+    restart: unless-stopped
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0 # USB passthrough for Z-Wave or Zigbee dongle
+    # For initial setup
+    # sudo firewall-cmd --add-port=8123/tcp
+    # sudo firewall-cmd --reload
+    # ports:
+    #   - 8123:8123
+    volumes:
+      - ${FAST_TEMP_STORAGE}/homeassistant/config:/config:rw,Z
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homeassistant.rule=Host(`homeassistant.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.homeassistant.entrypoints=websecure"
+      - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"

@@ -18,6 +18,7 @@ include:
   - docker/frigate/compose.yml
   - docker/adguard/compose.yml
   - docker/ollama/compose.yml
+  - docker/homeassistant/compose.yml
 
   # Services for media
   - docker/qbittorrent/compose.yml
