@@ -4,7 +4,6 @@ services:
     container_name: homelab-restic-backup
     hostname: restic-backup
     restart: unless-stopped
-    user: ${PUID}:${PGID}
     environment:
       RUN_ON_STARTUP: "false"
       BACKUP_CRON: "0 0 * * * *"
@@ -45,7 +44,6 @@ services:
     container_name: homelab-restic-prune
     hostname: restic-prune
     restart: unless-stopped
-    user: ${PUID}:${PGID}
     environment:
       SKIP_INIT: "true"
       RUN_ON_STARTUP: "false"
@@ -58,6 +56,11 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD}
       DISCORD_WEBHOOK: ${DISCORD_WEBHOOK}
+      PRE_COMMANDS: >-
+        curl
+        -H "Content-Type:application/json"
+        -d '{"content": "Restic prune started"}'
+        $$DISCORD_WEBHOOK
       POST_COMMANDS_SUCCESS: >-
         curl
         -H "Content-Type:application/json"
@@ -75,7 +78,6 @@ services:
     container_name: homelab-restic-check
     hostname: restic-check
     restart: unless-stopped
-    user: ${PUID}:${PGID}
     environment:
       SKIP_INIT: "true"
       RUN_ON_STARTUP: "false"
@@ -87,6 +89,11 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD}
       DISCORD_WEBHOOK: ${DISCORD_WEBHOOK}
+      PRE_COMMANDS: >-
+        curl
+        -H "Content-Type:application/json"
+        -d '{"content": "Restic check started"}'
+        $$DISCORD_WEBHOOK
       POST_COMMANDS_SUCCESS: >-
         curl
         -H "Content-Type:application/json"
