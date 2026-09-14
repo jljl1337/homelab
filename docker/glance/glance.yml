@@ -83,6 +83,12 @@ pages:
                 url: https://ai.${DOMAIN_NAME}
                 icon: si:ollama
                 hide: false
+              homelab-homeassistant:
+                name: Home Assistant
+                description: Home Automation
+                url: https://homeassistant.${DOMAIN_NAME}
+                icon: si:homeassistant
+                hide: false
 
           - title: Media
             type: docker-containers
