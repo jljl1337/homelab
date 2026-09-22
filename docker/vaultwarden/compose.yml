@@ -1,6 +1,6 @@
 services:
   vaultwarden:
-    image: docker.io/vaultwarden/server:1.37.2
+    image: docker.io/vaultwarden/server:1.37.3
     container_name: homelab-vaultwarden
     restart: unless-stopped
     user: ${PUID}:${PGID}
