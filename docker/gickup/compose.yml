@@ -1,6 +1,6 @@
 services:
   gickup:
-    image: docker.io/buddyspencer/gickup:0.10.45
+    image: docker.io/buddyspencer/gickup:0.10.47
     container_name: homelab-gickup
     restart: unless-stopped
     user: ${PUID}:${PGID}
