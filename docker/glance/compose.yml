@@ -1,7 +1,7 @@
 services:
   glance:
     container_name: homelab-glance
-    image: docker.io/glanceapp/glance:v0.8.5
+    image: docker.io/glanceapp/glance:v0.8.6
     restart: unless-stopped
     user: ${PUID}:${PGID}
     group_add:

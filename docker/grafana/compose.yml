@@ -1,6 +1,6 @@
 services:
   grafana:
-    image: docker.io/grafana/grafana:13.2.1
+    image: docker.io/grafana/grafana:13.2.2
     container_name: homelab-grafana
     restart: unless-stopped
     user: ${PUID}:${PGID}
