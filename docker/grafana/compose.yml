@@ -18,7 +18,7 @@ services:
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
 
   prometheus:
-    image: docker.io/prom/prometheus:v3.14.0
+    image: docker.io/prom/prometheus:v3.15.0
     container_name: homelab-prometheus
     restart: unless-stopped
     user: ${PUID}:${PGID}
@@ -40,7 +40,7 @@ services:
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
 
   cadvisor:
-    image: ghcr.io/google/cadvisor:v0.60.5
+    image: ghcr.io/google/cadvisor:v0.60.6
     container_name: homelab-cadvisor
     restart: unless-stopped
     privileged: true
