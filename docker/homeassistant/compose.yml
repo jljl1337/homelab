@@ -1,6 +1,6 @@
 services:
   homeassistant:
-    image: docker.io/linuxserver/homeassistant:2026.9.3
+    image: docker.io/linuxserver/homeassistant:2026.9.4
     container_name: homelab-homeassistant
     restart: unless-stopped
     devices:
