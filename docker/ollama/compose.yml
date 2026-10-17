@@ -1,6 +1,6 @@
 services:
   ollama:
-    image: docker.io/ollama/ollama:0.40.3
+    image: docker.io/ollama/ollama:0.40.6
     container_name: homelab-ollama
     restart: unless-stopped
     user: ${PUID}:${PGID}
@@ -19,7 +19,7 @@ services:
       - OLLAMA_KEEP_ALIVE=24h
 
   open-webui:
-    image: ghcr.io/open-webui/open-webui:v0.12.0
+    image: ghcr.io/open-webui/open-webui:v0.12.3
     container_name: homelab-open-webui
     restart: unless-stopped
     user: ${PUID}:${PGID}
