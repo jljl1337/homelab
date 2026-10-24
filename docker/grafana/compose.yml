@@ -18,7 +18,7 @@ services:
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
 
   prometheus:
-    image: docker.io/prom/prometheus:v3.15.0
+    image: docker.io/prom/prometheus:v3.15.1
     container_name: homelab-prometheus
     restart: unless-stopped
     user: ${PUID}:${PGID}
