@@ -1,6 +1,6 @@
 services:
   arcane:
-    image: ghcr.io/getarcaneapp/manager:v2.17.0
+    image: ghcr.io/getarcaneapp/manager:v2.17.1
     container_name: homelab-arcane
     restart: unless-stopped
     cgroup: host

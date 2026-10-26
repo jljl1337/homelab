@@ -59,7 +59,7 @@ services:
       - "traefik.http.services.cadvisor.loadbalancer.server.port=8080"
 
   nvidia-gpu-exporter:
-    image: docker.io/utkuozdemir/nvidia_gpu_exporter:1.15.1
+    image: docker.io/utkuozdemir/nvidia_gpu_exporter:1.16.0
     container_name: homelab-nvidia-gpu-exporter
     restart: unless-stopped
     deploy:
