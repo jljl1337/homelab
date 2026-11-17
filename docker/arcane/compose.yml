@@ -8,11 +8,10 @@ services:
       - ${FAST_TEMP_STORAGE}/arcane:/app/data:rw,Z
       - /var/run/docker.sock:/var/run/docker.sock:ro,z
     environment:
-      - APP_URL=http://arcane.${DOMAIN_NAME}
       - PUID=${PUID}
       - PGID=${PGID}
-      - ENCRYPTION_KEY=${ARCANE_ENCRYPTION_KEY}
-      - JWT_SECRET=${ARCANE_JWT_SECRET}
+      - ARCANE_APP_URL=http://arcane.${DOMAIN_NAME}
+      - ARCANE_ENCRYPTION_KEY=${ARCANE_ENCRYPTION_KEY}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.arcane.rule=Host(`arcane.${DOMAIN_NAME}`)"
