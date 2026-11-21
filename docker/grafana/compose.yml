@@ -40,7 +40,7 @@ services:
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
 
   cadvisor:
-    image: ghcr.io/google/cadvisor:v0.60.6
+    image: ghcr.io/google/cadvisor:v0.61.1
     container_name: homelab-cadvisor
     restart: unless-stopped
     privileged: true
@@ -59,7 +59,7 @@ services:
       - "traefik.http.services.cadvisor.loadbalancer.server.port=8080"
 
   nvidia-gpu-exporter:
-    image: docker.io/utkuozdemir/nvidia_gpu_exporter:1.18.0
+    image: docker.io/utkuozdemir/nvidia_gpu_exporter:1.19.0
     container_name: homelab-nvidia-gpu-exporter
     restart: unless-stopped
     deploy:
